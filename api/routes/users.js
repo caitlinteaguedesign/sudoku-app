@@ -1,19 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
-const User = require('../models/user');
 
-router.get('/', (req, res) => {
-   User.find()
-      .select('-__v')
-      .exec()
-      .then( data => {
-         res.status(200).json(data);
-      })
-      .catch( err => {
-         console.log(err);
-         res.status(500).json({
-            error: err
-         });
-      });
-});
+const UserController = require('../controllers/user');
+
+router.get('/', UserController.getAll);
+
+module.exports = router;

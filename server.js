@@ -3,13 +3,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
+
+// constants
 const PORT = process.env.PORT || 4000;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://admin:gPDecnvGyOiIIiWC@sudokucluster.ztnsx.mongodb.net/sudokuapp?retryWrites=true&w=majority";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://admin:gPDecnvGyOiIIiWC@sudokucluster.ztnsx.mongodb.net/SudokuApp?retryWrites=true&w=majority";
 
-const path = require('path');
+// routes
 const usersRoute = require('./api/routes/users');
+const puzzlesRoute = require('./api/routes/puzzles');
 
-// connect
+// Connecting
 mongoose.connect(MONGODB_URI, {
    useUnifiedTopology: true,
    useNewUrlParser: true,
@@ -36,6 +39,7 @@ app.use(express.json());
 
 // Routing
 app.use('/users', usersRoute);
+app.use('/puzzles', puzzlesRoute);
 
 // Listen for connections, changes
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));
