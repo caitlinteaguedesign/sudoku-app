@@ -21,12 +21,24 @@ const userSchema = mongoose.Schema({
       type: String,
       required: true
    },
-   puzzles: Array,
+   puzzles: [{
+      id: {
+         type: mongoose.Schema.Types.ObjectId,
+         required: true
+      },
+      completed: {
+         type: Boolean,
+         default: false
+      },
+      state: {
+         type: Array,
+         default: []
+      }
+   }],
    role: {
       type: String,
-      required: true,
       default: 'player'
    }
 });
 
-module.exports = mongoose.model('User', userSchema); // User => users in mongoose (the name of the collection)
+module.exports = mongoose.model('User', userSchema); // User == users (the actual name of the collection) in mongoose

@@ -15,6 +15,7 @@ const puzzleSchema = mongoose.Schema({
    },
    start: {
       type: Array,
+      default: [],
       required: true
    },
    date_created: {
