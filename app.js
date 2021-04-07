@@ -5,8 +5,7 @@ const morgan = require('morgan');
 const app = express();
 
 // constants
-const MONGODB_URI = "mongodb+srv://admin:gPDecnvGyOiIIiWC@sudokucluster.ztnsx.mongodb.net/SudokuApp?retryWrites=true&w=majority";
-console.log(process.env);
+const MONGODB_URI = "mongodb+srv://admin:"+process.env.MONGO_ATLAS_PW+"@sudokucluster.ztnsx.mongodb.net/SudokuApp?retryWrites=true&w=majority";
 
 // routes
 const usersRoute = require('./api/routes/users');
