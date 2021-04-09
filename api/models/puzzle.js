@@ -7,11 +7,14 @@ const puzzleSchema = mongoose.Schema({
    },
    name: {
       type: String,
-      required: true
+      required: true,
+      trim: true
    },
    difficulty: {
       type: String,
       required: true,
+      enum: ['easy', 'medium', 'hard', 'insane'],
+      default: 'easy'
    },
    start: {
       type: Array,

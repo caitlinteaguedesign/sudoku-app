@@ -74,3 +74,30 @@ exports.create = (req, res, next) => {
          });
       });
 }
+
+exports.update = (req, res, next) => {
+   const id = req.params.id;
+   const updateOps = {};
+
+   for (const ops of req.body) {
+      updateOps[ops.property] = ops.value;
+   }
+
+   Puzzle.findByIdAndUpdate({_id: id}, {$set: updateOps}, { runValidators: true }).exec()
+      .then( result => {
+         res.status(200).json({
+            message: 'Puzzle updated',
+            updates: updateOps,
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/puzzles/' + id 
+            }
+         });
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         })
+      });
+}
