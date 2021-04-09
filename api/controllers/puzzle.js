@@ -3,7 +3,7 @@ const Puzzle = require('../models/puzzle');
 
 exports.getAll = (req, res, next) => {
    Puzzle.find()
-      .select('-__v')
+      .select('-__v -start')
       .exec()
       .then( data => {
          res.status(200).json(data);
@@ -42,4 +42,35 @@ exports.getById = (req, res, next) => {
             error: err
          })
       })
+}
+
+exports.create = (req, res, next) => {
+   const puzzle = new Puzzle({
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      difficulty: req.body.difficulty,
+      date_created: Date.now(),
+      start: req.body.start
+   })
+
+   puzzle.save()
+      .then( result => {
+         res.status(201).json({
+            message: 'Puzzle added',
+            puzzle: {
+               id: result._id,
+               name: result.name
+            },
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/puzzles/' + result._id
+            }
+         })
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         });
+      });
 }
