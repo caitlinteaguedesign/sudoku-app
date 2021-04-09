@@ -7,11 +7,13 @@ const userSchema = mongoose.Schema({
    },
    name: {
       type: String,
-      required: true
+      required: true,
+      trim: true
    },
    email: {
       type: String,
       required: true,
+      trim: true
    },
    verified: {
       type: Boolean,
@@ -19,7 +21,8 @@ const userSchema = mongoose.Schema({
    },
    password: {
       type: String,
-      required: true
+      required: true,
+      trim: true
    },
    puzzles: [{
       id: {
@@ -37,7 +40,9 @@ const userSchema = mongoose.Schema({
    }],
    role: {
       type: String,
-      default: 'player'
+      enum: ['admin', 'player'],
+      default: 'player',
+      required: true
    }
 });
 
