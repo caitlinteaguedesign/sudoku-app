@@ -51,7 +51,7 @@ exports.create = (req, res, next) => {
       difficulty: req.body.difficulty,
       date_created: Date.now(),
       start: req.body.start
-   })
+   });
 
    puzzle.save()
       .then( result => {
@@ -121,6 +121,7 @@ exports.delete = (req, res, next) => {
          }
       })
       .catch( err => {
+         console.log(err);
          res.status(500).json({
             error: err
          })
