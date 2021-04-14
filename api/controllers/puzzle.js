@@ -101,3 +101,28 @@ exports.update = (req, res, next) => {
          })
       });
 }
+
+exports.delete = (req, res, next) => {
+   const id = req.params.id;
+
+   Puzzle.findByIdAndDelete(id).exec()
+      .then( result => {
+
+         if(result) {
+            res.status(200).json({
+               message: 'Puzzle deleted',
+               result: result.name
+            });
+         }
+         else {
+            res.status(404).json({
+               message: 'Puzzle not found'
+            })
+         }
+      })
+      .catch( err => {
+         res.status(500).json({
+            error: err
+         })
+      });
+}
