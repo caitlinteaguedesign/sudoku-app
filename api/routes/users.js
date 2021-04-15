@@ -5,9 +5,11 @@ const checkEmail = require('../middleware/check-email');
 const UserController = require('../controllers/user');
 
 router.get('/', UserController.getAll);
-router.get('/:id', UserController.getById);
 router.post('/', checkEmail, UserController.create);
-router.patch('/:id', checkEmail, UserController.update);
-router.delete('/:id', UserController.delete);
+router.delete('/unverified', UserController.deleteUnverified);
+router.get('/id/:id', UserController.getById);
+router.patch('/id/:id', checkEmail, UserController.update);
+router.delete('/id/:id', UserController.delete);
+
 
 module.exports = router;

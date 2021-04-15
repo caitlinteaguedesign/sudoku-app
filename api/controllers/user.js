@@ -124,3 +124,24 @@ exports.delete = (req, res, next) => {
          })
       })
 }
+
+exports.deleteUnverified = (req, res, next) => {
+   User.deleteMany({verified: false}).exec()
+      .then(result => {
+         let message = 'No unverified users found';
+
+         if(result.deletedCount>0) {
+            message = 'Unverified users deleted';
+         }
+         res.status(200).json({
+            message: message,
+            count: result.deletedCount
+         });
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         })
+      })
+}

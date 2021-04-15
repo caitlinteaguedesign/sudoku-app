@@ -15,7 +15,6 @@ module.exports = async (req, res, next) => {
             updateOps[ops.property] = ops.value;
          }
          if(updateOps['email']) email = updateOps['email'];
-         console.log('email: '+email);
       }
       // we're creating a new user
       else {
