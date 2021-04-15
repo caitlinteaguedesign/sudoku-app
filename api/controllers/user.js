@@ -43,45 +43,33 @@ exports.getById = (req, res, next) => {
 }
 
 exports.create = (req,res, next) => {
-   const email = req.body.email;
 
-   User.find({email: email}).exec()
-      .then(users => {
-         // we have a unique email address
-         if(users.length == 0) {
-            const user = new User({
-               _id: new mongoose.Types.ObjectId(),
-               name: req.body.name,
-               email: email,
-               password: req.body.password
-            });
-         
-            user.save()
-               .then( result => {
-                  res.status(201).json({
-                     message: 'User added',
-                     user: {
-                        id: result._id,
-                        name: result.name
-                     },
-                     request: {
-                        type: 'GET',
-                        url: 'http://localhost:4000/users/' + result._id
-                     }
-                  })
-               })
-               .catch( err => {
-                  console.log(err);
-                  res.status(500).json({
-                     error: err
-                  });
-               })
-         }
-         else {
-            res.status(409).json({
-               message: 'Email already is use'
-            })
-         }
+   const user = new User({
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+   });
+
+   user.save()
+      .then( result => {
+         res.status(201).json({
+            message: 'User added',
+            user: {
+               id: result._id,
+               name: result.name
+            },
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/users/' + result._id
+            }
+         })
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         });
       })
 }
 
@@ -92,14 +80,6 @@ exports.update = (req, res, next) => {
    for (const ops of req.body) {
       updateOps[ops.property] = ops.value;
    }
-
-   // if(updateOps['email']) {
-   //    const email = updateOps['email'];
-   //    let user = User.findOne({email});
-   //    if (user) {
-   //       res.status(404).send('Email already in use');
-   //    } 
-   // }
 
    User.findByIdAndUpdate({_id: id}, {$set: updateOps}, { runValidators: true }).exec()
       .then( result => {
