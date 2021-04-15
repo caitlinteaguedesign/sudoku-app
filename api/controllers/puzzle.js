@@ -63,7 +63,7 @@ exports.create = (req, res, next) => {
             },
             request: {
                type: 'GET',
-               url: 'http://localhost:4000/puzzles/' + result._id
+               url: 'http://localhost:4000/puzzles/id/' + result._id
             }
          })
       })
@@ -90,7 +90,7 @@ exports.update = (req, res, next) => {
             updates: updateOps,
             request: {
                type: 'GET',
-               url: 'http://localhost:4000/puzzles/' + id 
+               url: 'http://localhost:4000/puzzles/id/' + id 
             }
          });
       })

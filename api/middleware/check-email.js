@@ -22,7 +22,6 @@ module.exports = async (req, res, next) => {
       }
    
       if(email!='') {
-         console.log('checking email');
          let user = await User.findOne({email: email});
 
          // if this user exists AND we're updating a different user

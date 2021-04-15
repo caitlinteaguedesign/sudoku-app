@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const { commonKeys } = require('../utilities/objectComparison');
 
 exports.getAll = (req, res, next) => {
    User.find()
@@ -61,7 +62,7 @@ exports.create = (req,res, next) => {
             },
             request: {
                type: 'GET',
-               url: 'http://localhost:4000/users/' + result._id
+               url: 'http://localhost:4000/users/id/' + result._id
             }
          })
       })
@@ -83,12 +84,18 @@ exports.update = (req, res, next) => {
 
    User.findByIdAndUpdate({_id: id}, {$set: updateOps}, { runValidators: true }).exec()
       .then( result => {
+
+         const changes = commonKeys(updateOps, result);
+
          res.status(200).json({
             message: 'User updated',
-            updates: updateOps,
+            updates: {
+               id: result._id,
+               changes: changes
+            },
             request: {
                type: 'GET',
-               url: 'http://localhost:4000/users/' + id
+               url: 'http://localhost:4000/users/id/' + id
             }
          })
       })
