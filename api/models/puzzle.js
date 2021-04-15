@@ -7,7 +7,7 @@ const puzzleSchema = mongoose.Schema({
    },
    name: {
       type: String,
-      required: true,
+      required: [true, 'Name required'],
       trim: true
    },
    difficulty: {

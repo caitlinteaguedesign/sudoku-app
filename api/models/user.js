@@ -7,14 +7,14 @@ const userSchema = mongoose.Schema({
    },
    name: {
       type: String,
-      required: true,
+      required: [true, 'Name required'],
       trim: true
    },
    email: {
       type: String,
-      required: true,
+      required: [true, 'Email required'],
       trim: true,
-      createIndex: true,
+      unique: true,
       match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
    },
    verified: {
@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
    },
    password: {
       type: String,
-      required: true,
+      required: [true, 'Password required'],
       trim: true
    },
    puzzles: [{
@@ -43,8 +43,7 @@ const userSchema = mongoose.Schema({
    role: {
       type: String,
       enum: ['admin', 'player'],
-      default: 'player',
-      required: true
+      default: 'player'
    }
 });
 
