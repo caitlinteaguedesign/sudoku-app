@@ -1,0 +1,9 @@
+<svg version="1.1" id="svg_mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 72 72" style="enable-background:new 0 0 72 72;" xml:space="preserve">
+   <rect id="svg_mark-quad_3" x="39.8" y="20.8" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -5.4117 39.935)" width="11.3" height="11.3"/>
+   <rect id="svg_mark-quad_2" x="20.8" y="39.8" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -24.4117 32.065)" width="11.3" height="11.3"/>
+   <rect id="svg_mark-quad_1" x="20.8" y="20.8" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -10.9767 26.5)" width="11.3" height="11.3"/>
+   <rect id="svg_mark-quad" x="39.8" y="39.8" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -18.8467 45.5)" width="11.3" height="11.3"/>
+   <path id="svg_mark-grid" d="M36,3L4,36l32,32l32-32L36,3z M53.5,26.5l-8,8l-8-8l8-8L53.5,26.5z M44,36l-8,8l-8-8l8-8L44,36z
+      M36,9l8,8l-8,8l-8-8L36,9z M26.5,18.5l8,8l-8,8l-8-8L26.5,18.5z M9,36l8-8l8,8l-8,8L9,36z M18.5,45.5l8-8l8,8l-8,8L18.5,45.5z
+      M36,63l-8-8l8-8l8,8L36,63z M45.5,53.5l-8-8l8-8l8,8L45.5,53.5z M47,36l8-8l8,8l-8,8L47,36z"/>
+</svg>

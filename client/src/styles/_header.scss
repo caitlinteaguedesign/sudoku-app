@@ -1,0 +1,18 @@
+.header {
+   display: grid;
+   grid-auto-flow: column;
+   grid-gap: 1rem;
+   gap: 1rem;
+   align-items: center;
+   padding: 1rem 2rem;
+   background: #eaeaea;
+
+   &__logo {
+      display: flex;
+      align-items: center;
+      color: #666666;
+      font-size: 1.5em;
+      font-weight: 700;
+      text-decoration: none;
+   }
+}
