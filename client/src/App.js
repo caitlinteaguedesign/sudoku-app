@@ -23,7 +23,7 @@ function App() {
           </div>
 
           <div className="header__container">
-            <p>Hi, <strong>Tom</strong></p>
+            <p>Hi, <span className="text_bold">Tom</span></p>
             <button type="button" className="button button_style-solid">Log Out</button>
           </div>
 
