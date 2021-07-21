@@ -10,28 +10,39 @@ import Create from './views/Create';
 function App() {
   return (
     <Router>
-      <header className="header">
-        <Link to="/" className="header__logo">
-          <img src={logo} alt="logo" width="36" height="36" />
-          Sudoku
-        </Link>
-        <Link to="/browse">Browse</Link>
-        <Link to="/create">Create</Link>
-      </header>
+      <div className="app">
+        <header className="header">
 
-      <main className="main">
-        <Switch>
-          <Route path="/browse">
-            <Browse />
-          </Route>
-          <Route path="/create">
-            <Create />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </main>
+          <div className="header__container">
+            <Link to="/" className="header__logo">
+              <img src={logo} alt="logo" width="36" height="36" />
+              Sudoku
+            </Link>
+            <Link to="/browse">Browse</Link>
+            <Link to="/create">Create</Link>
+          </div>
+
+          <div className="header__container">
+            <p>Hi, <strong>Tom</strong></p>
+            <button type="button" className="button button_style-solid">Log Out</button>
+          </div>
+
+        </header>
+
+        <main className="main">
+          <Switch>
+            <Route path="/browse">
+              <Browse />
+            </Route>
+            <Route path="/create">
+              <Create />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </main>
+      </div>
     </Router>
   );
 }

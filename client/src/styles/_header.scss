@@ -1,11 +1,15 @@
 .header {
-   display: grid;
-   grid-auto-flow: column;
-   grid-gap: 1rem;
-   gap: 1rem;
+   display: flex;
+   justify-content: space-between;
    align-items: center;
    padding: 1rem 2rem;
    background: #eaeaea;
+
+   &__container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+   }
 
    &__logo {
       display: flex;
@@ -15,4 +19,5 @@
       font-weight: 700;
       text-decoration: none;
    }
+
 }
