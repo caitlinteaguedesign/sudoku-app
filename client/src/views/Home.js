@@ -8,14 +8,12 @@ export default function Home() {
 }
 
 function start() {
-
    return (
       <div className="home__start">
          <p className="home__prompt">You don’t have any puzzles yet!</p>
          <Link to="/create" className="link link_style-outline">Create a puzzle</Link>
       </div>
    )
-
 }
 
 function myPuzzles() {
