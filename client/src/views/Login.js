@@ -9,7 +9,6 @@ export default function Login() {
    const { state } = useLocation();
 
    const login = () => fakeAuth.authenticate( () => {
-      console.log('clicked')
       setRedirectToReferrer(true);
    });
 
