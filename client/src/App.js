@@ -13,14 +13,16 @@ import Create from './views/Create';
 function App() {
   return (
     <Router>
-      <Switch>
-        
-        <Route path="/login">
-          <Login />
-        </Route>
+      <div className="app">
 
-        <PrivateRoute path="/">
-          <div className="app">
+        <Switch>
+          
+          <Route path="/login">
+            <Login />
+          </Route>
+
+          <PrivateRoute path="/">
+          
             <header className="header">
 
               <div className="header__container">
@@ -49,10 +51,11 @@ function App() {
                 </Route>
               </Switch>
             </main>
-          </div>
-        </PrivateRoute>
+          </PrivateRoute>
 
-      </Switch>
+        </Switch>
+
+      </div>
     </Router>
   );
 }

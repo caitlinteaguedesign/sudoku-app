@@ -1,0 +1,59 @@
+@mixin labelDefault() {
+   top: 0.5rem;
+   color: #666666;
+   text-transform: uppercase;
+   letter-spacing: 0.01em;
+   font-size: 0.9em;
+   transform: translateY(0);
+}
+
+.floating-field {
+   position: relative;
+   padding: 0.5rem 0.75rem;
+   border: 1px solid #cccccc;
+   background: #eaeaea;
+   width: 300px;
+   height: 4rem;
+
+   &:focus-within {
+      padding-left: 0.75rem;
+
+      .floating-field__label {
+         @include labelDefault();
+      }
+   }
+   
+   &--inactive {
+      padding-left: 1rem;
+
+      .floating-field__label {
+         top: 50%;
+         transform: translateY(-60%);
+         color: #333;
+         font-size: 1.125em;
+         text-transform: unset;
+      }
+   }
+
+   &__label {
+      position: absolute;
+      line-height: 1em;
+      transition: all 0.25s ease-in-out;
+
+      @include labelDefault();
+   }
+
+   &__input {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: 0;
+      height: 100%;
+      padding: 2rem 0.75rem 1rem;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 1.125em;
+      line-height: 1em;
+   }
+}

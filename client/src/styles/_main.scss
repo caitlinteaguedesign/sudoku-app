@@ -5,4 +5,8 @@
    display: flex;
    align-items: center;
    justify-content: center;
+
+   &--public {
+      background: url('../img/pattern.jpg') repeat;
+   }
 }
