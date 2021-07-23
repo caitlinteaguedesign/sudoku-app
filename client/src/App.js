@@ -18,8 +18,8 @@ function App() {
               <img src={logo} alt="logo" width="36" height="36" />
               Sudoku
             </Link>
-            <Link to="/browse">Browse</Link>
-            <Link to="/create">Create</Link>
+            <Link to="/browse" className="link link_style-text">Browse</Link>
+            <Link to="/create" className="link link_style-text">Create</Link>
           </div>
 
           <div className="header__container">

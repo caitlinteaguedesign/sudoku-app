@@ -1,0 +1,26 @@
+.link {
+   font-family: inherit;
+   font-size: 1em;
+   line-height: 1em;
+
+   &_style-text {
+      color: #0066FF;
+   }
+
+   &_style-solid {
+      padding: 0.5rem 0.7rem 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #ffffff;
+      background: #0066FF;
+   }
+
+   &_style-outline {
+      padding: 0.8rem 0.8rem 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+      color: #0066FF;
+      border: 3px solid #0066FF;
+   }
+}
