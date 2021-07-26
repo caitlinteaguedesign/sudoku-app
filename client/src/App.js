@@ -5,6 +5,7 @@ import logo from './img/logo.svg';
 import './styles/main.scss';
 
 import Login from './views/Login';
+import Register from './views/Register';
 import UserHandle from './components/UserHandle';
 import Home from './views/Home';
 import Browse from './views/Browse';
@@ -17,6 +18,10 @@ function App() {
 
         <Switch>
           
+          <Route path="/register">
+            <Register />
+          </Route>
+
           <Route path="/login">
             <Login />
           </Route>

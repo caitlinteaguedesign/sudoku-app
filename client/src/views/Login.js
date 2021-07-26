@@ -8,17 +8,21 @@ import FloatingField from '../components/FloatingField';
 import logo from '../img/logo.svg';
 
 export default function Login() {
-   const { state } = useLocation();
-
+  
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [errors, setErrors] = useState({});
 
-   const handleSubmit = () => {
+   //const { state } = useLocation();
+
+   const handleSubmit = (e) => {
+      e.preventDefault();
+
       const userData = {
          email: email,
          password: password
       }
+
       console.log(userData);
    }
 
@@ -48,8 +52,8 @@ export default function Login() {
 
             <form noValidate className="prompt__form" onSubmit={handleSubmit}>
                <div className="prompt__fields">
-                  <FloatingField type="text" name="email" update={ () => setEmail() } />
-                  <FloatingField type="password" name="password" update={ () => setPassword() } />
+                  <FloatingField type="text" name="email" update={(e) => setEmail(e.value)} />
+                  <FloatingField type="password" name="password" update={(e) => setPassword(e.value)} />
                </div>
 
                <button type="submit" className="button button_style-solid">Log in</button>
