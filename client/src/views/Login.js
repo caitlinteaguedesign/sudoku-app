@@ -1,40 +1,41 @@
 import { useState } from 'react';
-import { Redirect, useLocation } from 'react-router';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
-import fakeAuth from "../fakeAuth";
+// import fakeAuth from "../fakeAuth";
 
 import FloatingField from '../components/FloatingField';
 
 import logo from '../img/logo.svg';
 
 export default function Login() {
+   const { state } = useLocation();
 
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const [errors, setErrors] = useState({});
 
-   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-   const { state } = useLocation();
-
-   const updateEmail = (value) => {
-      setEmail(value);
-   }
-
-   const updatePassword = (value) => {
-      setPassword(value);
-   }
-
-   const login = () =>  {
-      // pre-validation
-      if(email!=='' && password !=='') {
-         fakeAuth.authenticate( () => {
-            setRedirectToReferrer(true);
-         });
+   const handleSubmit = () => {
+      const userData = {
+         email: email,
+         password: password
       }
+      console.log(userData);
    }
 
-   if(redirectToReferrer === true) {
-      return <Redirect to={state?.from || '/'} />
-   }
+   // const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+
+   // const login = () =>  {
+   //    // pre-validation
+   //    if(email!=='' && password !=='') {
+   //       fakeAuth.authenticate( () => {
+   //          setRedirectToReferrer(true);
+   //       });
+   //    }
+   // }
+
+   // if(redirectToReferrer === true) {
+   //    return <Redirect to={state?.from || '/'} />
+   // }
 
    return (
       <main className="main main--public">
@@ -45,11 +46,16 @@ export default function Login() {
                Sudoku
             </div>
 
-            <FloatingField type="text" name="email" update={updateEmail} />
+            <form noValidate className="prompt__form" onSubmit={handleSubmit}>
+               <div className="prompt__fields">
+                  <FloatingField type="text" name="email" update={ () => setEmail() } />
+                  <FloatingField type="password" name="password" update={ () => setPassword() } />
+               </div>
 
-            <FloatingField type="password" name="password" update={updatePassword} />
+               <button type="submit" className="button button_style-solid">Log in</button>
+            </form>
 
-            <button onClick={login} className="button button_style-solid">Log in</button>
+            <p>Don't have an account? <Link to="/register" className="link link_style-text">Sign up</Link></p>
          </div>
       </main>
    )
