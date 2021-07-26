@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-export default function Home() {
+function Home() {
    const count = 0;
 
    if(count>0) return myPuzzles();
@@ -21,3 +21,5 @@ function myPuzzles() {
       <p>There are puzzles!</p>
    )
 }
+
+export default Home;
