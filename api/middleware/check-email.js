@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
          // if this user exists AND we're updating a different user
          if (user && id != user._id) {
             return res.status(400).json({
-               message: 'This email is already in use'
+               email: 'This email is already in use'
             });
          }
       }

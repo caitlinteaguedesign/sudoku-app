@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const passport = require('passport');
 const app = express();
 
 // constants
@@ -29,6 +30,10 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('disconnected', err => {
    console.log('Database Disconnected');
 })
+
+// PASSPORT
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
 // HTTP request logger
 app.use(morgan('dev'));

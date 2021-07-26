@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
-const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
+
+const validateLogin = require('../middleware/login');
+const validateRegister = require('../middleware/register');
+
 const { commonKeys } = require('../utilities/objectComparison');
+
+const User = require('../models/user');
+const passport = require('passport');
 
 exports.getAll = (req, res, next) => {
    User.find()
@@ -72,6 +81,108 @@ exports.create = (req,res, next) => {
             error: err
          });
       })
+}
+
+exports.register = (req,res, next) => {
+
+   const { errors, isValid } = validateRegister(req.body);
+
+   if(!isValid) {
+      return res.status(400).json(errors);
+   }
+
+   bcrypt.hash(req.body.password, 10, function(err, hash) {
+      if(err) {
+         return res.status(500).json({
+            error: err
+         });
+      }
+      else {
+         const user = new User({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            email: req.body.email,
+            password: hash
+         });
+
+         user.save()
+            .then( result => {
+               res.status(201).json({
+                  message: 'User added',
+                  user: {
+                     id: result._id,
+                     name: result.name
+                  },
+                  request: {
+                     type: 'GET',
+                     url: 'http://localhost:4000/users/id/' + result._id
+                  }
+               })
+            })
+            .catch( err => {
+               console.log(err);
+               res.status(500).json({
+                  error: err
+               });
+            })
+      }
+   });
+
+}
+
+exports.login = (req, res, next) => {
+
+   const { errors, isValid } = validateLogin(req.body);
+
+   if(!isValid) {
+      return res.status(400).json(errors);
+   }
+
+   const email = req.body.email;
+   const password = req.body.password;
+
+   User.findOne({email}).then(user => {
+      if(!user) {
+         return res.status(404).json({ emailnotfound: "Email not found"});
+      }
+
+      bcrypt.compare(password, user.password).then(isMatch => {
+         if(isMatch) {
+            const payload = {
+               id: user.id,
+               name: user.name
+            }
+   
+            jwt.sign(
+               payload,
+               keys.secretOrKey,
+               {
+                  expiresIn: 31556926 // 1 year in seconds
+               },
+               (err, token) => {
+                  res.json({
+                     success: true,
+                     token: 'Bearer ' + token
+                  });
+               }
+            );
+         }
+         else {
+            return res.status(400).json({passwordincorrect: 'Password is incorrect'});
+         }
+      }).catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         });
+      })
+
+   }).catch( err => {
+      console.log(err);
+      res.status(500).json({
+         error: err
+      });
+   });
 }
 
 exports.update = (req, res, next) => {
