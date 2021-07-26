@@ -19,7 +19,7 @@ export default function FloatingField(props) {
    return (
       <div className={`floating-field ${ inactive ? 'floating-field--inactive' : ''}`}>
          <label className="floating-field__label" htmlFor={props.name}>{props.name}</label>
-         <input className="floating-field__input" onChange={handleChange} value={value} type={props.type} id={props.name} />
+         <input className="floating-field__input" onChange={handleChange} value={value} type={props.type} name={props.name} id={props.name} />
       </div>
    )
 }
