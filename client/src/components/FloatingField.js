@@ -13,7 +13,7 @@ export default function FloatingField(props) {
       if(value==='') setInactive(true);
       else setInactive(false);
 
-      props.update({value: value});
+      props.update(e);
    }
 
    return (

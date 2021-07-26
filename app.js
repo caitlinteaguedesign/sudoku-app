@@ -36,15 +36,35 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 // HTTP request logger
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 
 // Body parser
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
+// CORS
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header(
+		'Access-Control-Allow-Headers', 
+		'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+	);
+
+	if(req.method === 'OPTIONS') {
+		res.header('Access-Control-Allow-Methods', 'PUT, POST, PATH, DELETE, GET');
+		return res.status(200).json({});
+	}
+	next();
+});
+
 // Routing
 app.use('/users', usersRoute);
 app.use('/puzzles', puzzlesRoute);
+
+// Client
+if(process.env.NODE_ENV === "production") {
+   app.use(express.static('client/build'));
+}
 
 // Errors
 app.use((req, res, next) => {
