@@ -12,7 +12,15 @@ import {
 export const registerUser = (userData, history) => dispatch => {
    axios
       .post('/users/register', userData)
-      .then(res => history.push('/login')) // redirect to login after successful register
+      .then(
+         res => {
+            // reset errors
+            dispatch(resetErrors());
+
+            // redirect to login after successful register
+            history.push('/login')
+         }
+      ) 
       .catch(err => 
          dispatch({
             type: GET_ERRORS,

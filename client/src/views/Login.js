@@ -7,7 +7,7 @@ import { loginUser } from '../actions/authActions';
 import shallowEqual from '../util/shallowEquality';
 import FloatingField from '../components/FloatingField';
 
-import logo from '../img/logo.svg';
+import logo from '../img/wordmark.svg';
 
 class Login extends Component {
   
@@ -23,7 +23,7 @@ class Login extends Component {
 
    componentDidMount() {
       if (this.props.auth.isAuthenticated) {
-         this.props.history.push('/dashboard')
+         this.props.history.push('/')
       }
    }
 
@@ -31,7 +31,7 @@ class Login extends Component {
 
       if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
          if(this.props.auth.isAuthenticated) {
-            this.props.history.push('/dashboard');
+            this.props.history.push('/');
          }
 
       }
@@ -55,7 +55,7 @@ class Login extends Component {
          email: this.state.email,
          password: this.state.password
       }
-      
+
       this.props.loginUser(userData);
    }
 
@@ -68,14 +68,13 @@ class Login extends Component {
             <div className="prompt">
 
                <div className="prompt__brand">
-                  <img src={logo} alt="logo" width="36" height="36" />
-                  Sudoku
+                  <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
                </div>
 
                <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
                   <div className="prompt__fields">
-                     <FloatingField type="text" name="email" errors={errors.email} update={this.handleChange} />
-                     <FloatingField type="password" name="password" errors={errors.password} update={this.handleChange} />
+                     <FloatingField type="text" name="email" errors={errors.login_email} update={this.handleChange} />
+                     <FloatingField type="password" name="password" errors={errors.login_password} update={this.handleChange} />
                   </div>
 
                   <button type="submit" className="button button_style-solid">Log in</button>

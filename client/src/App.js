@@ -7,7 +7,7 @@ import PrivateRoute from './util/PrivateRoute';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import logo from './img/logo.svg';
+import logo from './img/wordmark.svg';
 import './styles/main.scss';
 
 import Login from './views/Login';
@@ -55,8 +55,7 @@ class App extends Component {
 
                   <div className="header__container">
                     <Link to="/" className="header__logo">
-                      <img src={logo} alt="logo" width="36" height="36" />
-                      Sudoku
+                      <img src={logo} alt="Sudoku Maker logo" width="180" height="36" />
                     </Link>
                     <Link to="/browse" className="link link_style-text">Browse</Link>
                     <Link to="/create" className="link link_style-text">Create</Link>
