@@ -1,53 +1,108 @@
-import { useState } from 'react';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom'; 
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
 
-import fakeAuth from "../fakeAuth";
-
+import shallowEqual from '../util/shallowEquality';
 import FloatingField from '../components/FloatingField';
 
 import logo from '../img/logo.svg';
 
-export default function Login() {
+class Register extends Component {
 
-   const [name, setName] = useState('');
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+   constructor() {
+      super();
 
-   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-   const { state } = useLocation();
+      this.state = {
+         name: '',
+         email: '',
+         password: '',
+         errors: {}
+      };
+   }
 
-   const register = () =>  {
-      // pre-validation
-      if(name !=='' && email!=='' && password !=='') {
-         fakeAuth.authenticate( () => {
-            setRedirectToReferrer(true);
-         });
+   componentDidMount() {
+      if (this.props.auth.isAuthenticated) {
+         this.props.history.push('/dashboard')
       }
    }
 
-   if(redirectToReferrer === true) {
-      return <Redirect to={state?.from || '/'} />
+   componentDidUpdate(prevProps) {
+
+      if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
+
+         if(this.props.auth.isAuthenticated) {
+            this.props.history.push('/dashboard');
+         }
+
+      }
+
+      if(!shallowEqual(prevProps.errors, this.props.errors)) {
+
+         this.setState({
+            errors: this.props.errors
+         });
+
+      }
+      
    }
 
-   return (
-      <main className="main main--public">
-         <div className="prompt">
+   handleChange = (e) => {
+      this.setState({ [e.target.name]: e.target.value });
+   }
+   
+   handleSubmit = (e) => {
+      e.preventDefault();
 
-            <div className="prompt__brand">
-               <img src={logo} alt="logo" width="36" height="36" />
-               Sudoku
+      const newUser = {
+         name: this.state.name,
+         email: this.state.email,
+         password: this.state.password
+      }
+
+      this.props.registerUser(newUser, this.props.history);
+   }
+
+   render() {
+
+      const { errors } = this.props;
+
+      return (
+         <main className="main main--public">
+            <div className="prompt">
+
+               <div className="prompt__brand">
+                  <img src={logo} alt="logo" width="36" height="36" />
+                  Sudoku
+               </div>
+
+               <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
+                  <div className="prompt__fields">
+                     <FloatingField type="text" name="name" errors={errors.name} update={this.handleChange} />               
+                     <FloatingField type="text" name="email" errors={errors.email} update={this.handleChange} />
+                     <FloatingField type="password" name="password" errors={errors.password} update={this.handleChange} />
+                  </div>
+
+                  <button type="submit" className="button button_style-solid">Register</button>
+               </form>
+
+               <p>Already have an account? <Link to="/login" className="link link_style-text">Log in</Link></p>
             </div>
-
-            <div className="prompt__fields">
-               <FloatingField type="text" name="name" update={ () => setName() } />               
-               <FloatingField type="text" name="email" update={ () => setEmail() } />
-               <FloatingField type="password" name="password" update={ () => setPassword() } />
-            </div>
-
-            <button onClick={register} className="button button_style-solid">Register</button>
-
-            <p>Already have an account? <Link to="/login" className="link link_style-text">Log in</Link></p>
-         </div>
-      </main>
-   )
+         </main>
+      )
+   }
 }
+
+Register.propTypes = {
+   registerUser: PropTypes.func.isRequired,
+   auth: PropTypes.object.isRequired,
+   errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+   auth: state.auth,
+   errors: state.errors
+});
+
+export default connect(mapStateToProps, {registerUser}) (withRouter(Register));

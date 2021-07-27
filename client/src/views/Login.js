@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom'; // Redirect, useLocation
+import { Link, withRouter } from 'react-router-dom'; 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../actions/authActions';
@@ -30,9 +30,6 @@ class Login extends Component {
    componentDidUpdate(prevProps) {
 
       if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
-         //console.log('prev auth '+prevProps.auth.isAuthenticated);
-         //console.log('this auth'+this.props.auth.isAuthenticated);
-
          if(this.props.auth.isAuthenticated) {
             this.props.history.push('/dashboard');
          }
@@ -40,13 +37,9 @@ class Login extends Component {
       }
 
       if(!shallowEqual(prevProps.errors, this.props.errors)) {
-         //console.log('prev ', prevProps.errors);
-         //console.log('this ', this.props.errors);
-
          this.setState({
             errors: this.props.errors
          });
-
       }
       
    }
@@ -62,8 +55,7 @@ class Login extends Component {
          email: this.state.email,
          password: this.state.password
       }
-
-      //console.log('handle submit: ', userData);
+      
       this.props.loginUser(userData);
    }
 
