@@ -21,6 +21,13 @@ class Login extends Component {
       };
    }
 
+   componentDidMount() {
+      if (this.props.auth.isAuthenticated) {
+         console.log('should already be logged in');
+         this.props.history.push('/dashboard')
+      }
+   }
+
    componentDidUpdate(prevProps) {
 
       if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
