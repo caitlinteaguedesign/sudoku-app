@@ -38,6 +38,9 @@ export const loginUser = userData => dispatch => {
 
          // set current user
          dispatch(setCurrentUser(decoded));
+
+         // reset errors
+         dispatch(resetErrors());
       })
       .catch( err => 
          dispatch({
@@ -59,6 +62,14 @@ export const setCurrentUser = decoded => {
 export const setUserLoading = () => {
    return {
       type: USER_LOADING
+   }
+}
+
+// Reset Errors 
+export const resetErrors = () => {
+   return {
+      type: GET_ERRORS,
+      payload: {}
    }
 }
 
