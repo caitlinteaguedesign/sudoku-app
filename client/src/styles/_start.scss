@@ -1,10 +1,8 @@
-.home {
-   &__start {
-      display: grid;
-      align-items: center;
-      justify-items: center;
-   }
-
+.start {
+   display: grid;
+   align-items: center;
+   justify-items: center;
+   
    &__prompt {
       font-size: 1.25em;
       font-weight: bold;
