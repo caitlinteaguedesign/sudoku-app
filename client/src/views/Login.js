@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'; // Redirect, useLocation
+import { Link, withRouter } from 'react-router-dom'; // Redirect, useLocation
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../actions/authActions';
-//import classnames from 'classnames';
 
+import shallowEqual from '../util/shallowEquality';
 import FloatingField from '../components/FloatingField';
 
 import logo from '../img/logo.svg';
@@ -21,21 +21,26 @@ class Login extends Component {
       };
    }
 
-   componentDidUpdate(nextProps) {
+   componentDidUpdate(prevProps) {
 
-      if(nextProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
+      if(prevProps.auth.isAuthenticated !== this.props.auth.isAuthenticated) {
+         //console.log('prev auth '+prevProps.auth.isAuthenticated);
+         //console.log('this auth'+this.props.auth.isAuthenticated);
 
-         console.log('a change!');
-         
-         if(nextProps.auth.isAuthenticated) {
-            this.props.history.push('/');
+         if(this.props.auth.isAuthenticated) {
+            console.log('login!');
+            this.props.history.push('/dashboard');
          }
 
-         if(nextProps.errors) {
-            this.setState({
-               errors: nextProps.errors
-            })
-         }
+      }
+
+      if(!shallowEqual(prevProps.errors, this.props.errors)) {
+         //console.log('prev ', prevProps.errors);
+         //console.log('this ', this.props.errors);
+
+         this.setState({
+            errors: this.props.errors
+         });
 
       }
       
@@ -44,8 +49,7 @@ class Login extends Component {
    handleChange = (e) => {
       this.setState({ [e.target.name]: e.target.value });
    }
-      
-
+   
    handleSubmit = (e) => {
       e.preventDefault();
 
@@ -54,12 +58,13 @@ class Login extends Component {
          password: this.state.password
       }
 
-      console.log(userData);
+      //console.log('handle submit: ', userData);
       this.props.loginUser(userData);
    }
 
    render() {
-      const { errors } = this.state;
+      
+      const { errors } = this.props;
 
       return (
          <main className="main main--public">
@@ -72,8 +77,8 @@ class Login extends Component {
 
                <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
                   <div className="prompt__fields">
-                     <FloatingField type="text" name="email" hasError={errors.email} update={this.handleChange} />
-                     <FloatingField type="password" name="password" hasError={errors.password} update={this.handleChange} />
+                     <FloatingField type="text" name="email" errors={errors.email} update={this.handleChange} />
+                     <FloatingField type="password" name="password" errors={errors.password} update={this.handleChange} />
                   </div>
 
                   <button type="submit" className="button button_style-solid">Log in</button>
@@ -97,4 +102,4 @@ const mapStateToProps = state => ({
    errors: state.errors
 });
 
-export default connect(mapStateToProps, {loginUser})(Login);
+export default connect(mapStateToProps, {loginUser}) (withRouter(Login));

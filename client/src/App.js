@@ -9,7 +9,7 @@ import './styles/main.scss';
 import Login from './views/Login';
 import Register from './views/Register';
 import UserHandle from './components/UserHandle';
-import Home from './views/Home';
+import Dashboard from './views/Dashboard';
 import Browse from './views/Browse';
 import Create from './views/Create';
 
@@ -38,6 +38,7 @@ function App() {
                     <img src={logo} alt="logo" width="36" height="36" />
                     Sudoku
                   </Link>
+                  <Link to="/dashboard" className="link link_style-text">Dashboard</Link>
                   <Link to="/browse" className="link link_style-text">Browse</Link>
                   <Link to="/create" className="link link_style-text">Create</Link>
                 </div>
@@ -54,8 +55,8 @@ function App() {
                   <Route path="/create">
                     <Create />
                   </Route>
-                  <Route path="/">
-                    <Home />
+                  <Route path="/dashboard">
+                    <Dashboard />
                   </Route>
                 </Switch>
               </main>
