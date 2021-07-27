@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { unlock } from '../../../api/routes/puzzles';
 
 export default class Browse extends Component {
 
@@ -29,29 +28,34 @@ export default class Browse extends Component {
 
       const { data } = this.state;
 
-      if(data) {
-
-         return (
-            <ul>where puzzle
-            {/* {data.map( (object) => {
-               return ( 
-                  <li>
-                     <p key={object._id}>{object.name}</p>
-                     <p>{object.difficulty}</p>
-                     <p>{object.date_created}</p>
-                  </li>
-               )
-            })} */}
-            </ul>
-         )
-      }
-      else {
-         return (
-            <div className="start">
-               <p className="start__prompt">There aren't any puzzles yet!</p>
-               <Link to="/create" className="link link_style-outline">Create a puzzle</Link>
-            </div>
-         )
-      }
+      if(data) return displayPuzzles(data);
+      else return noPuzzles();
    }
+}
+
+function displayPuzzles(data) {
+   return (
+      <ul>
+         {data.map( (obj) => singlePuzzle(obj) )}
+      </ul>
+   )
+}
+
+function singlePuzzle(puzzle) {
+   return (
+      <li key={puzzle._id}>
+         <p key={puzzle._id}>{puzzle.name}</p>
+         <p>{puzzle.difficulty}</p>
+         <p>{puzzle.date_created}</p>
+      </li>
+   )
+}
+
+function noPuzzles() {
+   return (
+      <div className="start">
+         <p className="start__prompt">There aren't any puzzles yet!</p>
+         <Link to="/create" className="link link_style-outline">Create a puzzle</Link>
+      </div>
+   )
 }
