@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import Loading from '../components/Loading';
+
 export default class Browse extends Component {
 
-   constructor() {
-      super();
+   constructor(props) {
+      super(props);
 
       this.state = {
-         data: null
+         data: null,
+         loading: true
       }
    }
 
@@ -18,7 +21,8 @@ export default class Browse extends Component {
       .then(res => {
          console.log(res.data)
          this.setState({
-            data: res.data
+            data: res.data,
+            loading: false
          })
       }) 
       .catch(err => console.log(err));
@@ -26,10 +30,15 @@ export default class Browse extends Component {
 
    render() {
 
-      const { data } = this.state;
+      const { data, loading } = this.state;
 
-      if(data) return displayPuzzles(data);
-      else return noPuzzles();
+      if(loading) {
+         return Loading();
+      }
+      else {
+         if(data) return displayPuzzles(data);
+         else return noPuzzles();
+      }
    }
 }
 
