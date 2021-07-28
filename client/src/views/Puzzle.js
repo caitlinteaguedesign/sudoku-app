@@ -69,7 +69,7 @@ function boardCell(cell) {
       return <div className="board__cell">{cell}</div>
    }
    else {
-      return <input type="number" pattern="" className="board__cell" />
+      return <input type="text" pattern="" className="board__cell" />
    }
 }
 
