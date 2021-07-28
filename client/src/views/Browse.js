@@ -44,9 +44,17 @@ export default class Browse extends Component {
 
 function displayPuzzles(data) {
    return (
-      <ul>
-         {data.map( (obj) => singlePuzzle(obj) )}
-      </ul>
+      <div className="page">
+         <h1 className="page-title">Browse Puzzles</h1>
+
+         <section className="section">
+            <h2 className="section-title">Easy</h2>
+            <ul>
+               {data.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         
+      </div>
    )
 }
 
@@ -63,7 +71,7 @@ function singlePuzzle(puzzle) {
 function noPuzzles() {
    return (
       <div className="start">
-         <p className="start__prompt">There aren't any puzzles yet!</p>
+         <h1 className="start__prompt">There aren't any puzzles yet!</h1>
          <Link to="/create" className="link link_style-outline">Create a puzzle</Link>
       </div>
    )

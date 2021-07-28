@@ -1,5 +1,6 @@
 @import 'reset';
 
+@import 'typography';
 @import 'button';
 @import 'link';
 @import 'text';
@@ -7,8 +8,10 @@
 @import 'app';
 @import 'header';
 @import 'main';
+@import 'section';
+
+@import 'page';
 @import 'prompt';
 @import 'floating-field';
-
 @import 'loading';
 @import 'start';
