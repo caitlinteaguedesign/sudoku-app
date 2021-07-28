@@ -11,8 +11,8 @@ import logo from '../img/wordmark.svg';
 
 class Register extends Component {
 
-   constructor() {
-      super();
+   constructor(props) {
+      super(props);
 
       this.state = {
          name: '',
