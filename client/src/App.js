@@ -16,6 +16,7 @@ import UserHandle from './components/UserHandle';
 import Dashboard from './views/Dashboard';
 import Browse from './views/Browse';
 import Create from './views/Create';
+import Puzzle from './views/Puzzle';
 
 // check for token
 if(localStorage.jwtToken) {
@@ -67,6 +68,9 @@ class App extends Component {
 
                 <main className="main">
                   <Switch>
+                    <Route path="/puzzle/:id">
+                      <Puzzle />
+                    </Route>
                     <Route path="/browse">
                       <Browse />
                     </Route>

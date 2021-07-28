@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import formatDate from '../util/formatDate';
+
 import Loading from '../components/Loading';
 
 export default class Browse extends Component {
@@ -19,7 +21,6 @@ export default class Browse extends Component {
       axios
       .get('/puzzles/')
       .then(res => {
-         console.log(res.data)
          this.setState({
             data: res.data,
             loading: false
@@ -43,17 +44,51 @@ export default class Browse extends Component {
 }
 
 function displayPuzzles(data) {
+
+   const easy = data.filter(puzzle => puzzle.difficulty === 'easy');
+   const medium = data.filter(puzzle => puzzle.difficulty === 'medium');
+   const hard = data.filter(puzzle => puzzle.difficulty === 'hard');
+   const insane = data.filter(puzzle => puzzle.difficulty === 'insane');
+
    return (
       <div className="page">
          <h1 className="page-title">Browse Puzzles</h1>
 
+         {easy.length > 0 &&
          <section className="section">
             <h2 className="section-title">Easy</h2>
             <ul>
-               {data.map( (obj) => singlePuzzle(obj) )}
+               {easy.map( (obj) => singlePuzzle(obj) )}
             </ul>
          </section>
-         
+         }
+
+         {medium.length > 0 &&
+         <section className="section">
+            <h2 className="section-title">Medium</h2>
+            <ul>
+               {medium.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         }
+
+         {hard.length > 0 &&
+         <section className="section">
+            <h2 className="section-title">Hard</h2>
+            <ul>
+               {hard.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         }
+
+         {insane.length > 0 &&
+         <section className="section">
+            <h2 className="section-title">Insane</h2>
+            <ul>
+               {insane.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         }
       </div>
    )
 }
@@ -61,9 +96,8 @@ function displayPuzzles(data) {
 function singlePuzzle(puzzle) {
    return (
       <li key={puzzle._id}>
-         <p key={puzzle._id}>{puzzle.name}</p>
-         <p>{puzzle.difficulty}</p>
-         <p>{puzzle.date_created}</p>
+         <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
+         <p>Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></p>
       </li>
    )
 }
