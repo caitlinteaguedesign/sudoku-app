@@ -18,8 +18,7 @@ export default class Browse extends Component {
    }
 
    componentDidMount() {
-      axios
-      .get('/puzzles/')
+      axios.get('/puzzles/')
       .then(res => {
          this.setState({
             data: res.data,
