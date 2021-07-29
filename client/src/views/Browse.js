@@ -56,47 +56,47 @@ function displayPuzzles(data) {
          {easy.length > 0 &&
          <section className="section">
             <h2 className="section-title">Easy</h2>
-            <ul>
-               {easy.map( (obj) => singlePuzzle(obj) )}
-            </ul>
+            { listPuzzles(easy) }
          </section>
          }
 
          {medium.length > 0 &&
          <section className="section">
             <h2 className="section-title">Medium</h2>
-            <ul>
-               {medium.map( (obj) => singlePuzzle(obj) )}
-            </ul>
+            { listPuzzles(medium) }
          </section>
          }
 
          {hard.length > 0 &&
          <section className="section">
             <h2 className="section-title">Hard</h2>
-            <ul>
-               {hard.map( (obj) => singlePuzzle(obj) )}
-            </ul>
+            { listPuzzles(hard) }
          </section>
          }
 
          {insane.length > 0 &&
          <section className="section">
             <h2 className="section-title">Insane</h2>
-            <ul>
-               {insane.map( (obj) => singlePuzzle(obj) )}
-            </ul>
+            { listPuzzles(insane) }
          </section>
          }
       </div>
    )
 }
 
+function listPuzzles(puzzles) {
+   return (
+      <ul className="puzzle-list">
+         {puzzles.map( (obj) => singlePuzzle(obj) )}
+      </ul>
+   )
+}
+
 function singlePuzzle(puzzle) {
    return (
-      <li key={puzzle._id}>
+      <li key={puzzle._id} className="puzzle-list__item">
          <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
-         <p>Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></p>
+         <span className="text_uppercase">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></span>
       </li>
    )
 }
