@@ -69,26 +69,24 @@ class Register extends Component {
       const { errors } = this.props;
 
       return (
-         <main className="main main--public">
-            <div className="prompt">
+         <div className="prompt">
 
-               <div className="prompt__brand">
-                  <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
+            <div className="prompt__brand">
+               <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
+            </div>
+
+            <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
+               <div className="prompt__fields">
+                  <FloatingField type="text" name="name" errors={errors.register_name} update={this.handleChange} />               
+                  <FloatingField type="text" name="email" errors={errors.register_email} update={this.handleChange} />
+                  <FloatingField type="password" name="password" errors={errors.register_password} update={this.handleChange} />
                </div>
 
-               <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
-                  <div className="prompt__fields">
-                     <FloatingField type="text" name="name" errors={errors.register_name} update={this.handleChange} />               
-                     <FloatingField type="text" name="email" errors={errors.register_email} update={this.handleChange} />
-                     <FloatingField type="password" name="password" errors={errors.register_password} update={this.handleChange} />
-                  </div>
+               <button type="submit" className="button button_style-solid">Register</button>
+            </form>
 
-                  <button type="submit" className="button button_style-solid">Register</button>
-               </form>
-
-               <p>Already have an account? <Link to="/login" className="link link_style-text">Log in</Link></p>
-            </div>
-         </main>
+            <p>Already have an account? <Link to="/login" className="link link_style-text">Log in</Link></p>
+         </div>
       )
    }
 }

@@ -7,6 +7,20 @@
    justify-content: center;
 
    &--public {
-      background: url('../img/pattern.jpg') repeat;
+      background: #666666 repeat center;
+      
+      animation: drift 120s linear infinite;
+
+      @keyframes drift {
+         to {
+            background-position: 0% 0%;
+         }
+         from {
+            background-position: -100% 0%;
+         }
+      }
+
+      background-image: url('../img/pattern.jpg');
+      
    }
 }

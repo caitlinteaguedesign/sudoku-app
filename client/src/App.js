@@ -42,13 +42,22 @@ class App extends Component {
 
             <Switch>
               
-              <Route path="/register">
-                <Register />
-              </Route>
+              <Route path={['/register', '/login']}>
 
-              <Route path="/login">
-                <Login />
+                <main className="main main--public">
+                  <Switch>
+                    <Route path="/register">
+                      <Register />
+                    </Route>
+
+                    <Route path="/login">
+                    < Login />
+                    </Route>
+                  </Switch>
+                </main>
+
               </Route>
+              
 
               <PrivateRoute path="/">
               
