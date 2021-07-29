@@ -7,16 +7,16 @@
    justify-content: center;
 
    &--public {
-      background: #666666 repeat center;
+      background: #666666 0% center repeat;
       
-      animation: drift 120s linear infinite;
+      animation: drift 180s linear infinite;
 
       @keyframes drift {
          to {
             background-position: 0% 0%;
          }
          from {
-            background-position: -100% 0%;
+            background-position: -100% 100%;
          }
       }
 

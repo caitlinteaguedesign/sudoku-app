@@ -10,8 +10,7 @@ import store from './store';
 import logo from './img/wordmark.svg';
 import './styles/main.scss';
 
-import Login from './views/Login';
-import Register from './views/Register';
+import Entry from './views/Entry';
 import UserHandle from './components/UserHandle';
 import Dashboard from './views/Dashboard';
 import Browse from './views/Browse';
@@ -43,19 +42,7 @@ class App extends Component {
             <Switch>
               
               <Route path={['/register', '/login']}>
-
-                <main className="main main--public">
-                  <Switch>
-                    <Route path="/register">
-                      <Register />
-                    </Route>
-
-                    <Route path="/login">
-                    < Login />
-                    </Route>
-                  </Switch>
-                </main>
-
+                <Entry />
               </Route>
               
 
