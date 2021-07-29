@@ -1,13 +1,13 @@
 .loading {
    display: grid;
    grid-template-columns: repeat(3, 1fr);
-   grid-gap: 1rem;
-   gap: 1rem;
+   grid-gap: 0.5rem;
+   gap: 0.5rem;
    margin-bottom: 1rem;
 
    &__square {
-      width: 2rem;
-      height: 2rem;
+      width: 1.5rem;
+      height: 1.5rem;
       background: rgba(0, 102, 255, .1);
       animation: color 1.8s ease-in-out reverse infinite;
 

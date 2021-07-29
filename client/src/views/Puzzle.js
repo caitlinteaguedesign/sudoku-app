@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import Loading from '../components/Loading';
+import Board from '../game/Board';
+
 import formatDate from '../util/formatDate';
 
 class Puzzle extends Component {
@@ -51,30 +53,9 @@ function viewPuzzle(data) {
             <span className="title-group__small">{`${data.difficulty} | ${formatDate(data.date_created, 'Mon D, YYYY')}`}</span>
          </div>
 
-         <section className="board">
-            {data.start.map( (row, i) => boardRow(row, i) )}
-         </section>
+         { Board(data.start) }
       </div>
    )
-}
-
-function boardRow(row, i) {
-   return (
-      <div key={`row_${i}`} className="board__row">{row.map( (cell, i) => boardCell(cell, i) )}</div>
-   )
-}
-
-function boardCell(cell, i) {
-   // TO DO: pass color/style classes down by cell level
-
-   if(cell !== 0) {
-      return <div key={`cell_${i}`} className="board__cell board__cell--readonly">{cell}</div>
-   }
-   else {
-      // TO DO: replace non 1-9 with empty spaces
-      return <input key={`cell_${i}`} type="text" pattern="[1-9]" maxLength="1" className="board__cell" />
-   }
-   
 }
 
 export default withRouter(Puzzle);
