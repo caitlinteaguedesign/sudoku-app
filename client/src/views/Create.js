@@ -1,5 +1,7 @@
 export default function Create() {
    return (
-      <p>Create</p>
+      <div className="page">
+         <h1 className="page-title">Create a Puzzle</h1>
+      </div>
    )
 }
