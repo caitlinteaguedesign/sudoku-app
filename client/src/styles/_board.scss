@@ -46,6 +46,13 @@ $border-thick: 2px solid #999999;
       &:nth-child(3),
       &:nth-child(6) {
          border-right: $border-thick;
+         border-right-width: 1px;
+      }
+
+      &:nth-child(4),
+      &:nth-child(7) {
+         border-left: $border-thick;
+         border-left-width: 1px;
       }
 
       &:nth-child(9) {
