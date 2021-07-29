@@ -1,9 +1,9 @@
 .loading {
-   padding: 1rem;
    display: grid;
    grid-template-columns: repeat(3, 1fr);
    grid-gap: 1rem;
    gap: 1rem;
+   margin-bottom: 1rem;
 
    &__square {
       width: 2rem;

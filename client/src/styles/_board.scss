@@ -19,5 +19,11 @@
          color: #333333;
          font-weight: bold;
       }
+
+      &:focus {
+         position: relative;
+         z-index: 1;
+         outline: 3px solid #0066FF;
+      }
    }
 }

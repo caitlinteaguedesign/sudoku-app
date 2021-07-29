@@ -18,7 +18,7 @@ export default function Entry() {
                   in={true}
                   key={location.key}
                   classNames="swipe"
-                  timeout={750}
+                  timeout={600}
                >
                   
                   <div ref={nodeRef} role="presentation" className="transition__wrapper">
