@@ -51,26 +51,29 @@ function viewPuzzle(data) {
             <span className="title-group__small">{`${data.difficulty} | ${formatDate(data.date_created, 'Mon D, YYYY')}`}</span>
          </div>
 
-         <section class="board">
-            {data.start.map( (row) => boardRow(row) )}
+         <section className="board">
+            {data.start.map( (row, i) => boardRow(row, i) )}
          </section>
       </div>
    )
 }
 
-function boardRow(row) {
+function boardRow(row, i) {
    return (
-      <div className="board__row">{row.map( (cell) => boardCell(cell) )}</div>
+      <div key={`row_${i}`} className="board__row">{row.map( (cell, i) => boardCell(cell, i) )}</div>
    )
 }
 
-function boardCell(cell) {
+function boardCell(cell, i) {
+   // TO DO: pass color/style classes down by cell level
+
    if(cell !== 0) {
-      return <div className="board__cell">{cell}</div>
+      return <input key={`cell_${i}`} type="text" pattern="[1-9]" maxLength="1" className="board__cell board__cell--readonly" readOnly={true} value={cell} />
    }
    else {
-      return <input type="text" pattern="" className="board__cell" />
+      return <input key={`cell_${i}`} type="text" pattern="[1-9]" maxLength="1" className="board__cell" />
    }
+   
 }
 
 export default withRouter(Puzzle);
