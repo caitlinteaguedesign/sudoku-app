@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 import Board from '../game/Board';
+import axios from 'axios';
 
 export default function CreatePuzzle() {
+   const history = useHistory();
+
    const start = [
       [0,0,0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0,0,0],
@@ -47,7 +51,24 @@ export default function CreatePuzzle() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      console.log('submit');
+
+      if(name === '') alert('Name is required');
+      else if(difficulty === '') alert('Choose a difficulty');
+
+      if(name !== '' && difficulty !== '') {
+         const puzzle = {
+            name: name,
+            difficulty: difficulty,
+            start: grid
+         }
+
+         axios.post('/puzzles', puzzle)
+            .then(res => {
+               history.push('/browse');
+            }) 
+            .catch(err => console.log(err));
+      }
+      
    }
 
    return (

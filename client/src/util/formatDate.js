@@ -60,10 +60,10 @@ export default function formatDate(raw, style) {
          return mons[m]+' '+d+', '+y;
 
       case 'M/D/YYYY':
-         return m+'/'+d+'/'+y;
+         return (m+1)+'/'+d+'/'+y;
 
       default:
-         return m+'/'+d+'/'+y;
+         return (m+1)+'/'+d+'/'+y;
    }
 
 }

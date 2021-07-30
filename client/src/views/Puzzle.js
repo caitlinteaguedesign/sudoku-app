@@ -37,9 +37,13 @@ class Puzzle extends Component {
                board: res.data.result,
                player: playerBoard,
                loading: false
-            }, () => console.log('start', res.data.result.start))
+            });
+
          }) 
-         .catch(err => console.log(err));
+         .catch(err => {
+            console.log(err);
+            this.props.history.push('/browse')
+         });
    }
 
    handleGrid = (e, rowIndex, cellIndex) => {
@@ -53,25 +57,28 @@ class Puzzle extends Component {
       let updateData = [...this.state.player];
       updateData[rowIndex][cellIndex] = value;
       this.setState({
+         ...this.state,
          player: updateData
-      }, () => console.log('updated', this.state.player, 'start', this.state.board))
+      });
    }
 
    render() {
       
-      const { board, player, loading } = this.state;
-
-      if(loading) return Loading();
-      else return (
+      if(this.state.loading) return Loading();
+      else {
+         // console.log('start', this.state.board.start);
+         // console.log('player', this.state.player);
+         return (
          <div className="page">
             <div className="title-group">
-               <h1 className="page-title">{board.name}</h1>
-               <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
+               <h1 className="page-title">{this.state.board.name}</h1>
+               <span className="title-group__small">{`${this.state.board.difficulty} | ${formatDate(this.state.board.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)}  />
+            <Board start={this.state.board.start} player={this.state.player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)}  />
          </div>
-      );
+         );
+      }
    }
    
    

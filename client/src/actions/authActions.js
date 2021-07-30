@@ -18,7 +18,7 @@ export const registerUser = (userData, history) => dispatch => {
             dispatch(resetErrors());
 
             // redirect to login after successful register
-            history.push('/login')
+            history.push('/login');
          }
       ) 
       .catch(err => 
