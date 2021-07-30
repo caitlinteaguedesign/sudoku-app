@@ -37,12 +37,24 @@ class Puzzle extends Component {
                board: res.data.result,
                player: playerBoard,
                loading: false
-            })
+            }, () => console.log('start', res.data.result.start))
          }) 
          .catch(err => console.log(err));
+   }
 
+   handleGrid = (e, rowIndex, cellIndex) => {
       
+      let value = parseInt(e.target.value);
+   
+      if(!Number.isInteger(value) || (value<1 || value>9)) {
+         value = 0;
+      }
 
+      let updateData = [...this.state.player];
+      updateData[rowIndex][cellIndex] = value;
+      this.setState({
+         player: updateData
+      }, () => console.log('updated', this.state.player, 'start', this.state.board))
    }
 
    render() {
@@ -50,23 +62,19 @@ class Puzzle extends Component {
       const { board, player, loading } = this.state;
 
       if(loading) return Loading();
-      else return viewPuzzle(board, player);
+      else return (
+         <div className="page">
+            <div className="title-group">
+               <h1 className="page-title">{board.name}</h1>
+               <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
+            </div>
+
+            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)}  />
+         </div>
+      );
    }
    
    
-}
-
-function viewPuzzle(board, player) {
-   return (
-      <div className="page">
-         <div className="title-group">
-            <h1 className="page-title">{board.name}</h1>
-            <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
-         </div>
-
-         <Board start={board.start} player={player}  />
-      </div>
-   )
 }
 
 export default withRouter(Puzzle);
