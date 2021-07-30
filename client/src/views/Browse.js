@@ -44,10 +44,10 @@ export default class Browse extends Component {
 
 function displayPuzzles(data) {
 
-   const easy = data.filter(puzzle => puzzle.difficulty === 'easy');
-   const medium = data.filter(puzzle => puzzle.difficulty === 'medium');
-   const hard = data.filter(puzzle => puzzle.difficulty === 'hard');
-   const insane = data.filter(puzzle => puzzle.difficulty === 'insane');
+   const easy = data.filter(puzzle => puzzle.difficulty === 'easy').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+   const medium = data.filter(puzzle => puzzle.difficulty === 'medium').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+   const hard = data.filter(puzzle => puzzle.difficulty === 'hard').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+   const insane = data.filter(puzzle => puzzle.difficulty === 'insane').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
 
    return (
       <div className="page">
