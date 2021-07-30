@@ -53,7 +53,7 @@ function viewPuzzle(data) {
             <span className="title-group__small">{`${data.difficulty} | ${formatDate(data.date_created, 'Mon D, YYYY')}`}</span>
          </div>
 
-         { Board(data.start) }
+         <Board data={data.start} />
       </div>
    )
 }

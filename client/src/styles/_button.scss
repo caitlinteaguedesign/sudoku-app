@@ -23,4 +23,9 @@
       color: #0066FF;
       border: 3px solid #0066FF;
    }
+
+   &--disabled {
+      background: #cccccc;
+      color: #666666;
+   }
 }

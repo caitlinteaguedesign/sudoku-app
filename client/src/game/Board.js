@@ -1,4 +1,6 @@
-export default function Board(data) {
+export default function Board(props) {
+
+   const {data} = props;
 
    return (
       <section className="board">
