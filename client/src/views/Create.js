@@ -1,21 +1,10 @@
 import { useState } from 'react';
 import Board from '../game/Board';
+import { START_BOARD } from '../game/constants.json';
 
 export default function CreatePuzzle() {
 
-   const start = [
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0],
-   ];
-
-   const [grid, setGrid] = useState(start);
+   const [grid, setGrid] = useState(START_BOARD);
 
    const handleGrid = (grid) =>{
       setGrid(grid);
@@ -62,7 +51,7 @@ export default function CreatePuzzle() {
                   </select>
                </div>
             </div>
-            <Board data={grid} update={handleGrid} />
+            <Board start={grid} player={null} update={handleGrid} />
             <button type="submit" className="button button_style-solid">Create</button>
          </form>
          

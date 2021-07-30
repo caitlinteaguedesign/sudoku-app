@@ -14,7 +14,8 @@ class Puzzle extends Component {
 
       this.state = {
          id: null,
-         data: null,
+         board: null,
+         player: null,
          loading: true
       }
    }
@@ -24,36 +25,46 @@ class Puzzle extends Component {
 
       axios.get('/puzzles/id/'+id)
          .then(res => {
+            // get player state
+
+            // if player doesn't have a board started, use the board's start
+            const playerBoard = res.data.result.start;
+
+            // if new, add to players list of puzzles
             
             this.setState({
                id: id,
-               data: res.data.result,
+               board: res.data.result,
+               player: playerBoard,
                loading: false
             })
          }) 
          .catch(err => console.log(err));
+
+      
+
    }
 
    render() {
       
-      const { data, loading } = this.state;
+      const { board, player, loading } = this.state;
 
       if(loading) return Loading();
-      else return viewPuzzle(data);
+      else return viewPuzzle(board, player);
    }
    
    
 }
 
-function viewPuzzle(data) {
+function viewPuzzle(board, player) {
    return (
       <div className="page">
          <div className="title-group">
-            <h1 className="page-title">{data.name}</h1>
-            <span className="title-group__small">{`${data.difficulty} | ${formatDate(data.date_created, 'Mon D, YYYY')}`}</span>
+            <h1 className="page-title">{board.name}</h1>
+            <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
          </div>
 
-         <Board data={data.start} />
+         <Board start={board.start} player={player}  />
       </div>
    )
 }

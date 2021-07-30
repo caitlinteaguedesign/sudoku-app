@@ -1,32 +1,50 @@
-export default function Board(props) {
+import { useState } from 'react';
 
-   const {data} = props;
+export default function Board(props) {
+   const { player, start } = props;
+
+   const [data, setData] = useState(player ? player : start);
+
+   const handleChange = (e, rowIndex, cellIndex) => {
+      
+      let value = parseInt(e.target.value);
+   
+      if(!Number.isInteger(value) || (value<1 || value>9)) {
+         value = 0;
+      }
+
+      let updateData = [...data];
+      updateData[rowIndex][cellIndex] = value;
+      setData(updateData);
+
+      console.log(data[rowIndex]);
+   }
 
    return (
       <section className="board">
-         {data.map( (row, i) => Row(row, i) )}
+         {console.log('start', start, 'player', player)}
+         {data.map( (row, rowIndex) => { 
+            return <div key={`row_${rowIndex}`} className="board__row">
+               {row.map( (cell, cellIndex) => {
+                  const value = cell === 0 ? '' : cell;
+                  const startValue = start[rowIndex][cellIndex];
+                  
+
+                  // TO DO: pass color/style classes for the numbers
+                  // TO DO: pass background color classes (validation)
+
+                  // If start grid has a non zero, it must be a ready only cell (only necessary if there's a player)
+                  if(player && startValue !== 0) { 
+                     return <div key={`cell_${cellIndex}`} className="board__cell board__cell--readonly">{startValue}</div>
+                  }
+                  // All other cells the user (or player) fills in
+                  else {
+                     return <input key={`cell_${cellIndex}`} onChange={(e) => handleChange(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" className="board__cell" value={value} />
+                  }
+   
+               })}
+            </div>
+         })}
       </section>
    )
-}
-
-
-function Row(row, i) {
-   return (
-      <div key={`row_${i}`} className="board__row">{row.map( (cell, i) => Cell(cell, i) )}</div>
-   )
-}
-
-function Cell(cell, i) {
-   // TO DO: pass color/style classes down by cell level
-
-   // TO DO: USE START GRID TO DETERMINE READ ONLY CELLS
-   if(cell !== 0) {
-      return <div key={`cell_${i}`} className="board__cell board__cell--readonly">{cell}</div>
-   }
-   // TO DO: USE USER STORED VALUE (BLANK IF 0)
-   else {
-      // TO DO: replace non 1-9 with empty spaces
-      return <input key={`cell_${i}`} type="text" pattern="[1-9]" maxLength="1" className="board__cell" />
-   }
-   
 }
