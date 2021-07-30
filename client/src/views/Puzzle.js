@@ -63,19 +63,20 @@ class Puzzle extends Component {
    }
 
    render() {
-      
-      if(this.state.loading) return Loading();
+      const { loading, board, player } = this.state;
+
+      if(loading) return Loading();
       else {
-         // console.log('start', this.state.board.start);
-         // console.log('player', this.state.player);
+         // console.log('start', board.start);
+         // console.log('player', player);
          return (
          <div className="page">
             <div className="title-group">
-               <h1 className="page-title">{this.state.board.name}</h1>
-               <span className="title-group__small">{`${this.state.board.difficulty} | ${formatDate(this.state.board.date_created, 'Mon D, YYYY')}`}</span>
+               <h1 className="page-title">{board.name}</h1>
+               <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Board start={this.state.board.start} player={this.state.player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)}  />
+            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)}  />
          </div>
          );
       }

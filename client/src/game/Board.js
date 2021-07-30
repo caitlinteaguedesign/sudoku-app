@@ -18,7 +18,7 @@ export default function Board(props) {
                   }
                   // All other cells the user (or player) fills in
                   else {
-                     return <input key={`cell_${cellIndex}`} onChange={(e) => props.update(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" className="board__cell" value={value} />
+                     return <input key={`cell_${cellIndex}`} onFocus={(e) => e.target.select()} onChange={(e) => props.update(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" className="board__cell" value={value} />
                   }
    
                })}
