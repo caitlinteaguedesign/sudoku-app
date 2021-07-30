@@ -1,8 +1,6 @@
 export default function Board(props) {
    const { player, start } = props;
-   console.log('player',player);
-   console.log('start', start);
-
+   
    return (
       <section className="board">
          {player.map( (row, rowIndex) => { 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { cloneDeep } from 'lodash';
 
 import Loading from '../components/Loading';
 import Board from '../game/Board';
@@ -28,7 +29,7 @@ class Puzzle extends Component {
             // get player state
 
             // if player doesn't have a board started, use the board's start
-            const playerBoard = res.data.result.start.slice();
+            const playerBoard = cloneDeep(res.data.result.start);
 
             // if new, add to players list of puzzles
             
@@ -66,8 +67,6 @@ class Puzzle extends Component {
 
       if(loading) return Loading();
       else {
-         // console.log('start', board.start);
-         // console.log('player', player);
          return (
          <div className="page">
             <div className="title-group">
