@@ -28,7 +28,7 @@ class Puzzle extends Component {
             // get player state
 
             // if player doesn't have a board started, use the board's start
-            const playerBoard = res.data.result.start;
+            const playerBoard = res.data.result.start.slice();
 
             // if new, add to players list of puzzles
             
@@ -57,7 +57,6 @@ class Puzzle extends Component {
       let updateData = [...this.state.player];
       updateData[rowIndex][cellIndex] = value;
       this.setState({
-         ...this.state,
          player: updateData
       });
    }
