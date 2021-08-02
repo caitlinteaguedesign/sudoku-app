@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import Board from '../game/Board';
+import classnames from 'classnames';
 import axios from 'axios';
 import { isEqual, isEmpty } from 'lodash';
+
+import Board from '../game/Board';
 
 export default function CreatePuzzle() {
    const history = useHistory();
@@ -33,6 +35,12 @@ export default function CreatePuzzle() {
       let updateData = [...grid];
       updateData[rowIndex][cellIndex] = value;
       setGrid(updateData);
+
+      if(!isEqual(start, grid) && errors.grid) {
+         const updateErrors = errors;
+         delete updateErrors['grid'];
+         setErrors(updateErrors);
+      }
    }
 
    const [name, setName] = useState('');
@@ -40,6 +48,12 @@ export default function CreatePuzzle() {
    const handleInput = (e) => {
       const value = e.target.value;
       setName(value);
+
+      if(value !== '' && errors.name) {
+         const updateErrors = errors;
+         delete updateErrors['name'];
+         setErrors(updateErrors);
+      }
    }
 
 
@@ -48,6 +62,12 @@ export default function CreatePuzzle() {
    const handleSelect = (e) => {
       const value = e.target.value;
       setDifficulty(value);
+
+      if(value !== '' && errors.difficulty) {
+         const updateErrors = errors;
+         delete updateErrors['difficulty'];
+         setErrors(updateErrors);
+      }
    }
 
 
@@ -82,37 +102,47 @@ export default function CreatePuzzle() {
          <h1 className="page-title">Create a Puzzle</h1>
 
          <form noValidate onSubmit={handleSubmit} className="create-puzzle">
-            <div className="form_layout-grid form_color-default">
+            <div className="create-puzzle__fields form_layout-grid form_color-default">
 
                <div className="form__field">
                   <label className="label">Name</label>
-                  <input type="text" className="field" onChange={handleInput} value={name} />
-                  {errors.name && <p>{errors.name}</p>}
+                  <input type="text" onChange={handleInput} value={name} 
+                     className={
+                        classnames('field', 
+                           { 'field_color-default': !errors.name },
+                           { 'field_color-error': errors.name }
+                        )} 
+                  />
+                  <p className="field__error">{errors.name}</p>
                </div>
 
                <div className="form__field">
                   <label className="label">Difficulty</label>
-                  <select className="select" onChange={handleSelect} value={difficulty}>
+                  <select onChange={handleSelect} value={difficulty}
+                     className={
+                        classnames('select', 
+                           { 'select_color-default': !errors.difficulty },
+                           { 'select_color-error': errors.difficulty }
+                        )} 
+                  >
                      <option value="">Select</option>
                      <option value="easy">Easy</option>
                      <option value="medium">Medium</option>
                      <option value="hard">Hard</option>
                      <option value="insane">Insane</option>
                   </select>
-                  {errors.difficulty && <p>{errors.difficulty}</p>}
+                  <p className="field__error">{errors.difficulty}</p>
                </div>
 
             </div>
 
-            <Board start={start} player={grid} update={handleGrid} />
+            <Board start={start} player={grid} update={handleGrid} className="create-puzzle__board" />
 
-            <div role="presentation">
-               <button type="submit" className="button button_style-solid">Create</button>
+            <button type="submit" className="button button_style-solid">Create</button>
 
-               {!isEmpty(errors) && <div className="alert alert_color-error">
-                  {Object.keys(errors).map( (err, i) => <p key={`error_${i}`}>{errors[err]}</p>) }
-               </div>}
-            </div>
+            {!isEmpty(errors) && <div className="create-puzzle__errors alert alert_color-error">
+               {Object.keys(errors).map( (err, i) => <p key={`error_${i}`}>{errors[err]}</p>) }
+            </div>}
          </form>
          
       </div>

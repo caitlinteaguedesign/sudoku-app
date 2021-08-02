@@ -2,7 +2,7 @@ export default function Board(props) {
    const { player, start } = props;
    
    return (
-      <section className="board">
+      <section className={`board ${props.className}`}>
          {player.map( (row, rowIndex) => { 
             return <div key={`row_${rowIndex}`} className="board__row">
                {row.map( (cell, cellIndex) => {
