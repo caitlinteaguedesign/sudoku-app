@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import Board from '../game/Board';
 import axios from 'axios';
+import { isEqual, isEmpty } from 'lodash';
 
 export default function CreatePuzzle() {
    const history = useHistory();
+   const [errors, setErrors] = useState({});
 
    const start = [
       [0,0,0,0,0,0,0,0,0],
@@ -52,10 +54,13 @@ export default function CreatePuzzle() {
    const handleSubmit = (e) => {
       e.preventDefault();
 
-      if(name === '') alert('Name is required');
-      else if(difficulty === '') alert('Choose a difficulty');
+      let checkErrors = {};
 
-      if(name !== '' && difficulty !== '') {
+      if(name === '') checkErrors.name = 'Name cannot be blank.';
+      if(difficulty === '') checkErrors.difficulty = 'Choose a difficulty.';
+      if(isEqual(start, grid)) checkErrors.grid = 'Board cannot be empty.';
+
+      if(isEmpty(checkErrors)) {
          const puzzle = {
             name: name,
             difficulty: difficulty,
@@ -68,18 +73,23 @@ export default function CreatePuzzle() {
             }) 
             .catch(err => console.log(err));
       }
+      else setErrors(checkErrors);
       
    }
 
    return (
       <div className="page">
          <h1 className="page-title">Create a Puzzle</h1>
+
          <form noValidate onSubmit={handleSubmit} className="create-puzzle">
             <div className="form_layout-grid form_color-default">
+
                <div className="form__field">
                   <label className="label">Name</label>
                   <input type="text" className="field" onChange={handleInput} value={name} />
+                  {errors.name && <p>{errors.name}</p>}
                </div>
+
                <div className="form__field">
                   <label className="label">Difficulty</label>
                   <select className="select" onChange={handleSelect} value={difficulty}>
@@ -89,10 +99,20 @@ export default function CreatePuzzle() {
                      <option value="hard">Hard</option>
                      <option value="insane">Insane</option>
                   </select>
+                  {errors.difficulty && <p>{errors.difficulty}</p>}
                </div>
+
             </div>
+
             <Board start={start} player={grid} update={handleGrid} />
-            <button type="submit" className="button button_style-solid">Create</button>
+
+            <div role="presentation">
+               <button type="submit" className="button button_style-solid">Create</button>
+
+               {!isEmpty(errors) && <div className="alert alert_color-error">
+                  {Object.keys(errors).map( (err, i) => <p key={`error_${i}`}>{errors[err]}</p>) }
+               </div>}
+            </div>
          </form>
          
       </div>
