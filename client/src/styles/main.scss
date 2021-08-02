@@ -1,4 +1,5 @@
 @import 'reset';
+@import 'colors';
 
 @import 'util/typography';
 @import 'util/button';
@@ -8,6 +9,7 @@
 @import 'util/form';
 @import 'util/field';
 @import 'util/label';
+@import 'util/alerts';
 
 @import 'global/app';
 @import 'global/header';

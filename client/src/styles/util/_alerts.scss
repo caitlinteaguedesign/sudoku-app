@@ -1,0 +1,13 @@
+.alert {
+   padding: 1rem;
+   font-size: 1em;
+   line-height: 1.5em;
+   border-width: 1px;
+   border-style: solid;
+
+   &_color-error {
+      background: $error_bg_color;
+      border-color: $error_border_color;
+      color: $error_color;
+   }
+}

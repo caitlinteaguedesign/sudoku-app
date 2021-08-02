@@ -36,15 +36,15 @@
    }
 
    &_color-error {
-      border-color: #d0b8b8;
-      background: #fbe3e3;
+      border-color: $error_border_color;
+      background: $error_bg_color;
 
       .floating-field__togglePassword {
-         color: #7c5d5d;
+         color: $error_color;
       }
 
       .floating-field__input {
-         outline-color: #d0b8b8;
+         outline-color: $error_outline_color;
       }
    }
 

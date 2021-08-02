@@ -12,7 +12,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #ffffff;
-      background: #0066FF;
+      background: $primary_color;
    }
 
    &_style-outline {
@@ -20,8 +20,8 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: bold;
-      color: #0066FF;
-      border: 3px solid #0066FF;
+      color: $primary_color;
+      border: 3px solid $primary_color;
    }
 
    &--disabled {
