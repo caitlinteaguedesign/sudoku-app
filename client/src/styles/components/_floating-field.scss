@@ -16,7 +16,7 @@
 
 .floating-field {
    position: relative;
-   padding: 0.5rem 0.75rem;
+   padding: 0.5rem;
    border: 1px solid;
    
    width: 100%;
@@ -29,6 +29,10 @@
       .floating-field__togglePassword {
          color: #464646;
       }
+
+      .floating-field__input {
+         outline-color: #cccccc;
+      }
    }
 
    &_color-error {
@@ -38,10 +42,14 @@
       .floating-field__togglePassword {
          color: #7c5d5d;
       }
+
+      .floating-field__input {
+         outline-color: #d0b8b8;
+      }
    }
 
    &:focus-within {
-      padding-left: 0.75rem;
+      padding-left: 0.5rem;
 
       .floating-field__label {
          @include labelDefault();
@@ -85,12 +93,17 @@
       width: 100%;
       top: 0;
       height: 100%;
-      padding: 2rem 0.75rem 1rem;
+      padding: 2rem 0.5rem 1rem;
       background: transparent;
       border: none;
       font-family: inherit;
       font-size: 1.125em;
       line-height: 1em;
+
+      &:focus {
+         outline-width: 4px;
+         outline-style: solid;
+      }
    }
 
    &__error {
