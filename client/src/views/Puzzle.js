@@ -23,8 +23,8 @@ class Puzzle extends Component {
    }
 
    componentDidMount() {
+      
       // get puzzle
-
       const puzzleId = this.props.match.params.id;
       
       axios.get('/puzzles/id/'+puzzleId)

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import formatDate from '../util/formatDate';
 
 import Loading from '../components/Loading';
+import CreatePrompt from '../components/CreatePrompt';
 
 export default class Browse extends Component {
 
@@ -37,7 +38,7 @@ export default class Browse extends Component {
       }
       else {
          if(data) return displayPuzzles(data);
-         else return noPuzzles();
+         else return <CreatePrompt />;
       }
    }
 }
@@ -98,14 +99,5 @@ function singlePuzzle(puzzle) {
          <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
          <span className="text_uppercase">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></span>
       </li>
-   )
-}
-
-function noPuzzles() {
-   return (
-      <div className="start">
-         <h1 className="start__prompt">There aren't any puzzles yet!</h1>
-         <Link to="/create" className="link link_style-outline">Create a puzzle</Link>
-      </div>
    )
 }
