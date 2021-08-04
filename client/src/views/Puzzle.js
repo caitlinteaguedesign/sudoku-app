@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 
 import Loading from '../components/Loading';
 import Board from '../game/Board';
+import solve from '../game/solve';
 
 import formatDate from '../util/formatDate';
 
@@ -47,6 +48,15 @@ class Puzzle extends Component {
          });
    }
 
+   testSolve = () => {
+      const start = [...this.state.player];
+      const result = solve(start);
+
+      this.setState({
+         player: result
+      });
+   }
+
    handleGrid = (e, rowIndex, cellIndex) => {
       
       let value = parseInt(e.target.value);
@@ -74,7 +84,8 @@ class Puzzle extends Component {
                <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className=''  />
+            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className='' />
+            <button type="button" className="button button_style-solid" onClick={this.testSolve}>Test</button>
          </div>
          );
       }

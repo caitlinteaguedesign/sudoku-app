@@ -5,6 +5,7 @@ import axios from 'axios';
 import { isEqual, isEmpty } from 'lodash';
 
 import Board from '../game/Board';
+import validate from '../game/validate';
 
 export default function CreatePuzzle() {
    const history = useHistory();
@@ -79,6 +80,7 @@ export default function CreatePuzzle() {
       if(name === '') checkErrors.name = 'Name cannot be blank.';
       if(difficulty === '') checkErrors.difficulty = 'Choose a difficulty.';
       if(isEqual(start, grid)) checkErrors.grid = 'Board cannot be empty.';
+      else if(!validate(grid)) checkErrors.grid = 'This board is invalid. Double check for duplicate entries.';
 
       if(isEmpty(checkErrors)) {
          const puzzle = {
