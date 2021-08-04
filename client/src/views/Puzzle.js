@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
 
 import Loading from '../components/Loading';
 import Board from '../game/Board';
-import solve from '../game/solve';
 
 import formatDate from '../util/formatDate';
 
@@ -15,46 +16,70 @@ class Puzzle extends Component {
       super(props);
 
       this.state = {
-         id: null,
-         board: null,
+         puzzle: null,
          player: null,
          loading: true
       }
    }
 
    componentDidMount() {
-      const id = this.props.match.params.id;
+      // get puzzle
 
-      axios.get('/puzzles/id/'+id)
-         .then(res => {
+      const puzzleId = this.props.match.params.id;
+      
+      axios.get('/puzzles/id/'+puzzleId)
+         .then(puzzleRes => {
+            // the puzzle
+            const puzzle = puzzleRes.data.result;
             // get player state
+            const userId = this.props.auth.user.id;
 
-            // if player doesn't have a board started, use the board's start
-            const playerBoard = cloneDeep(res.data.result.start);
+            axios.get('/users/id/'+userId)
+               .then( userRes => {
+                  const user = userRes.data.result;
 
-            // if new, add to players list of puzzles
+                  // starting board
+                  let player = {
+                     id: puzzleId,
+                     state: cloneDeep(puzzle.start),
+                     completed: false
+                  }
+
+                  // check if player has started this puzzle
+                  const index = user.puzzles.findIndex(obj => obj.id === puzzleId);
+
+                  // update player board to user's version
+                  if(index !== -1) {                     
+                     player = cloneDeep(user.puzzles[index]);
+                  }
+                  // if new, add to players list of puzzles
+                  else {
+                     // add this puzzle to user's list
+                     axios.post('/users/id/'+userId+'/addPuzzle', player)
+                        .then( saveRes => {
+                           console.log(saveRes.data);
+                        })
+                        .catch( saveErr => {
+                           console.log(saveErr);
+                        });
+                  }
+
+                  this.setState({
+                     puzzle: puzzle,
+                     player: player,
+                     loading: false
+                  });
+
+               })
+               .catch( userErr => {
+                  console.log(userErr);
+               });
             
-            this.setState({
-               id: id,
-               board: res.data.result,
-               player: playerBoard,
-               loading: false
-            });
-
          }) 
          .catch(err => {
             console.log(err);
             this.props.history.push('/browse')
          });
-   }
-
-   testSolve = () => {
-      const start = [...this.state.player];
-      const result = solve(start);
-
-      this.setState({
-         player: result
-      });
    }
 
    handleGrid = (e, rowIndex, cellIndex) => {
@@ -72,26 +97,38 @@ class Puzzle extends Component {
       });
    }
 
+   saveProgress = () => {
+      console.log('save!');
+   }
+
    render() {
-      const { loading, board, player } = this.state;
+      const { loading, puzzle, player } = this.state;
 
       if(loading) return Loading();
       else {
          return (
          <div className="page">
             <div className="title-group">
-               <h1 className="page-title">{board.name}</h1>
-               <span className="title-group__small">{`${board.difficulty} | ${formatDate(board.date_created, 'Mon D, YYYY')}`}</span>
+               <h1 className="page-title">{puzzle.name}</h1>
+               <span className="title-group__small">{`${puzzle.difficulty} | ${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Board start={board.start} player={player} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className='' />
-            <button type="button" className="button button_style-solid" onClick={this.testSolve}>Test</button>
+            <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className='' />
+
+            <button type="button" onClick={this.saveProgress}>Save</button>
          </div>
          );
       }
    }
-   
-   
 }
 
-export default withRouter(Puzzle);
+
+Puzzle.propTypes = {
+   auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+   auth: state.auth
+});
+
+export default connect(mapStateToProps)(withRouter(Puzzle));

@@ -13,7 +13,7 @@ const passport = require('passport');
 
 exports.getAll = (req, res, next) => {
    User.find()
-      .select('-__v')
+      .select('-__v -puzzles')
       .exec()
       .then( data => {
          res.status(200).json(data);
@@ -255,6 +255,60 @@ exports.deleteUnverified = (req, res, next) => {
             message: message,
             count: result.deletedCount
          });
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         })
+      })
+}
+
+exports.addPuzzleList = (req, res, next) => {
+   const id = req.params.id;
+
+   console.log('id', id);
+
+   User.findByIdAndUpdate({_id: id}, {$addToSet: {puzzles: [req.body] } }, { runValidators: true }).exec()
+      .then( result => {
+
+         res.status(200).json({
+            message: 'Puzzle added to user\'s list',
+            updates: {
+               id: result._id
+            },
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/users/id/' + id
+            }
+         })
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         })
+      })
+}
+
+exports.updatePuzzleList = (req, res, next) => {
+   const id = req.params.id;
+
+   User.findByIdAndUpdate({_id: id}, {$addToSet: {puzzles: [req.body] } }, { runValidators: true }).exec()
+      .then( result => {
+
+         console.log('result: ', result);
+
+         res.status(200).json({
+            message: 'Puzzle added to user\'s list',
+            updates: {
+               id: result._id
+            },
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/users/id/' + id
+            }
+         })
       })
       .catch( err => {
          console.log(err);

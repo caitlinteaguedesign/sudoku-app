@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema({
       trim: true
    },
    puzzles: [{
+      _id: false,
       id: {
          type: mongoose.Schema.Types.ObjectId,
          required: true
