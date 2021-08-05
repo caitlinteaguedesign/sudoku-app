@@ -297,7 +297,7 @@ exports.updatePuzzleList = (req, res, next) => {
 
    User.findOneAndUpdate({_id: userId, "puzzles.id": puzzleId}, 
       {$set: { 
-         "puzzles.$.state": [req.body.state],
+         "puzzles.$.state": req.body.state,
          "puzzles.$.completed": req.body.completed }}, 
       { new: true, upsert: false, runValidators: true }).exec()
       .then( result => {

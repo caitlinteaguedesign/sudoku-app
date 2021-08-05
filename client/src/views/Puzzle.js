@@ -101,7 +101,13 @@ class Puzzle extends Component {
    }
 
    saveProgress = () => {
-      console.log('save!');
+      axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', this.state.player)
+         .then( res => {
+            console.log('saved!');
+         })
+         .catch(err => {
+            console.log(err);
+         });
    }
 
    render() {
