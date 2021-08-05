@@ -110,6 +110,10 @@ class Puzzle extends Component {
          });
    }
 
+   checkAnswer = () => {
+      console.log('check answer');
+   }
+
    render() {
       const { loading, puzzle, player } = this.state;
 
@@ -124,7 +128,8 @@ class Puzzle extends Component {
 
             <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className='' />
 
-            <button type="button" onClick={this.saveProgress}>Save</button>
+            <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>Save Progress</button>
+            <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>Check Answer</button>
          </div>
          );
       }

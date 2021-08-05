@@ -76,7 +76,7 @@ class Login extends Component {
                   <FloatingField type="password" name="password" errors={errors.login_password} update={this.handleChange} />
                </div>
 
-               <button type="submit" className="button button_style-solid">Log in</button>
+               <button type="submit" className="button button_style-solid button_style-solid--primary">Log in</button>
             </form>
 
             <p>Don't have an account? <Link to="/register" className="link link_style-text">Sign up</Link></p>

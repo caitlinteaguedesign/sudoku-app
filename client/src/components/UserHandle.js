@@ -12,7 +12,7 @@ class UserHandle extends Component {
             <p>Hi, <span className="text_bold">{user.name}</span></p>
             <button type="button" 
                onClick={() => this.props.logoutUser()}
-               className="button button_style-solid">
+               className="button button_style-solid button_style-solid--primary">
                   Log Out
             </button>
          </div>

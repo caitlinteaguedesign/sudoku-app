@@ -140,7 +140,7 @@ export default function CreatePuzzle() {
 
             <Board start={start} player={grid} update={handleGrid} className="create-puzzle__board" />
 
-            <button type="submit" className="button button_style-solid">Create</button>
+            <button type="submit" className="button button_style-solid button_style-solid--primary">Create</button>
 
             {!isEmpty(errors) && <div className="create-puzzle__errors alert alert_color-error">
                {Object.keys(errors).map( (err, i) => <p key={`error_${i}`}>{errors[err]}</p>) }

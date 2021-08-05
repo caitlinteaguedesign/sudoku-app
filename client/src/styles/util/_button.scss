@@ -11,8 +11,16 @@
       padding: 0.7rem 0.9rem 0.9rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #ffffff;
-      background: $primary_color;
+
+      &--primary {
+         color: #ffffff;
+         background: $primary_color;
+      }
+
+      &--default {
+         color: #333333;
+         background: #cccccc;
+      }
    }
 
    &_style-outline {

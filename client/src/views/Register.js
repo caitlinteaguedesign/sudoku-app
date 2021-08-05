@@ -82,7 +82,7 @@ class Register extends Component {
                   <FloatingField type="password" name="password" errors={errors.register_password} update={this.handleChange} />
                </div>
 
-               <button type="submit" className="button button_style-solid">Register</button>
+               <button type="submit" className="button button_style-solid button_style-solid--primary">Register</button>
             </form>
 
             <p>Already have an account? <Link to="/login" className="link link_style-text">Log in</Link></p>
