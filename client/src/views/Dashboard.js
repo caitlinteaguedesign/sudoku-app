@@ -20,6 +20,41 @@ class Dashboard extends Component {
       }
    }
 
+   processPuzzles = async (puzzles) => {
+      let puzzlesList = [];
+
+      for(const puz in puzzles) {
+         const puzzleId = puzzles[puz].id;
+
+         const result = await axios.get('/puzzles/id/'+puzzleId)
+            .then( lookup => lookup.data.result)
+            .catch( err => console.log(err));
+
+         if(result) {
+            const entry = {
+               _id: puzzleId,
+               name: result.name,
+               difficulty: result.difficulty,
+               date_created: result.date_created,
+               completed: puzzles[puz].completed
+            }
+            puzzlesList.push(entry);     
+         }
+                   
+      }
+
+      return puzzlesList;
+   }
+
+   getPuzzles = async (puzzles) => {
+      const puzzlesList = await this.processPuzzles(puzzles);
+
+      this.setState({
+         puzzles: puzzlesList,
+         loading: false
+      });
+   }
+
    componentDidMount() {
       const { user } = this.props.auth;
 
@@ -27,40 +62,17 @@ class Dashboard extends Component {
          .then( res => {
             const puzzles = res.data.result.puzzles;
 
-            let puzzlesList = [];
+            if(puzzles.length > 0) {
+               this.getPuzzles(puzzles);
+            }
 
-            (async () => {
-               for(let puz in puzzles) {
-                  try {
-                     const puzzleId = puzzles[puz].id;
-                     const result = await axios.get('/puzzles/id/'+puzzleId)
-                        .then( lookup => lookup )
-                        .catch( err => console.log(err));
+            else {
+               this.setState({
+                  loading: false
+               })
+            }
 
-                     
-                     const data = result.data.result;
-
-                     const entry = {
-                        _id: puzzleId,
-                        name: data.name,
-                        difficulty: data.difficulty,
-                        date_created: data.date_created,
-                        completed: puzzles[puz].completed
-                     }
-                     puzzlesList.push(entry);
-                  }
-                  catch (err) {
-                     console.log(err);
-                  }                  
-               }
-            })();
-
-            console.log('puzzleList', puzzlesList);
-
-            this.setState({
-               puzzles: puzzlesList,
-               loading: false
-            })
+            
          })
          .catch( err => {
             console.log(err);
@@ -68,6 +80,7 @@ class Dashboard extends Component {
    }
 
    render() {
+      console.log('render');
       const { loading, puzzles } = this.state;
 
       if(loading) return Loading();
