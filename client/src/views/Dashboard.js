@@ -71,8 +71,6 @@ class Dashboard extends Component {
                   loading: false
                })
             }
-
-            
          })
          .catch( err => {
             console.log(err);
@@ -80,7 +78,6 @@ class Dashboard extends Component {
    }
 
    render() {
-      console.log('render');
       const { loading, puzzles } = this.state;
 
       if(loading) return Loading();
@@ -89,18 +86,35 @@ class Dashboard extends Component {
          if(puzzles.length > 0) return listPuzzles(puzzles)
          else return <CreatePrompt />;
       }
-      
    }
 }
 
 function listPuzzles(puzzles) {
+
+   const inprogress = puzzles.filter(puzzle => !puzzle.completed).sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+   const completed = puzzles.filter(puzzle => puzzle.completed).sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+
    return (
       <div className="page">
          <h1 className="page-title">My Puzzles</h1>
 
-         <ul className="puzzle-list">
-            {puzzles.map( (obj) => singlePuzzle(obj) )}
-         </ul>
+         {inprogress.length > 0 &&
+         <section className="section">
+            <h2 className="section-title">In-Progress</h2>
+            <ul className="puzzle-list">
+               {inprogress.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         }
+
+         {completed.length > 0 &&
+         <section className="section">
+            <h2 className="section-title">Completed</h2>
+            <ul className="puzzle-list">
+               {completed.map( (obj) => singlePuzzle(obj) )}
+            </ul>
+         </section>
+         }
       </div>
    )
 }

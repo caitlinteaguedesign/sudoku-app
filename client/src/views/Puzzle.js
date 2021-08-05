@@ -90,10 +90,13 @@ class Puzzle extends Component {
          value = 0;
       }
 
-      let updateData = [...this.state.player];
+      let updateData = [...this.state.player.state];
       updateData[rowIndex][cellIndex] = value;
       this.setState({
-         player: updateData
+         player: {
+            ...this.state.player,
+            state: updateData
+         }
       });
    }
 
