@@ -8,6 +8,9 @@ import { cloneDeep } from 'lodash';
 import Loading from '../components/Loading';
 import Board from '../game/Board';
 
+import checkset from '../game/checkset';
+import { definitions } from '../game/constants';
+
 import formatDate from '../util/formatDate';
 
 class Puzzle extends Component {
@@ -114,11 +117,62 @@ class Puzzle extends Component {
       console.log('check answer');
    }
 
+   validateSection = (section, int) => {
+      const { state } = this.state.player;
+      const { start } = this.state.puzzle;
+
+      let playerData = [];
+      let puzzleData = [];
+
+      switch (section) {
+         case 'row':
+            playerData = state[int];
+            puzzleData = start[int];
+            break;
+         case 'column':
+            playerData = [];
+            for(const row in state) {
+               playerData.push(state[row][int]);
+            }
+            puzzleData = [];
+            for(const row in start) {
+               puzzleData.push(start[row][int]);
+            }
+            break;
+         case 'subgrid':
+            const blockIndex = definitions.findIndex(x => x.block === int);
+            const startRow = definitions[blockIndex]["startRow"];
+            const startColumn = definitions[blockIndex]["startColumn"];
+
+            playerData = [];
+            for(let i = startRow; i < startRow+3; i++ ) {
+               for(let j = startColumn; j < startColumn+3; j++) {
+                  playerData.push(state[i][j]);
+               }
+            }
+            puzzleData = [];
+            for(let i = startRow; i < startRow+3; i++ ) {
+               for(let j = startColumn; j < startColumn+3; j++) {
+                  puzzleData.push(start[i][j]);
+               }
+            }
+            break;
+         default:
+            break;
+      }
+
+      const { remainder, duplicates } = checkset(puzzleData, playerData);
+      console.log('remainder: ', remainder, 'duplicates: ', duplicates);
+   }
+
    render() {
       const { loading, puzzle, player } = this.state;
 
       if(loading) return Loading();
       else {
+
+         const sections = [0,1,2,3,4,5,6,7,8];
+
          return (
          <div className="page">
             <div className="title-group">
@@ -126,10 +180,41 @@ class Puzzle extends Component {
                <span className="title-group__small">{`${puzzle.difficulty} | ${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className='' />
+            <div className="view-puzzle">
 
-            <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>Save Progress</button>
-            <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>Check Answer</button>
+               <div className="view-puzzle__subgrids">
+                  { sections.map( ( (button) => {
+                     return <button key={`btn-row_${button}`} type="button" onClick={(e) => this.validateSection('subgrid', button)}>
+                        [{ button === 0 && '='}][{ button === 1 && '='}][{ button === 2 && '='}]<br/>
+                        [{ button === 3 && '='}][{ button === 4 && '='}][{ button === 5 && '='}]<br/>
+                        [{ button === 6 && '='}][{ button === 7 && '='}][{ button === 8 && '='}]
+                     </button>
+                  })) }
+               </div>
+
+               <div className="view-puzzle__main">
+
+                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" />
+
+                  { sections.map( ( (button) => {
+                     return <button key={`btn-row_${button}`} type="button" className="view-puzzle__btn-col" onClick={(e) => this.validateSection('row', button)}>
+                        [][][]
+                     </button>
+                  })) }
+
+                  { sections.map( ( (button) => {
+                     return <button key={`btn-column_${button}`} type="button" onClick={ (e) => this.validateSection('column', button)}>
+                        []<br/>[]<br/>[]
+                     </button>
+                  })) }
+               </div>
+
+               <div className="view-puzzle__actions">
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>Save Progress</button>
+                  <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>Check Answer</button>
+               </div>
+
+            </div>
          </div>
          );
       }

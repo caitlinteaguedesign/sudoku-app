@@ -1,0 +1,44 @@
+.view-puzzle {
+   display: grid;
+   grid-template-columns: 400px 1fr 250px;
+   grid-gap: 2rem;
+   gap: 2rem;
+
+   &__subgrids {
+      display: grid;
+      align-items: start;
+      justify-items: start;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+   }
+
+   &__main {
+      display: grid;
+      grid-template-columns: repeat(9, 3rem ) 1fr;
+      grid-template-rows: repeat(2, 3rem) calc(3rem + 2px) repeat(2, 3rem) calc(3rem + 2px) repeat(2, 3rem) 1fr;
+
+      align-items: center;
+      justify-items: center;
+   }
+
+   &__board {
+      grid-column: 1 / 10;
+      grid-row: 1 / 10;
+
+      align-self: start;
+      justify-self: start;
+   }
+
+   &__btn-col {
+      justify-self: start;
+   }
+
+   &__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr;
+      grid-gap: 1rem;
+      gap: 1rem;
+      justify-items: stretch;
+   }
+}
