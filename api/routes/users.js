@@ -18,6 +18,7 @@ router.delete('/id/:id', UserController.delete);
 
 router.post('/id/:id/addPuzzle', UserController.addPuzzleList);
 router.patch('/id/:id/updatePuzzle', UserController.updatePuzzleList);
+router.patch('/id/:id/pullPuzzle', UserController.pullFromPuzzleList);
 
 
 module.exports = router;

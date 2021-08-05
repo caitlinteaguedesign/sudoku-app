@@ -292,21 +292,50 @@ exports.addPuzzleList = (req, res, next) => {
 }
 
 exports.updatePuzzleList = (req, res, next) => {
-   const id = req.params.id;
+   const userId = req.params.id;
+   const puzzleId = req.body.id;
 
-   User.findByIdAndUpdate({_id: id}, {$addToSet: {puzzles: [req.body] } }, { runValidators: true }).exec()
+   User.findOneAndUpdate({_id: userId, "puzzles.id": puzzleId}, 
+      {$set: { 
+         "puzzles.$.state": [req.body.state],
+         "puzzles.$.completed": req.body.completed }}, 
+      { new: true, upsert: false, runValidators: true }).exec()
       .then( result => {
-
-         console.log('result: ', result);
-
          res.status(200).json({
-            message: 'Puzzle added to user\'s list',
-            updates: {
-               id: result._id
-            },
+            message: 'Puzzle updated on user\'s list',
+            result: result,
             request: {
                type: 'GET',
-               url: 'http://localhost:4000/users/id/' + id
+               url: 'http://localhost:4000/users/id/' + userId
+            }
+         })
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         })
+      })
+}
+
+exports.pullFromPuzzleList = (req, res, next) => {
+   const userId = req.params.id;
+   const puzzleId = req.body.id;
+
+   User.findByIdAndUpdate({_id: userId}, 
+      {$pull: { 
+         "puzzles": {
+            "id": puzzleId
+         }
+      }}, 
+      { multi: true, new: true }).exec()
+      .then( result => {
+         res.status(200).json({
+            message: 'Puzzle removed from user\'s list',
+            result: result,
+            request: {
+               type: 'GET',
+               url: 'http://localhost:4000/users/id/' + userId
             }
          })
       })
