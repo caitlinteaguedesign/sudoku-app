@@ -154,6 +154,29 @@ class Puzzle extends Component {
          });
    }
 
+   resetPuzzle = () => {
+      const ask = window.confirm("Are you sure you want to reset this puzzle? This action cannot be undone.");
+
+      if(ask) {
+         let updatePlayer = this.state.player;
+
+         updatePlayer.state = cloneDeep(this.state.puzzle.start);
+
+         axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
+            .then( res => {
+               console.log('saved!');
+
+               this.setState({
+                  player: updatePlayer,
+                  validation: cloneDeep(validation_dictionary)
+               })
+            })
+            .catch(err => {
+               console.log(err);
+            });
+      }
+   }
+
    checkAnswer = () => {
       console.log('check answer');
    }
@@ -319,6 +342,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__actions">
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>Save Progress</button>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>Reset Puzzle</button>
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>Check Answer</button>
                </div>
 
