@@ -3,8 +3,10 @@
    grid-template-columns: 400px 1fr 250px;
    grid-gap: 2rem;
    gap: 2rem;
+   align-items: start;
 
    &__subgrids {
+      height: 500px;
       display: grid;
       align-items: start;
       justify-items: start;
@@ -26,10 +28,6 @@
       grid-row: 1 / 10;
 
       align-self: start;
-      justify-self: start;
-   }
-
-   &__btn-col {
       justify-self: start;
    }
 

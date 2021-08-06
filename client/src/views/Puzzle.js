@@ -9,9 +9,23 @@ import Loading from '../components/Loading';
 import Board from '../game/Board';
 
 import checkset from '../game/checkset';
-import { definitions } from '../game/constants';
+import { definitions, pattern } from '../game/constants';
 
 import formatDate from '../util/formatDate';
+
+const validation_start_entry = {
+   tip: false,
+   remaining: [],
+   duplicates: []
+}
+
+const validation_dictionary = {};
+
+for(let i = 0; i < 9; i++) {
+   validation_dictionary[`row_${i}`] = validation_start_entry;
+   validation_dictionary[`column_${i}`] = validation_start_entry;
+   validation_dictionary[`subgrid_${i}`] = validation_start_entry;
+}
 
 class Puzzle extends Component {
 
@@ -21,6 +35,7 @@ class Puzzle extends Component {
       this.state = {
          puzzle: null,
          player: null,
+         validation: validation_dictionary,
          loading: true
       }
    }
@@ -93,13 +108,38 @@ class Puzzle extends Component {
          value = 0;
       }
 
+      // update this cell
       let updateData = [...this.state.player.state];
       updateData[rowIndex][cellIndex] = value;
+
+      // update the validation tips
+      let updateValidation = this.state.validation;
+      const rowValid = this.validateSection('row', rowIndex);
+      updateValidation[`row_${rowIndex}`] = {
+         ...updateValidation[`row_${rowIndex}`],
+         remaining: rowValid.remainder,
+         duplicates: rowValid.duplicates
+      }
+      const colValid = this.validateSection('column', cellIndex);
+      updateValidation[`column_${cellIndex}`] = {
+         ...updateValidation[`column_${cellIndex}`],
+         remaining: colValid.remainder,
+         duplicates: colValid.duplicates
+      }
+      const subIndex = pattern[rowIndex][cellIndex];
+      const subValid = this.validateSection('subgrid', subIndex);
+      updateValidation[`subgrid_${subIndex}`] = {
+         ...updateValidation[`subgrid_${subIndex}`],
+         remaining: subValid.remainder,
+         duplicates: subValid.duplicates
+      }
+
       this.setState({
          player: {
             ...this.state.player,
             state: updateData
-         }
+         },
+         validation: updateValidation
       });
    }
 
@@ -117,6 +157,21 @@ class Puzzle extends Component {
       console.log('check answer');
    }
 
+   toggleValidation = (section, int) => {
+      const { remainder, duplicates } = this.validateSection(section, int);
+
+      let updateValidation = this.state.validation;
+      updateValidation[`${section}_${int}`] = {
+         tip: !updateValidation[`${section}_${int}`].tip,
+         remaining: remainder,
+         duplicates: duplicates
+      }
+
+      this.setState({
+         validation: updateValidation
+      });
+   }
+   
    validateSection = (section, int) => {
       const { state } = this.state.player;
       const { start } = this.state.puzzle;
@@ -161,12 +216,11 @@ class Puzzle extends Component {
             break;
       }
 
-      const { remainder, duplicates } = checkset(puzzleData, playerData);
-      console.log('remainder: ', remainder, 'duplicates: ', duplicates);
+      return checkset(puzzleData, playerData);
    }
 
    render() {
-      const { loading, puzzle, player } = this.state;
+      const { loading, puzzle, player, validation } = this.state;
 
       if(loading) return Loading();
       else {
@@ -184,11 +238,20 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__subgrids">
                   { sections.map( ( (button) => {
-                     return <button key={`btn-row_${button}`} type="button" onClick={(e) => this.validateSection('subgrid', button)}>
-                        [{ button === 0 && '='}][{ button === 1 && '='}][{ button === 2 && '='}]<br/>
-                        [{ button === 3 && '='}][{ button === 4 && '='}][{ button === 5 && '='}]<br/>
-                        [{ button === 6 && '='}][{ button === 7 && '='}][{ button === 8 && '='}]
-                     </button>
+                     const thisValidation = validation[`subgrid_${button}`];
+
+                     return <div key={`btn-subgrid_${button}`} className="validation validation_style-sub">
+                           <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('subgrid', button)}>
+                           [{ button === 0 && '='}][{ button === 1 && '='}][{ button === 2 && '='}]<br/>
+                           [{ button === 3 && '='}][{ button === 4 && '='}][{ button === 5 && '='}]<br/>
+                           [{ button === 6 && '='}][{ button === 7 && '='}][{ button === 8 && '='}]
+                        </button>
+                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        <div className="validation__tip validation__tip--vertical">
+                           {thisValidation.remaining.map( (value, index) => <span key={`subgrid_${button}_${index}`}>{value}</span>) }
+                        </div> 
+                        }
+                     </div>
                   })) }
                </div>
 
@@ -197,15 +260,33 @@ class Puzzle extends Component {
                   <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" />
 
                   { sections.map( ( (button) => {
-                     return <button key={`btn-row_${button}`} type="button" className="view-puzzle__btn-col" onClick={(e) => this.validateSection('row', button)}>
-                        [][][]
-                     </button>
+                     const thisValidation = validation[`row_${button}`];
+
+                     return <div key={`btn-row_${button}`} className="validation validation_style-row">
+                        <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('row', button)}>
+                           [][][]
+                        </button>
+                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        <div className="validation__tip validation__tip--horizontal">
+                           {thisValidation.remaining.map( (value, index) => <span key={`row_${button}_${index}`}>{value}</span>) }
+                        </div> 
+                        }
+                     </div>
                   })) }
 
                   { sections.map( ( (button) => {
-                     return <button key={`btn-column_${button}`} type="button" onClick={ (e) => this.validateSection('column', button)}>
-                        []<br/>[]<br/>[]
-                     </button>
+                     const thisValidation = validation[`column_${button}`];
+
+                     return <div key={`btn-column_${button}`} className="validation validation_style-col">
+                        <button type="button" className="validation__button" onClick={ (e) => this.toggleValidation('column', button)}>
+                           []<br/>[]<br/>[]
+                        </button>
+                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        <div className="validation__tip validation__tip--vertical">
+                           {thisValidation.remaining.map( (value, index) => <span key={`column_${button}_${index}`}>{value}</span>) }
+                        </div> 
+                        }
+                     </div>
                   })) }
                </div>
 

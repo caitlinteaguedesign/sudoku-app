@@ -23,5 +23,7 @@ export default function checkset(puzzleData, playerData) {
       }
    }
 
+   remainder = [...remainder];
+
    return { remainder, duplicates };
 }
