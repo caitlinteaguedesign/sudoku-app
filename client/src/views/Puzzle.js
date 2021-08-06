@@ -278,7 +278,8 @@ class Puzzle extends Component {
                         'validation validation_style-row',
                         {'validation_color-default': !thisValidation.tip},
                         {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
-                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
+                        {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )} >
                         <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('row', button)}>
                            <div className="validation__square"></div>

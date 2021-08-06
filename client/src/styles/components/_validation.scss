@@ -107,7 +107,7 @@
 
    &_color-error {
       .validation__square {
-         border-color: #b6a15e;
+         border-color: #c5af65;
          background: #FFFBA1;
 
          &--current {
@@ -119,7 +119,18 @@
          color: #301D00;
          border-color: #dac37b;
          background: #FFFBA1;
-         box-shadow: 0 2px 8px 0 rgba(221, 196, 116, 0.5);
+         box-shadow: 0 2px 8px 0 rgba(221, 196, 116, 0.7);
+      }
+   }
+
+   &_color-complete {
+      .validation__square {
+         border-color: #93bb8e;
+         background: #D1FCCE;
+
+         &--current {
+            background: #ABD2A7;
+         } 
       }
    }
 
