@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
+import classnames from 'classnames';
 
 import Loading from '../components/Loading';
 import Board from '../game/Board';
@@ -35,7 +36,7 @@ class Puzzle extends Component {
       this.state = {
          puzzle: null,
          player: null,
-         validation: validation_dictionary,
+         validation: cloneDeep(validation_dictionary),
          loading: true
       }
    }
@@ -240,11 +241,22 @@ class Puzzle extends Component {
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`subgrid_${button}`];
 
-                     return <div key={`btn-subgrid_${button}`} className="validation validation_style-sub">
-                           <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('subgrid', button)}>
-                           [{ button === 0 && '='}][{ button === 1 && '='}][{ button === 2 && '='}]<br/>
-                           [{ button === 3 && '='}][{ button === 4 && '='}][{ button === 5 && '='}]<br/>
-                           [{ button === 6 && '='}][{ button === 7 && '='}][{ button === 8 && '='}]
+                     return <div key={`btn-subgrid_${button}`} className={classnames(
+                        'validation validation_style-sub',
+                        {'validation_color-default': !thisValidation.tip},
+                        {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                     )}>
+                        <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('subgrid', button)}>
+                           { sections.map( (square) => {
+                              return (
+                              <div key={`subgrid_square_${square}`} 
+                                 className={classnames(
+                                    'validation__square', 
+                                    {'validation__square--current' :button === square}
+                                 )}></div>
+                              )
+                           })}
                         </button>
                         { thisValidation.tip && thisValidation.remaining.length > 0 && 
                         <div className="validation__tip validation__tip--vertical">
@@ -262,9 +274,16 @@ class Puzzle extends Component {
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
 
-                     return <div key={`btn-row_${button}`} className="validation validation_style-row">
+                     return <div key={`btn-row_${button}`} className={classnames(
+                        'validation validation_style-row',
+                        {'validation_color-default': !thisValidation.tip},
+                        {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                     )} >
                         <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('row', button)}>
-                           [][][]
+                           <div className="validation__square"></div>
+                           <div className="validation__square"></div>
+                           <div className="validation__square"></div>
                         </button>
                         { thisValidation.tip && thisValidation.remaining.length > 0 && 
                         <div className="validation__tip validation__tip--horizontal">
@@ -277,9 +296,16 @@ class Puzzle extends Component {
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`column_${button}`];
 
-                     return <div key={`btn-column_${button}`} className="validation validation_style-col">
+                     return <div key={`btn-column_${button}`} className={classnames(
+                        'validation validation_style-col',
+                        {'validation_color-default': !thisValidation.tip},
+                        {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                     )}>
                         <button type="button" className="validation__button" onClick={ (e) => this.toggleValidation('column', button)}>
-                           []<br/>[]<br/>[]
+                           <div className="validation__square"></div>
+                           <div className="validation__square"></div>
+                           <div className="validation__square"></div>
                         </button>
                         { thisValidation.tip && thisValidation.remaining.length > 0 && 
                         <div className="validation__tip validation__tip--vertical">

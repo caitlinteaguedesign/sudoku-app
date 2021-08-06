@@ -1,15 +1,17 @@
 .view-puzzle {
    display: grid;
-   grid-template-columns: 400px 1fr 250px;
+   grid-template-columns: 320px 1fr 250px;
    grid-gap: 2rem;
    gap: 2rem;
    align-items: start;
 
    &__subgrids {
-      height: 500px;
+      height: 545px;
       display: grid;
       align-items: start;
       justify-items: start;
+      grid-gap: 1.5rem;
+      gap: 1.5rem;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
    }
