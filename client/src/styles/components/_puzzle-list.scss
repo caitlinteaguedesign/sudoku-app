@@ -37,6 +37,18 @@
          color: #e04834;
       }
 
+      &--inprogress {
+         color: #D0E8F5;
+      }
+
+      &--completed {
+         color: #D5F5D0;
+      }
+
+      &--default {
+         color: #454545;
+      }
+
    }
 
    &__date {      
