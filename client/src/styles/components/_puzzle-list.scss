@@ -10,8 +10,40 @@
 
    &__item {
       display: grid;
-      grid-gap: 0.5rem;
-      gap: 0.5rem;
-      color: #333;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      align-items: start;
+      grid-gap: 0.25rem 0.75rem;
+      gap: 0.25rem 0.75rem;
+   }
+
+   &__icon {
+      grid-row: 1 / 3;
+      fill: currentColor;
+
+      &--easy {
+         color: #8cd33b;
+      }
+
+      &--medium {
+         color: #e9cd32;
+      }
+
+      &--hard {
+         color: #f09c3c;
+      }
+
+      &--insane {
+         color: #e04834;
+      }
+
+   }
+
+   &__date {      
+      color: #454545;
+      font-size: 0.9em;
+      line-height: 1em;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
    }
 }
