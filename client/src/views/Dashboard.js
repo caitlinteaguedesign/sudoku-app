@@ -14,6 +14,8 @@ import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
 import { ReactComponent as Hard } from '../img/hard.svg';
 import { ReactComponent as Insane } from '../img/insane.svg';
+import { ReactComponent as InProgress } from '../img/inprogress.svg';
+import { ReactComponent as Completed } from '../img/completed.svg';
 
 class Dashboard extends Component {
 
@@ -106,7 +108,10 @@ function listPuzzles(puzzles) {
 
          {inprogress.length > 0 &&
          <section className="section">
-            <h2 className="section-title">In-Progress</h2>
+            <div className="section-title-icon">
+               <InProgress role="img" aria-label="these are in-progress puzzles" width="26" height="26" className="section-title-icon__icon" />
+               <h2 className="section-title">In-Progress</h2>
+            </div>
             <ul className="puzzle-list">
                {inprogress.map( (obj) => singlePuzzle(obj) )}
             </ul>
@@ -115,7 +120,10 @@ function listPuzzles(puzzles) {
 
          {completed.length > 0 &&
          <section className="section">
-            <h2 className="section-title">Completed</h2>
+            <div className="section-title-icon">
+               <Completed role="img" aria-label="these are completed puzzles" width="26" height="26" className="section-title-icon__icon" />
+               <h2 className="section-title">Completed</h2>
+            </div>
             <ul className="puzzle-list">
                {completed.map( (obj) => singlePuzzle(obj) )}
             </ul>

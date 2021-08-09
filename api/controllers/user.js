@@ -119,8 +119,8 @@ exports.login = (req, res, next) => {
          if(isMatch) {
             const payload = {
                id: user.id,
-               name: user.name,
-               puzzles: user.puzzles
+               name: user.name
+               //puzzles: user.puzzles
             }
    
             jwt.sign(
