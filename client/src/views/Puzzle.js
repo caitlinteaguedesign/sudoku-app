@@ -87,6 +87,35 @@ class Puzzle extends Component {
                      puzzle: puzzle,
                      player: player,
                      loading: false
+                  }, () => {
+
+                     // update the validation tips
+                     let updateValidation = this.state.validation;
+
+                     for(let i = 0; i < 9; i++) {
+                        const rowValid = this.validateSection('row', i);
+                        updateValidation[`row_${i}`] = {
+                           ...updateValidation[`row_${i}`],
+                           remaining: rowValid.remainder,
+                           duplicates: rowValid.duplicates
+                        }
+                        const colValid = this.validateSection('column', i);
+                        updateValidation[`column_${i}`] = {
+                           ...updateValidation[`column_${i}`],
+                           remaining: colValid.remainder,
+                           duplicates: colValid.duplicates
+                        }
+                        const subValid = this.validateSection('subgrid', i);
+                        updateValidation[`subgrid_${i}`] = {
+                           ...updateValidation[`subgrid_${i}`],
+                           remaining: subValid.remainder,
+                           duplicates: subValid.duplicates
+                        }
+                     }
+
+                     this.setState({
+                        validation: updateValidation
+                     });
                   });
 
                })
@@ -147,7 +176,7 @@ class Puzzle extends Component {
    saveProgress = () => {
       axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', this.state.player)
          .then( res => {
-            console.log('saved!');
+            //console.log('saved!');
          })
          .catch(err => {
             console.log(err);
@@ -162,13 +191,35 @@ class Puzzle extends Component {
 
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
 
+         // update the validation tips
+         let updateValidation = cloneDeep(this.state.puzzle.start);
+
+         for(let i = 0; i < 9; i++) {
+            const rowValid = this.validateSection('row', i);
+            updateValidation[`row_${i}`] = {
+               ...updateValidation[`row_${i}`],
+               remaining: rowValid.remainder,
+               duplicates: rowValid.duplicates
+            }
+            const colValid = this.validateSection('column', i);
+            updateValidation[`column_${i}`] = {
+               ...updateValidation[`column_${i}`],
+               remaining: colValid.remainder,
+               duplicates: colValid.duplicates
+            }
+            const subValid = this.validateSection('subgrid', i);
+            updateValidation[`subgrid_${i}`] = {
+               ...updateValidation[`subgrid_${i}`],
+               remaining: subValid.remainder,
+               duplicates: subValid.duplicates
+            }
+         }
+
          axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
-               console.log('saved!');
-
                this.setState({
                   player: updatePlayer,
-                  validation: cloneDeep(validation_dictionary)
+                  validation: updateValidation
                })
             })
             .catch(err => {
@@ -181,19 +232,41 @@ class Puzzle extends Component {
       console.log('check answer');
    }
 
-   toggleValidation = (section, int) => {
-      const { remainder, duplicates } = this.validateSection(section, int);
-
+   toggleTip = (section, int) => {
       let updateValidation = this.state.validation;
       updateValidation[`${section}_${int}`] = {
-         tip: !updateValidation[`${section}_${int}`].tip,
-         remaining: remainder,
-         duplicates: duplicates
+         ...updateValidation[`${section}_${int}`],
+         tip: !updateValidation[`${section}_${int}`].tip
       }
 
       this.setState({
          validation: updateValidation
       });
+   }
+
+   toggleAllTips = (state) => {
+      let updateValidation = this.state.validation;
+
+      for(let i = 0; i < 9; i++) {
+         updateValidation[`row_${i}`] = {
+            ...updateValidation[`row_${i}`],
+            tip: state
+         }
+
+         updateValidation[`column_${i}`] = {
+            ...updateValidation[`column_${i}`],
+            tip: state
+         }
+
+         updateValidation[`subgrid_${i}`] = {
+            ...updateValidation[`subgrid_${i}`],
+            tip: state
+         }
+      }
+
+      this.setState({
+         validation: updateValidation
+      })
    }
    
    validateSection = (section, int) => {
@@ -268,9 +341,10 @@ class Puzzle extends Component {
                         'validation validation_style-sub',
                         {'validation_color-default': !thisValidation.tip},
                         {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
-                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
+                        {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('subgrid', button)}>
+                        <button type="button" className="validation__button" onClick={(e) => this.toggleTip('subgrid', button)}>
                            { sections.map( (square) => {
                               return (
                               <div key={`subgrid_square_${square}`} 
@@ -304,7 +378,7 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )} >
-                        <button type="button" className="validation__button" onClick={(e) => this.toggleValidation('row', button)}>
+                        <button type="button" className="validation__button" onClick={(e) => this.toggleTip('row', button)}>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
@@ -324,9 +398,10 @@ class Puzzle extends Component {
                         'validation validation_style-col',
                         {'validation_color-default': !thisValidation.tip},
                         {'validation_color-visible': thisValidation.tip && thisValidation.duplicates.length === 0},
-                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0}
+                        {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
+                        {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" className="validation__button" onClick={ (e) => this.toggleValidation('column', button)}>
+                        <button type="button" className="validation__button" onClick={ (e) => this.toggleTip('column', button)}>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
@@ -341,9 +416,22 @@ class Puzzle extends Component {
                </div>
 
                <div className="view-puzzle__actions">
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>Save Progress</button>
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>Reset Puzzle</button>
-                  <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>Check Answer</button>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
+                     Save Progress
+                  </button>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
+                     Reset Puzzle
+                  </button>
+                  <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
+                     Check Answer
+                  </button>
+
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(true)}>
+                     Show all tips
+                  </button>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(false)}>
+                     Hide all tips
+                  </button>
                </div>
 
             </div>
