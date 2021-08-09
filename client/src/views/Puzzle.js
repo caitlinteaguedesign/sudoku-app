@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import Loading from '../components/Loading';
 import Board from '../game/Board';
 
+import solve from '../game/solve';
 import checkset from '../game/checkset';
 import { definitions, pattern } from '../game/constants';
 
@@ -190,9 +191,10 @@ class Puzzle extends Component {
          let updatePlayer = this.state.player;
 
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
+         updatePlayer.completed = false;
 
          // update the validation tips
-         let updateValidation = cloneDeep(this.state.puzzle.start);
+         let updateValidation = cloneDeep(validation_dictionary);
 
          for(let i = 0; i < 9; i++) {
             const rowValid = this.validateSection('row', i);
@@ -228,8 +230,46 @@ class Puzzle extends Component {
       }
    }
 
+   searchValidation = () => {
+      const {validation} = this.state;
+
+      for(const section in validation) {
+         const remaining = validation[section].remaining;
+         const duplicates = validation[section].duplicates;
+
+         if(remaining.length > 0 || duplicates.length > 0) {
+            return false
+         }
+      }
+
+      return true;
+   }
+
    checkAnswer = () => {
-      console.log('check answer');
+      
+      if(this.searchValidation()) {
+         
+         // winning screen
+         console.log('dids it');
+
+         // update puzzle
+         const updatePlayer = this.state.player;
+         updatePlayer.completed = true;
+
+         axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
+            .then( res => {
+               console.log('marked completed');
+            })
+            .catch(err => {
+               console.log(err);
+            });
+
+      }
+      else {
+         console.log('errors!');
+      }
+
+      
    }
 
    toggleTip = (section, int) => {
@@ -314,6 +354,18 @@ class Puzzle extends Component {
       }
 
       return checkset(puzzleData, playerData);
+   }
+
+   autoSolve = () => {
+      const answer = solve(cloneDeep(this.state.puzzle.start));
+
+      this.setState({
+         player: {
+            ...this.state.player,
+            state: answer
+         },
+         validation: cloneDeep(validation_dictionary)
+      });
    }
 
    render() {
@@ -416,22 +468,31 @@ class Puzzle extends Component {
                </div>
 
                <div className="view-puzzle__actions">
+
+                  {!player.completed &&
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
                      Save Progress
                   </button>
+                  }
+
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
                      Reset Puzzle
+                  </button>
+
+                  {!player.completed && <>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
+                     Auto Solve
                   </button>
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
                      Check Answer
                   </button>
-
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(true)}>
                      Show all tips
                   </button>
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(false)}>
                      Hide all tips
                   </button>
+                  </>}
                </div>
 
             </div>
