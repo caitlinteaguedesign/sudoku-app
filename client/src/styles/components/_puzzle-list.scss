@@ -22,31 +22,31 @@
       fill: currentColor;
 
       &--easy {
-         color: #8cd33b;
+         color: $puzzle_color_easy;
       }
 
       &--medium {
-         color: #e9cd32;
+         color: $puzzle_color_medium;
       }
 
       &--hard {
-         color: #f09c3c;
+         color: $puzzle_color_hard;
       }
 
       &--insane {
-         color: #e04834;
+         color: $puzzle_color_insane;
       }
 
       &--inprogress {
-         color: #7cb0cc;
+         color: $puzzle_color_inprogress;
       }
 
       &--completed {
-         color: #8ecc85;
+         color: $puzzle_color_completed;
       }
 
       &--default {
-         color: #5b78a5;
+         color: $puzzle_color_default;
       }
 
    }

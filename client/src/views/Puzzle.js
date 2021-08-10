@@ -15,6 +15,11 @@ import { definitions, pattern } from '../game/constants';
 
 import formatDate from '../util/formatDate';
 
+import { ReactComponent as Easy } from '../img/easy.svg';
+import { ReactComponent as Medium } from '../img/medium.svg';
+import { ReactComponent as Hard } from '../img/hard.svg';
+import { ReactComponent as Insane } from '../img/insane.svg';
+
 const validation_start_entry = {
    tip: false,
    remaining: [],
@@ -374,13 +379,34 @@ class Puzzle extends Component {
       if(loading) return Loading();
       else {
 
+         let IconName = '';
+
+         switch (puzzle.difficulty) {
+            case 'easy':
+               IconName = Easy; break;
+            case 'medium':
+               IconName = Medium; break;
+            case 'hard':
+               IconName = Hard; break;
+            case 'insane':
+               IconName = Insane; break;
+            default: break;
+         }
+
          const sections = [0,1,2,3,4,5,6,7,8];
 
          return (
          <div className="page">
             <div className="title-group">
-               <h1 className="page-title">{puzzle.name}</h1>
-               <span className="title-group__small">{`${puzzle.difficulty} | ${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
+               <h1 className="page-title title-group__big">{puzzle.name}</h1>
+               <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty}`} width="26" height="26" 
+                  className={classnames('title-group__icon',
+                  {'title-group__icon--easy': puzzle.difficulty === 'easy'},
+                  {'title-group__icon--medium': puzzle.difficulty === 'medium'},
+                  {'title-group__icon--hard': puzzle.difficulty === 'hard'},
+                  {'title-group__icon--insane': puzzle.difficulty === 'insane'})}
+               />
+               <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
             <div className="view-puzzle">
