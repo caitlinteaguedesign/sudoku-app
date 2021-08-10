@@ -18,17 +18,19 @@ export default function Board(props) {
                   // pass background color classes from validation
                   const subgridIndex = pattern[rowIndex][cellIndex];
 
-                  const showTips = validation[`row_${rowIndex}`].tip 
-                     || validation[`column_${cellIndex}`].tip 
-                     || validation[`subgrid_${subgridIndex}`].tip;
+                  const showRowTips = validation[`row_${rowIndex}`].tip;
+                  const showColTips = validation[`column_${cellIndex}`].tip;
+                  const showSubTips = validation[`subgrid_${subgridIndex}`].tip;
 
-                  const hasDuplicates = validation[`row_${rowIndex}`].duplicates.length > 0 
-                     || validation[`column_${cellIndex}`].duplicates.length > 0 
-                     || validation[`subgrid_${subgridIndex}`].duplicates.length > 0;
+                  const showTips = showRowTips || showColTips || showSubTips;
 
-                  const hasRemaining = validation[`row_${rowIndex}`].remaining.length > 0 
-                     || validation[`column_${cellIndex}`].remaining.length > 0 
-                     || validation[`subgrid_${subgridIndex}`].remaining.length > 0;
+                  const hasDuplicates = (showRowTips && validation[`row_${rowIndex}`].duplicates.length > 0) 
+                     || (showColTips && validation[`column_${cellIndex}`].duplicates.length > 0)
+                     || (showSubTips && validation[`subgrid_${subgridIndex}`].duplicates.length > 0);
+
+                  const hasRemaining = (showRowTips &&validation[`row_${rowIndex}`].remaining.length > 0) 
+                     || (showColTips && validation[`column_${cellIndex}`].remaining.length > 0)
+                     || (showSubTips && validation[`subgrid_${subgridIndex}`].remaining.length > 0);
 
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 

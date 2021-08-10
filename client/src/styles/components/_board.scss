@@ -1,5 +1,5 @@
 $border: 1px solid #cccccc;
-$border-thick: 2px solid #999999;
+$border-thick: 2px solid #adadad;
 
 .board {
    width: 27rem;
@@ -44,14 +44,17 @@ $border-thick: 2px solid #999999;
 
       &--missing {
          color: #1e2e3e;
+         border-color: #b4cadf;
          background: #DAEDFF;
       }
       &--duplicates {
          color: #684900;
+         border-color: #e0dc81;
          background: #FFFBA1;
       }
       &--complete {
          color: #111f10;
+         border-color: #a9d8a6;
          background: #D1FCCE;
       }
 
