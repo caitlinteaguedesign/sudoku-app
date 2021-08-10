@@ -19,6 +19,7 @@ import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
 import { ReactComponent as Hard } from '../img/hard.svg';
 import { ReactComponent as Insane } from '../img/insane.svg';
+import { ReactComponent as Completed } from '../img/completed.svg';
 
 const validation_start_entry = {
    tip: false,
@@ -43,7 +44,9 @@ class Puzzle extends Component {
          puzzle: null,
          player: null,
          validation: cloneDeep(validation_dictionary),
-         loading: true
+         loading: true,
+         errors: null,
+         won: false
       }
    }
 
@@ -175,7 +178,8 @@ class Puzzle extends Component {
             ...this.state.player,
             state: updateData
          },
-         validation: updateValidation
+         validation: updateValidation,
+         errors: null
       });
    }
 
@@ -226,7 +230,8 @@ class Puzzle extends Component {
             .then( res => {
                this.setState({
                   player: updatePlayer,
-                  validation: updateValidation
+                  validation: updateValidation,
+                  errors: null
                })
             })
             .catch(err => {
@@ -253,9 +258,6 @@ class Puzzle extends Component {
    checkAnswer = () => {
       
       if(this.searchValidation()) {
-         
-         // winning screen
-         console.log('dids it');
 
          // update puzzle
          const updatePlayer = this.state.player;
@@ -263,7 +265,13 @@ class Puzzle extends Component {
 
          axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
-               console.log('marked completed');
+               this.setState({
+                  player: {
+                     ...this.state.player,
+                     completed: true
+                  },
+                  won: true
+               })
             })
             .catch(err => {
                console.log(err);
@@ -271,7 +279,11 @@ class Puzzle extends Component {
 
       }
       else {
-         console.log('errors!');
+         this.toggleAllTips(true);
+         
+         this.setState({
+            errors: 'Not quite there! Double check your answer for missing numbers or duplicates.'
+         });
       }
 
       
@@ -369,12 +381,13 @@ class Puzzle extends Component {
             ...this.state.player,
             state: answer
          },
-         validation: cloneDeep(validation_dictionary)
+         validation: cloneDeep(validation_dictionary),
+         errors: null
       });
    }
 
    render() {
-      const { loading, puzzle, player, validation } = this.state;
+      const { loading, puzzle, player, validation, errors } = this.state;
 
       if(loading) return Loading();
       else {
@@ -501,8 +514,15 @@ class Puzzle extends Component {
                   </button>
                   }
 
+                  {player.completed &&
+                  <div className={`alert alert_color-success alert_layout-icon`}>
+                     <Completed role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />    
+                     <p>You solved this puzzle!</p>
+                  </div>
+                  }
+
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
-                     Reset Puzzle
+                     {player.completed ? 'Replay' : 'Restart' } Puzzle
                   </button>
 
                   {!player.completed && <>
@@ -512,6 +532,13 @@ class Puzzle extends Component {
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
                      Check Answer
                   </button>
+
+                  {errors && 
+                  <div className={`alert alert_color-error`}>
+                     <p>{errors}</p>
+                  </div>
+                  }
+
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(true)}>
                      Show all tips
                   </button>

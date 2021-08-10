@@ -5,9 +5,28 @@
    border-width: 1px;
    border-style: solid;
 
+   &_layout-icon {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 0.5rem;
+      gap: 0.5rem;
+      text-align: center;
+   }
+
    &_color-error {
       background: $error_bg_color;
       border-color: $error_border_color;
       color: $error_color;
+   }
+
+   &_color-success {
+      background: $success_bg_color;
+      border-color: $success_border_color;
+      color: $success_color;
+   }
+   
+
+   &__icon {
+      fill: currentColor;
    }
 }

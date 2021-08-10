@@ -201,7 +201,7 @@ function singlePuzzle(puzzle) {
             {'puzzle-list__icon--default': !('isCompleted' in puzzle)} )}
          />
          <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
-         <span className="text_uppercase">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></span>
+         <span className="puzzle-list__date">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></span>
       </li>
    )
 }
