@@ -38,7 +38,21 @@ $border-thick: 2px solid #999999;
       }
 
       &--editable {
-         color: #003995;
+         color: #293441;
+         background: #ffffff;
+      }
+
+      &--missing {
+         color: #1e2e3e;
+         background: #DAEDFF;
+      }
+      &--duplicates {
+         color: #684900;
+         background: #FFFBA1;
+      }
+      &--complete {
+         color: #111f10;
+         background: #D1FCCE;
       }
 
       &:focus {

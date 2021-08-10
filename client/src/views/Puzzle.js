@@ -457,7 +457,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" />
+                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
