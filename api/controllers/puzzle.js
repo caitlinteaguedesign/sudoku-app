@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Puzzle = require('../models/puzzle');
+const User = require('../models/user');
 
 exports.getAll = (req, res, next) => {
    Puzzle.find()
@@ -109,10 +110,29 @@ exports.delete = (req, res, next) => {
       .then( result => {
 
          if(result) {
-            res.status(200).json({
-               message: 'Puzzle deleted',
-               result: result.name
-            });
+
+            User.updateMany({"puzzles.id": result._id},
+               {$pull: { 
+                  "puzzles": {
+                     "id": result._id
+                  }
+               }}, 
+               { multi: true, new: true }).exec()
+               .then( users => {
+
+                  res.status(200).json({
+                     message: 'Puzzle deleted',
+                     result: result.name
+                  });
+
+               })
+               .catch( userErr => {
+                  console.log(userErr);
+                  res.status(500).json({
+                     error: userErr
+                  })
+               })
+            
          }
          else {
             res.status(404).json({
