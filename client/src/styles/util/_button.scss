@@ -7,6 +7,23 @@
    font-size: 1em;
    line-height: 1em;
 
+   &__layout {
+      display: grid;
+      grid-gap: 0.5rem;
+      gap: 0.5rem;
+      align-items: center;
+      justify-items: start;
+
+      &--icon-left {
+         grid-template-columns: auto 1fr;
+      }
+
+      &--icon-right {
+         grid-template-columns: 1fr auto;
+      }
+      
+   }
+
    &_style-solid {
       padding: 0.7rem 0.9rem 0.9rem;
       text-transform: uppercase;
@@ -35,5 +52,13 @@
    &--disabled {
       background: #cccccc;
       color: #666666;
+   }
+
+   &__icon {
+      fill: currentColor;
+   }
+
+   &__text {
+      margin-bottom: 0.01em;
    }
 }

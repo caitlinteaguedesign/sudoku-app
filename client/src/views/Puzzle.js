@@ -21,6 +21,9 @@ import { ReactComponent as Hard } from '../img/hard.svg';
 import { ReactComponent as Insane } from '../img/insane.svg';
 import { ReactComponent as Completed } from '../img/completed.svg';
 
+import { ReactComponent as OpenEye } from '../img/open-eye.svg';
+import { ReactComponent as CloseEye } from '../img/close-eye.svg';
+
 const validation_start_entry = {
    tip: false,
    remaining: [],
@@ -538,10 +541,16 @@ class Puzzle extends Component {
                   }
 
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(true)}>
-                     Show all tips
+                     <div className="button__layout button__layout--icon-left">
+                        <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
+                        <span className="button__text">all tips</span>
+                     </div>
                   </button>
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(false)}>
-                     Hide all tips
+                     <div className="button__layout button__layout--icon-left">
+                        <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
+                        <span className="button__text">all tips</span>
+                     </div>
                   </button>
                   </>}
                </div>
