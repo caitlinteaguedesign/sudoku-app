@@ -51,8 +51,8 @@ export default function Board(props) {
                   // All other cells the user (or player) fills in
                   else {
                      return <input key={`cell_${cellIndex}`} onFocus={(e) => e.target.select()} onChange={(e) => props.update(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" value={value} 
-                        className={classnames('board__cell',
-                        {'board__cell--editable' : !showTips },
+                        className={classnames('board__cell board__cell--editable',
+                        {'board__cell--default' : !showTips },
                         {'board__cell--missing': showTips && hasRemaining },
                         {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },
                         {'board__cell--complete': showTips && !hasRemaining }

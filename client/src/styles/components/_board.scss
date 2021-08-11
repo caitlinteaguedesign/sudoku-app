@@ -38,8 +38,15 @@ $border-thick: 2px solid #adadad;
       }
 
       &--editable {
-         color: #293441;
-         background: #ffffff;
+         font-family: 'Mali', cursive;
+         font-weight: 500;
+      }
+
+      &--guess {
+         font-family: 'Mali', cursive;
+         font-weight: 300;
+         font-style: italic;
+         opacity: 0.75;
       }
 
       &--missing {
@@ -56,6 +63,11 @@ $border-thick: 2px solid #adadad;
          color: #111f10;
          border-color: #a9d8a6;
          background: #D1FCCE;
+      }
+
+      &--default {
+         color: #1153a2;
+         background: #ffffff;
       }
 
       &:focus {
