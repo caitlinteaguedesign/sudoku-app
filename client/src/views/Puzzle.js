@@ -38,6 +38,11 @@ for(let i = 0; i < 9; i++) {
    validation_dictionary[`subgrid_${i}`] = validation_start_entry;
 }
 
+const cell_dictionary = [];
+for(let i = 0; i < 81; i++){
+   cell_dictionary.push('default');
+}
+
 class Puzzle extends Component {
 
    constructor(props) {
@@ -48,7 +53,9 @@ class Puzzle extends Component {
          player: null,
          validation: cloneDeep(validation_dictionary),
          loading: true,
-         errors: null
+         errors: null,
+         mode: 'default',
+         cells: cloneDeep(cell_dictionary)
       }
    }
 
@@ -175,13 +182,19 @@ class Puzzle extends Component {
          duplicates: subValid.duplicates
       }
 
+      // update the style (if changed)
+      const cells = [...this.state.cells];
+      const int = rowIndex * 9 + cellIndex;
+      if(cells[int] !== this.state.mode) cells[int] = this.state.mode;
+
       this.setState({
          player: {
             ...this.state.player,
             state: updateData
          },
          validation: updateValidation,
-         errors: null
+         errors: null,
+         cells: cells
       });
    }
 
@@ -290,6 +303,21 @@ class Puzzle extends Component {
       
    }
 
+   toggleMode = (mode) => {
+
+      if(!mode) {
+         if(this.state.mode === 'default') mode = 'guess';
+         else mode = 'default';
+      }
+
+      if(mode !== this.state.mode) {
+         this.setState({
+            mode: mode
+         })
+      }
+      
+   }
+
    toggleTip = (section, int) => {
       let updateValidation = this.state.validation;
       updateValidation[`${section}_${int}`] = {
@@ -388,7 +416,7 @@ class Puzzle extends Component {
    }
 
    render() {
-      const { loading, puzzle, player, validation, errors } = this.state;
+      const { loading, puzzle, player, validation, errors, cells } = this.state;
 
       if(loading) return Loading();
       else {
@@ -458,7 +486,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} />
+                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} cells={cells} />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
@@ -540,18 +568,53 @@ class Puzzle extends Component {
                   </div>
                   }
 
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(true)}>
-                     <div className="button__layout button__layout--icon-left">
-                        <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
-                        <span className="button__text">all tips</span>
+                  <div>
+                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                        title="Show all tips"
+                        onClick={(e) => this.toggleAllTips(true)}
+                     >
+                        <div className="button__layout button__layout--icon-left">
+                           <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
+                           <span className="button__text">Show</span>
+                        </div>
+                     </button>
+                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                        title="Hide all tips"
+                        onClick={(e) => this.toggleAllTips(false)}
+                     >
+                        <div className="button__layout button__layout--icon-left">
+                           <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
+                           <span className="button__text">Hide</span>
+                        </div>
+                     </button>
+                  </div>
+
+                  <div className="view-puzzle__mark-mode">
+                     <button type="button" onClick={(e) => this.toggleMode('default')}
+                        title="Set mode to normal"
+                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default', 
+                        {'view-puzzle__mark-button--active': this.state.mode === 'default'},
+                        {'view-puzzle__mark-button--press': this.state.mode !== 'default'}
+                        )} 
+                     >
+                        123
+                     </button>
+                     <div className={classnames('indicator',
+                        {'indicator--start': this.state.mode === 'default'},
+                        {'indicator--end': this.state.mode === 'guess'},
+                     )}>
+                        <button type="button" onClick={(e) => this.toggleMode()} className="indicator__button" title="Toggle mode"></button>                    
                      </div>
-                  </button>
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.toggleAllTips(false)}>
-                     <div className="button__layout button__layout--icon-left">
-                        <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
-                        <span className="button__text">all tips</span>
-                     </div>
-                  </button>
+                     <button type="button"onClick={(e) => this.toggleMode('guess')}
+                        title="Set mode to guess"
+                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess', 
+                        {'view-puzzle__mark-button--active': this.state.mode === 'guess'},
+                        {'view-puzzle__mark-button--press': this.state.mode !== 'guess'}
+                        )}
+                     >
+                        123
+                     </button>
+                  </div>
                   </>}
                </div>
 

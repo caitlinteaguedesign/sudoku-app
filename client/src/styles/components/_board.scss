@@ -37,16 +37,16 @@ $border-thick: 2px solid #adadad;
          font-weight: bold;
       }
 
-      &--editable {
+      &_editable-default {
          font-family: 'Mali', cursive;
          font-weight: 500;
       }
 
-      &--guess {
+      &_editable-guess {
          font-family: 'Mali', cursive;
          font-weight: 300;
          font-style: italic;
-         opacity: 0.75;
+         opacity: 0.9;
       }
 
       &--missing {

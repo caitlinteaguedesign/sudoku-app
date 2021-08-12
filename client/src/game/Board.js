@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { pattern } from '../game/constants';
 
 export default function Board(props) {
-   const { player, start, validation } = props;
+   const { player, start, validation, cells } = props;
    
    return (
       <section className={`board ${props.className}`}>
@@ -14,6 +14,12 @@ export default function Board(props) {
                   const startValue = start[rowIndex][cellIndex];
                   
                   // TO DO: pass color/style classes for the numbers
+                  let cellMode = 'default';
+
+                  if(cells) {
+                     const int = rowIndex * 9 + cellIndex;
+                     cellMode = cells[int]
+                  }
 
                   // pass background color classes from validation
                   let showTips = false, hasDuplicates = false, hasRemaining = false;
@@ -36,6 +42,8 @@ export default function Board(props) {
                         || (showSubTips && validation[`subgrid_${subgridIndex}`].remaining.length > 0);
                   }
 
+
+
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
                      return <div key={`cell_${cellIndex}`} 
@@ -51,7 +59,9 @@ export default function Board(props) {
                   // All other cells the user (or player) fills in
                   else {
                      return <input key={`cell_${cellIndex}`} onFocus={(e) => e.target.select()} onChange={(e) => props.update(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" value={value} 
-                        className={classnames('board__cell board__cell--editable',
+                        className={classnames('board__cell',
+                        {'board__cell_editable-default' : cellMode === 'default' },
+                        {'board__cell_editable-guess' : cellMode === 'guess' },
                         {'board__cell--default' : !showTips },
                         {'board__cell--missing': showTips && hasRemaining },
                         {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },

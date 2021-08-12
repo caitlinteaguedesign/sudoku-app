@@ -41,4 +41,41 @@
       gap: 1rem;
       justify-items: start;
    }
+
+   &__mark-mode {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-gap: 0.5rem;
+      gap: 0.5rem;
+      align-items: center;      
+   }
+
+   &__mark-button {
+      background: none;
+      padding: 0.25rem 1rem 0.5rem;
+      font-size: 1.5em;
+      line-height: 1em;
+
+      &--default {
+         font-family: 'Mali', cursive;
+         font-weight: 500;
+      }
+
+      &--guess {
+         font-family: 'Mali', cursive;
+         font-weight: 300;
+         font-style: italic;
+      }
+
+      &--active {
+         border: 1px solid #aaaaaa;
+      }
+
+      &--press {
+         cursor: pointer;
+         color: #ffffff;
+         border: 1px solid $primary_color;
+         background: $primary_color;
+      }
+   }
 }
