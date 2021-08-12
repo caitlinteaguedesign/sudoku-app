@@ -24,6 +24,9 @@ import { ReactComponent as Completed } from '../img/completed.svg';
 import { ReactComponent as OpenEye } from '../img/open-eye.svg';
 import { ReactComponent as CloseEye } from '../img/close-eye.svg';
 
+import { ReactComponent as Reset } from '../img/reset.svg';
+import { ReactComponent as Save } from '../img/save.svg';
+
 const validation_start_entry = {
    tip: false,
    remaining: [],
@@ -539,7 +542,10 @@ class Puzzle extends Component {
 
                   {!player.completed &&
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
-                     Save Progress
+                     <div className="button__layout button__layout--icon-left">
+                        <Save className="button__icon" width="20" height="20" role="img" aria-label="save" />
+                        <span className="button__text">Save Progress</span>
+                     </div>
                   </button>
                   }
 
@@ -551,7 +557,10 @@ class Puzzle extends Component {
                   }
 
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
-                     {player.completed ? 'Replay' : 'Restart' } Puzzle
+                     <div className="button__layout button__layout--icon-left">
+                        <Reset className="button__icon" width="20" height="20" role="img" aria-label="reset" />
+                        <span className="button__text">{player.completed ? 'Replay' : 'Restart' } Puzzle</span>
+                     </div>
                   </button>
 
                   {!player.completed && <>

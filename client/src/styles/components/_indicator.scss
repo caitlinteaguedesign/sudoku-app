@@ -3,8 +3,8 @@
    width: 4rem;
    height: 2rem;
    background: rgb(234,234,234);
-   background: radial-gradient(ellipse, rgba(234,234,234,1) 60%, rgba(170,170,170,1) 100%); 
-   box-shadow: 0 0 0 1px #cccccc;
+   background: radial-gradient(ellipse, #eaeaea 50%, #aaaaaa 100%); 
+   box-shadow: 0 0 5px 1px #cccccc inset;
    border-radius: 1rem;
    overflow: hidden;
 
@@ -12,7 +12,6 @@
       .indicator__button {
          left: 0;
          top: 0;
-         transition: all 0.2s ease-in-out;
       }
    }
 
@@ -20,15 +19,15 @@
       .indicator__button {
          left: calc(100% - 2rem);
          top: calc(100% - 2rem);
-         transition: all 0.2s ease-in-out;
       }
    }
 
    &__button {
+      transition: all 0.2s ease-in-out;
       cursor: pointer;
       position: absolute;
       background: #0066ff;
-      background: radial-gradient(circle at top right, #3787ff 0%, #0066ff 30%, #004ab9 100%); 
+      background: radial-gradient(circle at 70% 25%, #3787ff 0%, #0066ff 30%, #004ab9 100%); 
       box-shadow: -1px 1px 5px 0 rgba(0, 36, 90, 0.8);
       border: none;
       padding: 0;
