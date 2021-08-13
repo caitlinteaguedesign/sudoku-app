@@ -84,6 +84,12 @@ $border-thick: 2px solid #adadad;
       &:nth-child(9) {
          border-right: $border;
       }
+
+      &:hover {
+         .board__reset {
+            opacity: 1;
+         }
+      }
    }
 
    &__input {
@@ -105,8 +111,26 @@ $border-thick: 2px solid #adadad;
    }
 
    &__reset {
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
       position: absolute;
-      top: 0;
-      left: 0;
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      top: -0.25rem;
+      left: -0.25rem;
+      height: 1.5rem;
+      width: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 1rem;
+      background: $primary_color;
+      color: #ffffff;
+      box-shadow: 0 0 3px 0 rgba(0, 22, 54, 0.5);
+
+      &-icon {
+         fill: currentColor;
+      }
    }
 }

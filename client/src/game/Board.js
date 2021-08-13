@@ -2,6 +2,8 @@ import classnames from 'classnames';
 
 import { pattern } from '../game/constants';
 
+import { ReactComponent as Reset } from '../img/reset.svg';
+
 export default function Board(props) {
    const { player, start, validation, cells } = props;
    
@@ -72,7 +74,7 @@ export default function Board(props) {
                            { cellHistory.length > 0 && 
                            <button type="button" className="board__reset" 
                               onClick={(e) => props.history(cellHistory[cellHistory.length - 1], posIndex)} >
-                                 i
+                                 <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="Mass undo to this point" />
                            </button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} className="board__input"
