@@ -15,10 +15,13 @@ export default function Board(props) {
                   
                   // pass color/style classes for the numbers
                   let cellMode = 'default';
+                  let cellHistory = -1;
 
                   if(cells) {
                      const int = rowIndex * 9 + cellIndex;
-                     cellMode = cells[int].style;
+                     const cell = cells[int];
+                     cellMode = cell.style;
+                     cellHistory = cell.history[cell.history.length-1];
                   }
 
                   // pass background color classes from validation
@@ -56,17 +59,24 @@ export default function Board(props) {
                   }
                   // All other cells the user (or player) fills in
                   else {
-                     return <input key={`cell_${cellIndex}`} type="text" pattern="[1-9]" maxLength="1" value={value} 
-                        onFocus={(e) => e.target.select()} 
-                        onChange={(e) => props.update(e, rowIndex, cellIndex)} 
-                        className={classnames('board__cell',
-                        {'board__cell_editable-default' : cellMode === 'default' },
-                        {'board__cell_editable-guess' : cellMode === 'guess' },
-                        {'board__cell--default' : !showTips },
-                        {'board__cell--missing': showTips && hasRemaining },
-                        {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },
-                        {'board__cell--complete': showTips && !hasRemaining }
-                     )} />
+                     return (
+                        <div key={`cell_${cellIndex}`} 
+                           className={classnames('board__cell',
+                           {'board__cell_editable-default' : cellMode === 'default' },
+                           {'board__cell_editable-guess' : cellMode === 'guess' },
+                           {'board__cell--default' : !showTips },
+                           {'board__cell--missing': showTips && hasRemaining },
+                           {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },
+                           {'board__cell--complete': showTips && !hasRemaining }
+                        )} >
+                           { cellHistory > -1 && 
+                           <button type="button" className="board__reset" onClick={(e) => props.history(cellHistory)}>i</button> 
+                           }
+                           <input type="text" pattern="[1-9]" maxLength="1" value={value} className="board__input"
+                              onFocus={(e) => e.target.select()} 
+                              onChange={(e) => props.update(e, rowIndex, cellIndex)} />
+                        </div>
+                     )
                   }
    
                })}

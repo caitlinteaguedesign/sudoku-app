@@ -45,7 +45,7 @@ const cell_dictionary = [];
 for(let i = 0; i < 81; i++){
    cell_dictionary.push({
       style: 'default',
-      history: -1
+      history: [-1]
    });
 }
 
@@ -201,16 +201,19 @@ class Puzzle extends Component {
          duplicates: subValid.duplicates
       }
 
-      // update the style (if changed)
-      const cells = [...this.state.cells];
-      const int = rowIndex * 9 + cellIndex;
-      if(cells[int].style !== this.state.mode) cells[int].style = this.state.mode;
-
       // update history
       const currentHistory = cloneDeep(this.state.history);
       const updateHistory = cloneDeep(currentHistory.slice(0, this.state.current_history + 1));
       const newBoard = cloneDeep(updateHistory[updateHistory.length - 1].state);
       newBoard[rowIndex][cellIndex] = value;
+
+      // update the style (if changed)
+      const cells = [...this.state.cells];
+      const int = rowIndex * 9 + cellIndex;
+      if(cells[int].style !== this.state.mode) cells[int].style = this.state.mode;
+      cells[int].history.push(updateHistory.length - 1);
+
+      console.log(cells[int].history)
 
       this.setState({
          player: {
@@ -531,7 +534,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} cells={cells} />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e) => this.changeHistory(e)} className="view-puzzle__board" validation={validation} cells={cells} />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
