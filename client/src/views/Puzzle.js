@@ -45,7 +45,7 @@ const cell_dictionary = [];
 for(let i = 0; i < 81; i++){
    cell_dictionary.push({
       style: 'default',
-      history: [-1]
+      history: []
    });
 }
 
@@ -215,8 +215,6 @@ class Puzzle extends Component {
       const posIndex = rowIndex * 9 + cellIndex;
       if(cells[posIndex].style !== this.state.mode) cells[posIndex].style = this.state.mode;
       cells[posIndex].history.push(updateHistory.length);
-
-      console.log('handleGrid', cells[posIndex].history)
 
       this.setState({
          player: {
