@@ -52,10 +52,12 @@ class Puzzle extends Component {
       super(props);
 
       this.state = {
+         loading: true,
          puzzle: null,
          player: null,
+         history: [],
+         current_history: 0,
          validation: cloneDeep(validation_dictionary),
-         loading: true,
          errors: null,
          mode: 'default',
          cells: cloneDeep(cell_dictionary)
@@ -104,38 +106,21 @@ class Puzzle extends Component {
                         });
                   }
 
+                  let startHistory = cloneDeep(this.state.history);
+                  startHistory.push({state: cloneDeep(player.state)});
+
                   this.setState({
+                     loading: false,
                      puzzle: puzzle,
                      player: player,
-                     loading: false
+                     history: startHistory
                   }, () => {
 
+                     const { history, current_history } = this.state;
+
                      // update the validation tips
-                     let updateValidation = this.state.validation;
-
-                     for(let i = 0; i < 9; i++) {
-                        const rowValid = this.validateSection('row', i);
-                        updateValidation[`row_${i}`] = {
-                           ...updateValidation[`row_${i}`],
-                           remaining: rowValid.remainder,
-                           duplicates: rowValid.duplicates
-                        }
-                        const colValid = this.validateSection('column', i);
-                        updateValidation[`column_${i}`] = {
-                           ...updateValidation[`column_${i}`],
-                           remaining: colValid.remainder,
-                           duplicates: colValid.duplicates
-                        }
-                        const subValid = this.validateSection('subgrid', i);
-                        updateValidation[`subgrid_${i}`] = {
-                           ...updateValidation[`subgrid_${i}`],
-                           remaining: subValid.remainder,
-                           duplicates: subValid.duplicates
-                        }
-                     }
-
                      this.setState({
-                        validation: updateValidation
+                        validation: this.validateEntireGrid(history[current_history].state)
                      });
                   });
 
@@ -149,6 +134,34 @@ class Puzzle extends Component {
             console.log(err);
             this.props.history.push('/browse')
          });
+   }
+
+   validateEntireGrid = (puzzle) => {
+      let updateValidation = this.state.validation;
+      const data = cloneDeep(puzzle);
+
+      for(let i = 0; i < 9; i++) {
+         const rowValid = this.validateSection(data, 'row', i);
+         updateValidation[`row_${i}`] = {
+            ...updateValidation[`row_${i}`],
+            remaining: rowValid.remainder,
+            duplicates: rowValid.duplicates
+         }
+         const colValid = this.validateSection(data, 'column', i);
+         updateValidation[`column_${i}`] = {
+            ...updateValidation[`column_${i}`],
+            remaining: colValid.remainder,
+            duplicates: colValid.duplicates
+         }
+         const subValid = this.validateSection(data, 'subgrid', i);
+         updateValidation[`subgrid_${i}`] = {
+            ...updateValidation[`subgrid_${i}`],
+            remaining: subValid.remainder,
+            duplicates: subValid.duplicates
+         }
+      }
+
+      return updateValidation;
    }
 
    handleGrid = (e, rowIndex, cellIndex) => {
@@ -165,20 +178,20 @@ class Puzzle extends Component {
 
       // update the validation tips
       let updateValidation = this.state.validation;
-      const rowValid = this.validateSection('row', rowIndex);
+      const rowValid = this.validateSection(updateData, 'row', rowIndex);
       updateValidation[`row_${rowIndex}`] = {
          ...updateValidation[`row_${rowIndex}`],
          remaining: rowValid.remainder,
          duplicates: rowValid.duplicates
       }
-      const colValid = this.validateSection('column', cellIndex);
+      const colValid = this.validateSection(updateData, 'column', cellIndex);
       updateValidation[`column_${cellIndex}`] = {
          ...updateValidation[`column_${cellIndex}`],
          remaining: colValid.remainder,
          duplicates: colValid.duplicates
       }
       const subIndex = pattern[rowIndex][cellIndex];
-      const subValid = this.validateSection('subgrid', subIndex);
+      const subValid = this.validateSection(updateData, 'subgrid', subIndex);
       updateValidation[`subgrid_${subIndex}`] = {
          ...updateValidation[`subgrid_${subIndex}`],
          remaining: subValid.remainder,
@@ -190,15 +203,53 @@ class Puzzle extends Component {
       const int = rowIndex * 9 + cellIndex;
       if(cells[int] !== this.state.mode) cells[int] = this.state.mode;
 
+      // update history
+      const currentHistory = cloneDeep(this.state.history);
+      const updateHistory = cloneDeep(currentHistory.slice(0, this.state.current_history + 1));
+      const newBoard = cloneDeep(updateHistory[updateHistory.length - 1].state);
+      newBoard[rowIndex][cellIndex] = value;
+
       this.setState({
          player: {
             ...this.state.player,
             state: updateData
          },
+         history: updateHistory.concat([{
+            state: newBoard
+         }]),
+         current_history: updateHistory.length,
          validation: updateValidation,
          errors: null,
          cells: cells
       });
+   }
+
+   changeHistory = (method) => {
+
+      const { history, current_history } = this.state;
+
+      let newPosition = 0;
+
+      switch (method) {
+         case 'prev':
+            newPosition = current_history - 1;
+            break;
+         case 'next':
+            newPosition = current_history + 1;
+            break;
+         default:
+            newPosition = method; 
+            break;            
+      }
+
+      this.setState({
+         player: {
+            ...this.state.player,
+            state: cloneDeep(history[newPosition].state)
+         },
+         current_history: newPosition,
+         validation: this.validateEntireGrid(history[newPosition].state)
+      })
    }
 
    saveProgress = () => {
@@ -220,36 +271,14 @@ class Puzzle extends Component {
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
          updatePlayer.completed = false;
 
-         // update the validation tips
-         let updateValidation = cloneDeep(validation_dictionary);
-
-         for(let i = 0; i < 9; i++) {
-            const rowValid = this.validateSection('row', i);
-            updateValidation[`row_${i}`] = {
-               ...updateValidation[`row_${i}`],
-               remaining: rowValid.remainder,
-               duplicates: rowValid.duplicates
-            }
-            const colValid = this.validateSection('column', i);
-            updateValidation[`column_${i}`] = {
-               ...updateValidation[`column_${i}`],
-               remaining: colValid.remainder,
-               duplicates: colValid.duplicates
-            }
-            const subValid = this.validateSection('subgrid', i);
-            updateValidation[`subgrid_${i}`] = {
-               ...updateValidation[`subgrid_${i}`],
-               remaining: subValid.remainder,
-               duplicates: subValid.duplicates
-            }
-         }
-
          axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
                this.setState({
                   player: updatePlayer,
-                  validation: updateValidation,
-                  errors: null
+                  validation: this.validateEntireGrid(updatePlayer.state),
+                  errors: null,
+                  history: [{state: cloneDeep(updatePlayer.state)}],
+                  current_history: 0,
                })
             })
             .catch(err => {
@@ -358,8 +387,10 @@ class Puzzle extends Component {
       })
    }
    
-   validateSection = (section, int) => {
-      const { state } = this.state.player;
+   validateSection = (source, section, int) => {
+      //const { puzzle, history, current_history } = this.state;
+      //const { state } = this.state.player;
+      // const state = cloneDeep(history[current_history].state);
       const { start } = this.state.puzzle;
 
       let playerData = [];
@@ -367,13 +398,13 @@ class Puzzle extends Component {
 
       switch (section) {
          case 'row':
-            playerData = state[int];
+            playerData = source[int];
             puzzleData = start[int];
             break;
          case 'column':
             playerData = [];
-            for(const row in state) {
-               playerData.push(state[row][int]);
+            for(const row in source) {
+               playerData.push(source[row][int]);
             }
             puzzleData = [];
             for(const row in start) {
@@ -388,7 +419,7 @@ class Puzzle extends Component {
             playerData = [];
             for(let i = startRow; i < startRow+3; i++ ) {
                for(let j = startColumn; j < startColumn+3; j++) {
-                  playerData.push(state[i][j]);
+                  playerData.push(source[i][j]);
                }
             }
             puzzleData = [];
@@ -419,7 +450,15 @@ class Puzzle extends Component {
    }
 
    render() {
-      const { loading, puzzle, player, validation, errors, cells } = this.state;
+      const { 
+         loading, 
+         puzzle, 
+         player, 
+         history,
+         current_history,
+         validation, 
+         errors, 
+         cells } = this.state;
 
       if(loading) return Loading();
       else {
@@ -489,7 +528,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={player.state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} cells={cells} />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} className="view-puzzle__board" validation={validation} cells={cells} />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
@@ -624,6 +663,9 @@ class Puzzle extends Component {
                         123
                      </button>
                   </div>
+
+                  {current_history > 0 && <button type="button" onClick={(e) => this.changeHistory('prev')}>Undo</button> }
+                  {current_history < history.length - 1 && <button type="button" onClick={(e) => this.changeHistory('next')}>Redo</button> }
                   </>}
                </div>
 
