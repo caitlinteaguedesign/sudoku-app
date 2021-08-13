@@ -13,7 +13,7 @@ export default function Board(props) {
                   const value = cell === 0 ? '' : cell;
                   const startValue = start[rowIndex][cellIndex];
                   
-                  // TO DO: pass color/style classes for the numbers
+                  // pass color/style classes for the numbers
                   let cellMode = 'default';
 
                   if(cells) {
@@ -42,8 +42,6 @@ export default function Board(props) {
                         || (showSubTips && validation[`subgrid_${subgridIndex}`].remaining.length > 0);
                   }
 
-
-
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
                      return <div key={`cell_${cellIndex}`} 
@@ -58,7 +56,9 @@ export default function Board(props) {
                   }
                   // All other cells the user (or player) fills in
                   else {
-                     return <input key={`cell_${cellIndex}`} onFocus={(e) => e.target.select()} onChange={(e) => props.update(e, rowIndex, cellIndex)} type="text" pattern="[1-9]" maxLength="1" value={value} 
+                     return <input key={`cell_${cellIndex}`} type="text" pattern="[1-9]" maxLength="1" value={value} 
+                        onFocus={(e) => e.target.select()} 
+                        onChange={(e) => props.update(e, rowIndex, cellIndex)} 
                         className={classnames('board__cell',
                         {'board__cell_editable-default' : cellMode === 'default' },
                         {'board__cell_editable-guess' : cellMode === 'guess' },

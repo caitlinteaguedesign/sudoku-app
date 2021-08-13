@@ -544,7 +544,7 @@ class Puzzle extends Component {
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
                      <div className="button__layout button__layout--icon-left">
                         <Save className="button__icon" width="20" height="20" role="img" aria-label="save" />
-                        <span className="button__text">Save Progress</span>
+                        <span className="button__text">Save</span>
                      </div>
                   </button>
                   }
@@ -559,7 +559,7 @@ class Puzzle extends Component {
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
                      <div className="button__layout button__layout--icon-left">
                         <Reset className="button__icon" width="20" height="20" role="img" aria-label="reset" />
-                        <span className="button__text">{player.completed ? 'Replay' : 'Restart' } Puzzle</span>
+                        <span className="button__text">{player.completed ? 'Replay' : 'Restart' }</span>
                      </div>
                   </button>
 
