@@ -36,18 +36,6 @@ $border-thick: 2px solid #adadad;
          font-weight: bold;
       }
 
-      &_editable-default {
-         font-family: 'Mali', cursive;
-         font-weight: 500;
-      }
-
-      &_editable-guess {
-         font-family: 'Mali', cursive;
-         font-weight: 300;
-         font-style: italic;
-         opacity: 0.9;
-      }
-
       &--missing {
          color: #1e2e3e;
          border-color: #b4cadf;
@@ -85,6 +73,11 @@ $border-thick: 2px solid #adadad;
          border-right: $border;
       }
 
+      &:focus-within {
+         position: relative;
+         z-index: 1;
+      }
+
       &:hover {
          .board__reset {
             opacity: 1;
@@ -103,9 +96,19 @@ $border-thick: 2px solid #adadad;
       font-size: inherit;
       line-height: inherit;
 
+      &--default {
+         font-family: 'Mali', cursive;
+         font-weight: 500;
+      }
+
+      &--guess {
+         font-family: 'Mali', cursive;
+         font-weight: 300;
+         font-style: italic;
+         opacity: 0.9;
+      }
+
       &:focus {
-         position: relative;
-         z-index: 1;
          outline: 3px solid $primary_color;
       }
    }

@@ -64,8 +64,6 @@ export default function Board(props) {
                      return (
                         <div key={`cell_${cellIndex}`} 
                            className={classnames('board__cell',
-                           {'board__cell_editable-default' : cellMode === 'default'},
-                           {'board__cell_editable-guess' : cellMode === 'guess'},
                            {'board__cell--default' : !showTips },
                            {'board__cell--missing': showTips && hasRemaining },
                            {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },
@@ -77,7 +75,11 @@ export default function Board(props) {
                                  <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="Mass undo to this point" />
                            </button> 
                            }
-                           <input type="text" pattern="[1-9]" maxLength="1" value={value} className="board__input"
+                           <input type="text" pattern="[1-9]" maxLength="1" value={value} 
+                              className={classnames("board__input",
+                              {'board__input--default' : cellMode === 'default'},
+                              {'board__input--guess' : cellMode === 'guess'},
+                              )}
                               onFocus={(e) => e.target.select()} 
                               onChange={(e) => props.update(e, rowIndex, cellIndex)} />
                         </div>
