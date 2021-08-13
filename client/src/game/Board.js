@@ -18,7 +18,7 @@ export default function Board(props) {
 
                   if(cells) {
                      const int = rowIndex * 9 + cellIndex;
-                     cellMode = cells[int]
+                     cellMode = cells[int].style;
                   }
 
                   // pass background color classes from validation

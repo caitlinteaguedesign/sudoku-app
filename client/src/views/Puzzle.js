@@ -43,7 +43,10 @@ for(let i = 0; i < 9; i++) {
 
 const cell_dictionary = [];
 for(let i = 0; i < 81; i++){
-   cell_dictionary.push('default');
+   cell_dictionary.push({
+      style: 'default',
+      history: -1
+   });
 }
 
 class Puzzle extends Component {
@@ -201,7 +204,7 @@ class Puzzle extends Component {
       // update the style (if changed)
       const cells = [...this.state.cells];
       const int = rowIndex * 9 + cellIndex;
-      if(cells[int] !== this.state.mode) cells[int] = this.state.mode;
+      if(cells[int].style !== this.state.mode) cells[int].style = this.state.mode;
 
       // update history
       const currentHistory = cloneDeep(this.state.history);
