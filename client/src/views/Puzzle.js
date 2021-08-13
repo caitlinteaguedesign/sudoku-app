@@ -664,8 +664,19 @@ class Puzzle extends Component {
                      </button>
                   </div>
 
-                  {current_history > 0 && <button type="button" onClick={(e) => this.changeHistory('prev')}>Undo</button> }
-                  {current_history < history.length - 1 && <button type="button" onClick={(e) => this.changeHistory('next')}>Redo</button> }
+                  <div>
+                     {current_history > 0 ?
+                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.changeHistory('prev')}>Undo</button>
+                     :
+                     <button type="button" className="button button_style-solid button--disabled">Undo</button>
+                     }
+                     {current_history < history.length - 1 ?
+                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.changeHistory('next')}>Redo</button>
+                     :
+                     <button type="button" className="button button_style-solid button--disabled">Redo</button>
+                     }
+                  </div>
+
                   </>}
                </div>
 
