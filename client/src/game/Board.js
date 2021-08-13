@@ -16,10 +16,10 @@ export default function Board(props) {
                   // pass color/style classes for the numbers
                   let cellMode = 'default';
                   let cellHistory = -1;
+                  let posIndex = rowIndex * 9 + cellIndex;
 
                   if(cells) {
-                     const int = rowIndex * 9 + cellIndex;
-                     const cell = cells[int];
+                     const cell = cells[posIndex];
                      cellMode = cell.style;
                      cellHistory = cell.history[cell.history.length-1];
                   }
@@ -70,7 +70,7 @@ export default function Board(props) {
                            {'board__cell--complete': showTips && !hasRemaining }
                         )} >
                            { cellHistory > -1 && 
-                           <button type="button" className="board__reset" onClick={(e) => props.history(cellHistory)}>i</button> 
+                           <button type="button" className="board__reset" onClick={(e) => props.history(cellHistory, posIndex)}>i</button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} className="board__input"
                               onFocus={(e) => e.target.select()} 

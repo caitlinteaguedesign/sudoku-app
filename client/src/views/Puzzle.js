@@ -110,7 +110,10 @@ class Puzzle extends Component {
                   }
 
                   let startHistory = cloneDeep(this.state.history);
-                  startHistory.push({state: cloneDeep(player.state)});
+                  startHistory.push({
+                     state: cloneDeep(player.state),
+                     cell: -1
+                  });
 
                   this.setState({
                      loading: false,
@@ -209,11 +212,11 @@ class Puzzle extends Component {
 
       // update the style (if changed)
       const cells = [...this.state.cells];
-      const int = rowIndex * 9 + cellIndex;
-      if(cells[int].style !== this.state.mode) cells[int].style = this.state.mode;
-      cells[int].history.push(updateHistory.length - 1);
+      const posIndex = rowIndex * 9 + cellIndex;
+      if(cells[posIndex].style !== this.state.mode) cells[posIndex].style = this.state.mode;
+      cells[posIndex].history.push(updateHistory.length);
 
-      console.log(cells[int].history)
+      console.log('handleGrid', cells[posIndex].history)
 
       this.setState({
          player: {
@@ -221,7 +224,8 @@ class Puzzle extends Component {
             state: updateData
          },
          history: updateHistory.concat([{
-            state: newBoard
+            state: newBoard,
+            cell: posIndex
          }]),
          current_history: updateHistory.length,
          validation: updateValidation,
@@ -230,7 +234,48 @@ class Puzzle extends Component {
       });
    }
 
-   changeHistory = (method) => {
+   changeHistory = (position, index) => {
+
+      const ask = window.confirm("Are you sure you want to mass undo to this point? This action cannot be undone.");
+      
+      if(ask) {
+         const { history } = this.state;
+
+         const updateHistory = cloneDeep(history);
+         const removeHistory = updateHistory.slice(position, history.length);
+         const newHistory = updateHistory.slice(0, position);
+
+         let cellIndexes = [];
+
+         for(const info in removeHistory) {
+            const cell = removeHistory[info].cell;
+            cellIndexes.push(cell);
+         }
+
+         let updateCells = cloneDeep(this.state.cells);
+
+         for(let i = 0; i < cellIndexes.length; i++) {
+            const index = cellIndexes[i];
+            updateCells[index].history.splice(-1);
+         }
+
+         const updatedPosition = position - 1;
+   
+         this.setState({
+            player: {
+               ...this.state.player,
+               state: cloneDeep(history[updatedPosition].state)
+            },
+            history: newHistory,
+            current_history: updatedPosition,
+            validation: this.validateEntireGrid(history[updatedPosition].state),
+            cells: updateCells
+         })
+      }
+
+   }
+
+   moveHistory = (method) => {
 
       const { history, current_history } = this.state;
 
@@ -283,7 +328,7 @@ class Puzzle extends Component {
                   player: updatePlayer,
                   validation: this.validateEntireGrid(updatePlayer.state),
                   errors: null,
-                  history: [{state: cloneDeep(updatePlayer.state)}],
+                  history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                   current_history: 0,
                })
             })
@@ -534,7 +579,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e) => this.changeHistory(e)} className="view-puzzle__board" validation={validation} cells={cells} />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} className="view-puzzle__board" validation={validation} cells={cells} />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
@@ -672,12 +717,12 @@ class Puzzle extends Component {
 
                   <div>
                      {current_history > 0 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.changeHistory('prev')}>Undo</button>
+                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.moveHistory('prev')}>Undo</button>
                      :
                      <button type="button" className="button button_style-solid button--disabled">Undo</button>
                      }
                      {current_history < history.length - 1 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.changeHistory('next')}>Redo</button>
+                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.moveHistory('next')}>Redo</button>
                      :
                      <button type="button" className="button button_style-solid button--disabled">Redo</button>
                      }
