@@ -68,10 +68,10 @@ class Puzzle extends Component {
    }
 
    componentDidMount() {
-      
+
       // get puzzle
       const puzzleId = this.props.match.params.id;
-      
+
       axios.get('/puzzles/id/'+puzzleId)
          .then(puzzleRes => {
             // the puzzle
@@ -94,7 +94,7 @@ class Puzzle extends Component {
                   const index = user.puzzles.findIndex(obj => obj.id === puzzleId);
 
                   // update player board to user's version
-                  if(index !== -1) {                     
+                  if(index !== -1) {
                      player = cloneDeep(user.puzzles[index]);
                   }
                   // if new, add to players list of puzzles
@@ -134,8 +134,8 @@ class Puzzle extends Component {
                .catch( userErr => {
                   console.log(userErr);
                });
-            
-         }) 
+
+         })
          .catch(err => {
             console.log(err);
             this.props.history.push('/browse')
@@ -171,9 +171,9 @@ class Puzzle extends Component {
    }
 
    handleGrid = (e, rowIndex, cellIndex) => {
-      
+
       let value = parseInt(e.target.value);
-   
+
       if(!Number.isInteger(value) || (value<1 || value>9)) {
          value = 0;
       }
@@ -235,7 +235,7 @@ class Puzzle extends Component {
    changeHistory = (position, index) => {
 
       const ask = window.confirm("Are you sure you want to mass undo to this point? This action cannot be undone.");
-      
+
       if(ask) {
          const { history } = this.state;
 
@@ -258,7 +258,7 @@ class Puzzle extends Component {
          }
 
          const updatedPosition = position - 1;
-   
+
          this.setState({
             player: {
                ...this.state.player,
@@ -287,8 +287,8 @@ class Puzzle extends Component {
             newPosition = current_history + 1;
             break;
          default:
-            newPosition = method; 
-            break;            
+            newPosition = method;
+            break;
       }
 
       this.setState({
@@ -352,7 +352,7 @@ class Puzzle extends Component {
    }
 
    checkAnswer = () => {
-      
+
       if(this.searchValidation()) {
 
          // update puzzle
@@ -375,13 +375,13 @@ class Puzzle extends Component {
       }
       else {
          this.toggleAllTips(true);
-         
+
          this.setState({
             errors: 'Not quite there! Double check your answer for missing numbers or duplicates.'
          });
       }
 
-      
+
    }
 
    toggleMode = (mode) => {
@@ -396,7 +396,7 @@ class Puzzle extends Component {
             mode: mode
          })
       }
-      
+
    }
 
    toggleTip = (section, int) => {
@@ -435,7 +435,7 @@ class Puzzle extends Component {
          validation: updateValidation
       })
    }
-   
+
    validateSection = (source, section, int) => {
       //const { puzzle, history, current_history } = this.state;
       //const { state } = this.state.player;
@@ -493,20 +493,22 @@ class Puzzle extends Component {
             ...this.state.player,
             state: answer
          },
+         history: [{state: answer, cell: -1}],
+         current_history: 0,
          validation: cloneDeep(validation_dictionary),
          errors: null
       });
    }
 
    render() {
-      const { 
-         loading, 
-         puzzle, 
-         player, 
+      const {
+         loading,
+         puzzle,
+         player,
          history,
          current_history,
-         validation, 
-         errors, 
+         validation,
+         errors,
          cells } = this.state;
 
       if(loading) return Loading();
@@ -532,7 +534,7 @@ class Puzzle extends Component {
          <div className="page">
             <div className="title-group">
                <h1 className="page-title title-group__big">{puzzle.name}</h1>
-               <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty}`} width="26" height="26" 
+               <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty}`} width="26" height="26"
                   className={classnames('title-group__icon',
                   {'title-group__icon--easy': puzzle.difficulty === 'easy'},
                   {'title-group__icon--medium': puzzle.difficulty === 'medium'},
@@ -558,18 +560,18 @@ class Puzzle extends Component {
                         <button type="button" className="validation__button" onClick={(e) => this.toggleTip('subgrid', button)}>
                            { sections.map( (square) => {
                               return (
-                              <div key={`subgrid_square_${square}`} 
+                              <div key={`subgrid_square_${square}`}
                                  className={classnames(
-                                    'validation__square', 
+                                    'validation__square',
                                     {'validation__square--current' :button === square}
                                  )}></div>
                               )
                            })}
                         </button>
-                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        { thisValidation.tip && thisValidation.remaining.length > 0 &&
                         <div className="validation__tip validation__tip--vertical">
                            {thisValidation.remaining.map( (value, index) => <span key={`subgrid_${button}_${index}`}>{value}</span>) }
-                        </div> 
+                        </div>
                         }
                      </div>
                   })) }
@@ -594,10 +596,10 @@ class Puzzle extends Component {
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                         </button>
-                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        { thisValidation.tip && thisValidation.remaining.length > 0 &&
                         <div className="validation__tip validation__tip--horizontal">
                            {thisValidation.remaining.map( (value, index) => <span key={`row_${button}_${index}`}>{value}</span>) }
-                        </div> 
+                        </div>
                         }
                      </div>
                   })) }
@@ -617,10 +619,10 @@ class Puzzle extends Component {
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                         </button>
-                        { thisValidation.tip && thisValidation.remaining.length > 0 && 
+                        { thisValidation.tip && thisValidation.remaining.length > 0 &&
                         <div className="validation__tip validation__tip--vertical">
                            {thisValidation.remaining.map( (value, index) => <span key={`column_${button}_${index}`}>{value}</span>) }
-                        </div> 
+                        </div>
                         }
                      </div>
                   })) }
@@ -639,7 +641,7 @@ class Puzzle extends Component {
 
                   {player.completed &&
                   <div className={`alert alert_color-success alert_layout-icon`}>
-                     <Completed role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />    
+                     <Completed role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
                      <p>You solved this puzzle!</p>
                   </div>
                   }
@@ -652,21 +654,21 @@ class Puzzle extends Component {
                   </button>
 
                   {!player.completed && <>
-                  {/* <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
+                  {/*<button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
-                  </button> */}
+                  </button>*/}
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
                      Check Answer
                   </button>
 
-                  {errors && 
+                  {errors &&
                   <div className={`alert alert_color-error`}>
                      <p>{errors}</p>
                   </div>
                   }
 
                   <div>
-                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                     <button type="button" className="button button_style-solid button_style-solid--default"
                         title="Show all tips"
                         onClick={(e) => this.toggleAllTips(true)}
                      >
@@ -675,7 +677,7 @@ class Puzzle extends Component {
                            <span className="button__text">Show</span>
                         </div>
                      </button>
-                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                     <button type="button" className="button button_style-solid button_style-solid--default"
                         title="Hide all tips"
                         onClick={(e) => this.toggleAllTips(false)}
                      >
@@ -689,10 +691,10 @@ class Puzzle extends Component {
                   <div className="view-puzzle__mark-mode">
                      <button type="button" onClick={(e) => this.toggleMode('default')}
                         title="Set mode to normal"
-                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default', 
+                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default',
                         {'view-puzzle__mark-button--active': this.state.mode === 'default'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'default'}
-                        )} 
+                        )}
                      >
                         123
                      </button>
@@ -700,11 +702,11 @@ class Puzzle extends Component {
                         {'indicator--start': this.state.mode === 'default'},
                         {'indicator--end': this.state.mode === 'guess'},
                      )}>
-                        <button type="button" onClick={(e) => this.toggleMode()} className="indicator__button" title="Toggle mode"></button>                    
+                        <button type="button" onClick={(e) => this.toggleMode()} className="indicator__button" title="Toggle mode"></button>
                      </div>
                      <button type="button"onClick={(e) => this.toggleMode('guess')}
                         title="Set mode to guess"
-                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess', 
+                        className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess',
                         {'view-puzzle__mark-button--active': this.state.mode === 'guess'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'guess'}
                         )}
