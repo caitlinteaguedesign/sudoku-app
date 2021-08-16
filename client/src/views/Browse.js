@@ -200,7 +200,7 @@ function singlePuzzle(puzzle) {
 
    return (
       <li key={puzzle._id} className="puzzle-list__item">
-         <IconName role="img" aria-label="this is an easy puzzle" width="52" height="52" 
+         <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty} difficulty`} width="52" height="52" 
             className={classnames('puzzle-list__icon',
             {'puzzle-list__icon--completed': 'isCompleted' in puzzle && puzzle.isCompleted},
             {'puzzle-list__icon--inprogress': 'isCompleted' in puzzle && !puzzle.isCompleted},

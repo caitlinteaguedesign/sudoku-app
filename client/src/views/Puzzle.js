@@ -599,7 +599,7 @@ class Puzzle extends Component {
          <div className="page">
             <div className="title-group">
                <h1 className="page-title title-group__big">{puzzle.name}</h1>
-               <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty}`} width="26" height="26"
+               <IconName role="img" aria-label={`This puzzle is ${puzzle.difficulty} difficulty`} title={`This puzzle is ${puzzle.difficulty}`} width="26" height="26"
                   className={classnames('title-group__icon',
                   {'title-group__icon--easy': puzzle.difficulty === 'easy'},
                   {'title-group__icon--medium': puzzle.difficulty === 'medium'},
@@ -622,7 +622,10 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" className="validation__button" onClick={(e) => this.toggleTip('subgrid', button)}>
+                        <button type="button" 
+                           className="validation__button" onClick={(e) => this.toggleTip('subgrid', button)}
+                           title="Press to toggle tips for this quadrant"
+                           >
                            { sections.map( (square) => {
                               return (
                               <div key={`subgrid_square_${square}`}
@@ -656,7 +659,10 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )} >
-                        <button type="button" className="validation__button" onClick={(e) => this.toggleTip('row', button)}>
+                        <button type="button" className="validation__button" 
+                           onClick={(e) => this.toggleTip('row', button)}
+                           title="Press to toggle tips for this row"
+                           >
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
@@ -679,7 +685,10 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" className="validation__button" onClick={ (e) => this.toggleTip('column', button)}>
+                        <button type="button" className="validation__button" 
+                           onClick={ (e) => this.toggleTip('column', button)}
+                           title="Press to toggle tips for this column"
+                           >
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
                            <div className="validation__square"></div>
@@ -711,7 +720,10 @@ class Puzzle extends Component {
                   </div>
                   }
 
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.resetPuzzle}>
+                  <button type="button" className="button button_style-solid button_style-solid--default" 
+                     onClick={this.resetPuzzle}
+                     title={`Press to ${player.completed ? 'replay' : 'restart'} puzzle`}
+                     >
                      <div className="button__layout button__layout--icon-left">
                         <Reset className="button__icon" width="20" height="20" role="img" aria-label="reset" />
                         <span className="button__text">{player.completed ? 'Replay' : 'Restart' }</span>
@@ -722,8 +734,10 @@ class Puzzle extends Component {
                   {/* <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
                   </button> */}
-                  <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
-                     Check Answer
+                  <button type="button" className="button button_style-solid button_style-solid--primary" 
+                     onClick={this.checkAnswer}
+                     title="Press to submit answer">
+                     Submit Answer
                   </button>
 
                   {errors &&
@@ -739,7 +753,7 @@ class Puzzle extends Component {
                      >
                         <div className="button__layout button__layout--icon-left">
                            <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
-                           <span className="button__text">Show</span>
+                           <span className="button__text">all tips</span>
                         </div>
                      </button>
                      <button type="button" className="button button_style-solid button_style-solid--default"
@@ -748,7 +762,7 @@ class Puzzle extends Component {
                      >
                         <div className="button__layout button__layout--icon-left">
                            <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
-                           <span className="button__text">Hide</span>
+                           <span className="button__text">all tips</span>
                         </div>
                      </button>
                   </div>
@@ -782,12 +796,22 @@ class Puzzle extends Component {
 
                   <div>
                      {current_history > 0 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.moveHistory('prev')}>Undo</button>
+                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                        onClick={(e) => this.moveHistory('prev')}
+                        title="Press to undo the most recent move"
+                        >
+                           Undo
+                     </button>
                      :
                      <button type="button" className="button button_style-solid button--disabled">Undo</button>
                      }
                      {current_history < history.length - 1 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" onClick={(e) => this.moveHistory('next')}>Redo</button>
+                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                        onClick={(e) => this.moveHistory('next')}
+                        title="Press to redo that last move that was previously undone"
+                        >
+                        Redo
+                     </button>
                      :
                      <button type="button" className="button button_style-solid button--disabled">Redo</button>
                      }

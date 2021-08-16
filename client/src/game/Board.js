@@ -87,7 +87,8 @@ export default function Board(props) {
                               {'board__input--guess' : cellMode === 'guess'},
                               )}
                               onFocus={(e) => e.target.select()} 
-                              onChange={(e) => props.update(e, rowIndex, cellIndex)} />
+                              onChange={(e) => props.update(e, rowIndex, cellIndex)}
+                              title="Enter a number between 1 and 9" />
                         </div>
                      )
                   }
