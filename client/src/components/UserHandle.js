@@ -15,7 +15,7 @@ class UserHandle extends Component {
             <Link to="/dashboard" className="link link_style-text">Dashboard</Link>
             <Link to="/settings" className="link link_style-text">Settings</Link>
             <button type="button" 
-               onClick={() => this.props.logoutUser()}
+               onClick={() => this.props.logoutUser(this.props.history)}
                className="button button_style-solid button_style-solid--primary">
                   Log Out
             </button>

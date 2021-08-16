@@ -82,7 +82,7 @@ export const resetErrors = () => {
 }
 
 // Log user out
-export const logoutUser = () => dispatch => {
+export const logoutUser = (history) => dispatch => {
    // Remove token from local storage
    localStorage.removeItem('jwtToken');
 
@@ -92,5 +92,6 @@ export const logoutUser = () => dispatch => {
    // Set current user to empty object {} which will set isAuthenticated to false
    dispatch(setCurrentUser({}));
 
-   // TO DO: redirect to homepage
+   // redirect to homepage after logout
+   history.push('/');
 }
