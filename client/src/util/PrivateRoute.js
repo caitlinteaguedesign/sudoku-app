@@ -3,21 +3,6 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-//import fakeAuth from "../fakeAuth";
-
-// export default function PrivateRoute({children, ...rest}) {
-//    return (
-//       <Route {...rest} render={({ location }) => {
-//          return fakeAuth.isAuthenticated === true
-//             ? children
-//             : <Redirect to={{
-//                pathname: '/login',
-//                state: { from: location }
-//                }} />
-//       }} />
-//    )
-// }
-
 const PrivateRoute = ({children, auth, ...rest}) => (
    <Route 
       {...rest}
