@@ -12,9 +12,6 @@ Not to be confused with telling the player if they entered an incorrect answer i
 ### Scope Creeping
 Because it's too easy to think of features to add!
 
-* Move history (undo)
 * 5 x 5 insane sudoku puzzle
 * Interface tour for new users
 * Sudoku tutorial
-* Different number colors/fonts (pen vs pencil marks)
-* Abandon puzzle, restart puzzle
