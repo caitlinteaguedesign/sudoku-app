@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/authActions';
 import PrivateRoute from './util/PrivateRoute';
@@ -7,15 +7,16 @@ import PrivateRoute from './util/PrivateRoute';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import logo from './img/wordmark.svg';
 import './styles/main.scss';
 
+import Home from './views/Home';
 import Entry from './views/Entry';
-import UserHandle from './components/UserHandle';
+import Header from './components/Header';
 import Dashboard from './views/Dashboard';
 import Browse from './views/Browse';
 import Create from './views/Create';
 import Puzzle from './views/Puzzle';
+import Settings from './views/Settings';
 
 // check for token
 if(localStorage.jwtToken) {
@@ -44,42 +45,35 @@ class App extends Component {
               <Route path={['/register', '/login']}>
                 <Entry />
               </Route>
-              
 
-              <PrivateRoute path="/">
-              
-                <header className="header">
+              <Route path="/">
 
-                  <div className="header__container">
-                    <Link to="/" className="header__logo">
-                      <img src={logo} alt="Sudoku Maker logo" width="180" height="36" />
-                    </Link>
-                    <Link to="/dashboard" className="link link_style-text">Dashboard</Link>
-                    <Link to="/create" className="link link_style-text">Create</Link>
-                    <Link to="/browse" className="link link_style-text">Browse</Link>
-                  </div>
-
-                  <UserHandle />
-
-                </header>
+                <Header />
 
                 <main className="main">
                   <Switch>
+                    <PrivateRoute path="/settings">
+                      <Settings />
+                    </PrivateRoute>
+                    <PrivateRoute path="/create">
+                      <Create />
+                    </PrivateRoute>
+                    <PrivateRoute path="/dashboard">
+                      <Dashboard />
+                    </PrivateRoute>
                     <Route path="/puzzle/:id">
                       <Puzzle />
                     </Route>
                     <Route path="/browse">
                       <Browse />
                     </Route>
-                    <Route path="/create">
-                      <Create />
-                    </Route>
-                    <Route path={['/', '/dashboard']}>
-                      <Dashboard />
+                    <Route path="/">
+                      <Home />
                     </Route>
                   </Switch>
                 </main>
-              </PrivateRoute>
+
+              </Route>
 
             </Switch>
 
