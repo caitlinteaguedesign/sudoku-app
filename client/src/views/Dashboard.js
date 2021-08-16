@@ -109,7 +109,7 @@ function listPuzzles(puzzles) {
          {inprogress.length > 0 &&
          <section className="section">
             <div className="section-title-icon">
-               <InProgress role="img" aria-label="these are in-progress puzzles" width="26" height="26" className="section-title-icon__icon" />
+               <InProgress role="img" aria-label="these puzzles are in-progress" width="26" height="26" className="section-title-icon__icon" />
                <h2 className="section-title">In-Progress</h2>
             </div>
             <ul className="puzzle-list">
@@ -121,7 +121,7 @@ function listPuzzles(puzzles) {
          {completed.length > 0 &&
          <section className="section">
             <div className="section-title-icon">
-               <Completed role="img" aria-label="these are completed puzzles" width="26" height="26" className="section-title-icon__icon" />
+               <Completed role="img" aria-label="these puzzles are completed" width="26" height="26" className="section-title-icon__icon" />
                <h2 className="section-title">Completed</h2>
             </div>
             <ul className="puzzle-list">
@@ -150,7 +150,7 @@ function singlePuzzle(puzzle) {
 
    return (
       <li key={puzzle._id} className="puzzle-list__item">
-         <IconName role="img" aria-label="this is an easy puzzle" width="52" height="52" 
+         <IconName role="img" aria-label={`This puzzle has a difficulty of ${puzzle.difficulty}`} width="52" height="52" 
             className={classnames('puzzle-list__icon',
             {'puzzle-list__icon--easy': puzzle.difficulty === 'easy'},
             {'puzzle-list__icon--medium': puzzle.difficulty === 'medium'},

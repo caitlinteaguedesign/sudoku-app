@@ -177,12 +177,15 @@ function listPuzzles(puzzles) {
 
 function singlePuzzle(puzzle) {
    let IconName = '';
+   let userLabelModifier = '';
 
    if('isCompleted' in puzzle && puzzle.isCompleted) {
       IconName = Completed;
+      userLabelModifier = ' and has already been completed';
    }
    else if ('isCompleted' in puzzle && !puzzle.isCompleted) {
       IconName = InProgress;
+      userLabelModifier = ' and is already in progress';
    }
    else {
       switch (puzzle.difficulty) {
@@ -200,14 +203,14 @@ function singlePuzzle(puzzle) {
 
    return (
       <li key={puzzle._id} className="puzzle-list__item">
-         <IconName role="img" aria-label={`this puzzle is ${puzzle.difficulty} difficulty`} width="52" height="52" 
+         <IconName role="img" aria-label={`This puzzle has a difficulty of ${puzzle.difficulty}` + userLabelModifier} width="52" height="52" 
             className={classnames('puzzle-list__icon',
             {'puzzle-list__icon--completed': 'isCompleted' in puzzle && puzzle.isCompleted},
             {'puzzle-list__icon--inprogress': 'isCompleted' in puzzle && !puzzle.isCompleted},
             {'puzzle-list__icon--default': !('isCompleted' in puzzle)} )}
          />
          <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
-         <span className="puzzle-list__date">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'Month Dn, YYYY')}</span></span>
+         <span className="puzzle-list__date">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'MM/DD/YYYY')}</span></span>
       </li>
    )
 }
