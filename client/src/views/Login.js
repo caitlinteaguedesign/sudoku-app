@@ -67,7 +67,9 @@ class Login extends Component {
          <div className="prompt">
 
             <div className="prompt__brand">
-               <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
+               <Link to="/">
+                  <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
+               </Link>
             </div>
 
             <form noValidate className="prompt__form" onSubmit={this.handleSubmit}>
