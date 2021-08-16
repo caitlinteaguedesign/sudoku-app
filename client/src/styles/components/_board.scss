@@ -52,8 +52,8 @@ $border-thick: 2px solid #adadad;
          background: #D1FCCE;
       }
 
-      &--default {
-         color: #1153a2;
+      &--default {         
+         color: $entry_color_default;
          background: #ffffff;
       }
 
@@ -91,22 +91,18 @@ $border-thick: 2px solid #adadad;
       width: 100%;
       height: 100%;
       text-align: center;
-      color: inherit;
-      font-family: inherit;
       font-size: inherit;
       line-height: inherit;
+      font-family: 'Mali', cursive;
+      font-weight: 400;
+      font-style: italic;
 
       &--default {
-         font-family: 'Mali', cursive;
-         font-weight: 500;
-         font-style: italic;
+         color: inherit;
       }
 
       &--guess {
-         font-family: 'Mali', cursive;
-         font-weight: 300;
-         font-style: italic;
-         opacity: 0.9;
+         color: $entry_color_guess;
       }
 
       &:focus {

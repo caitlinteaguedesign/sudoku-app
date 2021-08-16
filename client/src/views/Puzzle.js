@@ -108,7 +108,7 @@ class Puzzle extends Component {
                         // add this puzzle to user's list
                         axios.post('/users/id/'+userId+'/addPuzzle', player)
                            .then( saveRes => {
-                              console.log(saveRes.data);
+                              //console.log(saveRes.data);
                            })
                            .catch( saveErr => {
                               console.log(saveErr);
@@ -705,7 +705,10 @@ class Puzzle extends Component {
                <div className="view-puzzle__actions">
 
                   {!player.completed && isAuthenticated &&
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
+                  <button type="button" className="button button_style-solid button_style-solid--default" 
+                     onClick={this.saveProgress}
+                     title="Press to save progress"
+                     >
                      <div className="button__layout button__layout--icon-left">
                         <Save className="button__icon" width="20" height="20" role="img" aria-label="save" />
                         <span className="button__text">Save</span>
@@ -769,7 +772,7 @@ class Puzzle extends Component {
 
                   <div className="view-puzzle__mark-mode">
                      <button type="button" onClick={(e) => this.toggleMode('default')}
-                        title="Set mode to normal"
+                        title="Set color to default"
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default',
                         {'view-puzzle__mark-button--active': this.state.mode === 'default'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'default'}
@@ -784,7 +787,7 @@ class Puzzle extends Component {
                         <button type="button" onClick={(e) => this.toggleMode()} className="indicator__button" title="Toggle mode"></button>
                      </div>
                      <button type="button"onClick={(e) => this.toggleMode('guess')}
-                        title="Set mode to guess"
+                        title="Set color to guess"
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess',
                         {'view-puzzle__mark-button--active': this.state.mode === 'guess'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'guess'}

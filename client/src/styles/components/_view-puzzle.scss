@@ -51,33 +51,27 @@
    }
 
    &__mark-button {
+      border: none;
       padding: 0.25rem 1rem 0.5rem;
-      font-size: 1.5em;
-      line-height: 1em;
       text-align: center;
       transition: all 0.2s ease-in-out;
+      font-family: 'Mali', cursive;
+      font-size: 1.5em;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1em;
+      color: #ffffff;
 
       &--default {
-         font-family: 'Mali', cursive;
-         font-weight: 500;
+         background: $entry_color_default;
       }
 
       &--guess {
-         font-family: 'Mali', cursive;
-         font-weight: 300;
-         font-style: italic;
-      }
-
-      &--active {
-         border: 1px solid #aaaaaa;
-         background: none;
+         background: $entry_color_guess;
       }
 
       &--press {
          cursor: pointer;
-         color: #ffffff;
-         border: 1px solid $primary_color;
-         background: $primary_color;
       }
    }
 }

@@ -104,7 +104,7 @@ function listPuzzles(puzzles) {
 
    return (
       <div className="page">
-         <h1 className="page-title">My Puzzles</h1>
+         <h1 className="page-title">Dashboard</h1>
 
          {inprogress.length > 0 &&
          <section className="section">
