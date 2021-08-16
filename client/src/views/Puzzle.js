@@ -56,6 +56,7 @@ class Puzzle extends Component {
 
       this.state = {
          loading: true,
+         isGuest: true,
          puzzle: null,
          player: null,
          history: [],
@@ -76,64 +77,69 @@ class Puzzle extends Component {
          .then(puzzleRes => {
             // the puzzle
             const puzzle = puzzleRes.data.result;
-            // get player state
-            const userId = this.props.auth.user.id;
 
-            axios.get('/users/id/'+userId)
-               .then( userRes => {
-                  const user = userRes.data.result;
+            const { isAuthenticated } = this.props.auth;
 
-                  // starting board
-                  let player = {
-                     id: puzzleId,
-                     state: cloneDeep(puzzle.start),
-                     completed: false
-                  }
+            // starting board
+            let player = {
+               id: puzzleId,
+               state: cloneDeep(puzzle.start),
+               completed: false
+            }
+            
+            if(isAuthenticated) {
+               // get player state
+               const userId = this.props.auth.user.id;
 
-                  // check if player has started this puzzle
-                  const index = user.puzzles.findIndex(obj => obj.id === puzzleId);
+               axios.get('/users/id/'+userId)
+                  .then( userRes => {
+                     const user = userRes.data.result;
 
-                  // update player board to user's version
-                  if(index !== -1) {
-                     player = cloneDeep(user.puzzles[index]);
-                  }
-                  // if new, add to players list of puzzles
-                  else {
-                     // add this puzzle to user's list
-                     axios.post('/users/id/'+userId+'/addPuzzle', player)
-                        .then( saveRes => {
-                           console.log(saveRes.data);
-                        })
-                        .catch( saveErr => {
-                           console.log(saveErr);
-                        });
-                  }
+                     // check if player has started this puzzle
+                     const index = user.puzzles.findIndex(obj => obj.id === puzzleId);
 
-                  let startHistory = cloneDeep(this.state.history);
-                  startHistory.push({
-                     state: cloneDeep(player.state),
-                     cell: -1
+                     // update player board to user's version
+                     if(index !== -1) {
+                        player = cloneDeep(user.puzzles[index]);
+                     }
+                     // if new, add to players list of puzzles
+                     else {
+                        // add this puzzle to user's list
+                        axios.post('/users/id/'+userId+'/addPuzzle', player)
+                           .then( saveRes => {
+                              console.log(saveRes.data);
+                           })
+                           .catch( saveErr => {
+                              console.log(saveErr);
+                           });
+                     }
+                  })
+                  .catch( userErr => {
+                     console.log(userErr);
                   });
+            }
 
-                  this.setState({
-                     loading: false,
-                     puzzle: puzzle,
-                     player: player,
-                     history: startHistory
-                  }, () => {
+            let startHistory = cloneDeep(this.state.history);
+            startHistory.push({
+               state: cloneDeep(player.state),
+               cell: -1
+            });
 
-                     const { history, current_history } = this.state;
+            this.setState({
+               isGuest: !isAuthenticated,
+               loading: false,
+               puzzle: puzzle,
+               player: player,
+               history: startHistory
+            }, () => {
 
-                     // update the validation tips
-                     this.setState({
-                        validation: this.validateEntireGrid(history[current_history].state)
-                     });
-                  });
+               const { history, current_history } = this.state;
 
-               })
-               .catch( userErr => {
-                  console.log(userErr);
+               // update the validation tips
+               this.setState({
+                  validation: this.validateEntireGrid(history[current_history].state)
                });
+            });
 
          })
          .catch(err => {
@@ -320,7 +326,8 @@ class Puzzle extends Component {
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
          updatePlayer.completed = false;
 
-         axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
+         if(!this.state.isGuest) {
+            axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
                this.setState({
                   player: updatePlayer,
@@ -333,6 +340,16 @@ class Puzzle extends Component {
             .catch(err => {
                console.log(err);
             });
+         }
+         else {
+            this.setState({
+               player: updatePlayer,
+               validation: this.validateEntireGrid(updatePlayer.state),
+               errors: null,
+               history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
+               current_history: 0,
+            })
+         }
       }
    }
 
@@ -359,18 +376,29 @@ class Puzzle extends Component {
          const updatePlayer = this.state.player;
          updatePlayer.completed = true;
 
-         axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
-            .then( res => {
-               this.setState({
-                  player: {
-                     ...this.state.player,
-                     completed: true
-                  }
+         if(!this.state.isGuest) {
+               
+            axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
+               .then( res => {
+                  this.setState({
+                     player: {
+                        ...this.state.player,
+                        completed: true
+                     }
+                  })
                })
+               .catch(err => {
+                  console.log(err);
+               });
+         }
+         else {
+            this.setState({
+               player: {
+                  ...this.state.player,
+                  completed: true
+               }
             })
-            .catch(err => {
-               console.log(err);
-            });
+         }
 
       }
       else {
@@ -503,6 +531,7 @@ class Puzzle extends Component {
    render() {
       const {
          loading,
+         isGuest,
          puzzle,
          player,
          history,
@@ -630,7 +659,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__actions">
 
-                  {!player.completed &&
+                  {!player.completed && !isGuest &&
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
                      <div className="button__layout button__layout--icon-left">
                         <Save className="button__icon" width="20" height="20" role="img" aria-label="save" />
@@ -654,9 +683,9 @@ class Puzzle extends Component {
                   </button>
 
                   {!player.completed && <>
-                  {/*<button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
+                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
-                  </button>*/}
+                  </button>
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
                      Check Answer
                   </button>
