@@ -17,7 +17,6 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-   logoutUser: PropTypes.func.isRequired,
    auth: PropTypes.object.isRequired
 }
 

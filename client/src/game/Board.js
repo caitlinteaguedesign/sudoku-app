@@ -2,6 +2,8 @@ import classnames from 'classnames';
 
 import { pattern } from '../game/constants';
 
+import ordinal_suffix_of from '../util/ordinal_suffix_of';
+
 import { ReactComponent as Reset } from '../img/reset.svg';
 
 export default function Board(props) {
@@ -17,13 +19,15 @@ export default function Board(props) {
                   
                   // pass color/style classes for the numbers
                   let cellMode = 'default';
-                  let cellHistory = [];
+                  let cellHistory = [-1];
+                  let undoStep = -1;
                   let posIndex = rowIndex * 9 + cellIndex;
 
                   if(cells) {
                      const cell = cells[posIndex];
                      cellMode = cell.style;
                      cellHistory = cell.history;
+                     undoStep = cellHistory[cellHistory.length - 1];
                   }
 
                   // pass background color classes from validation
@@ -61,6 +65,7 @@ export default function Board(props) {
                   }
                   // All other cells the user (or player) fills in
                   else {
+
                      return (
                         <div key={`cell_${cellIndex}`} 
                            className={classnames('board__cell',
@@ -71,8 +76,9 @@ export default function Board(props) {
                         )} >
                            { cellHistory.length > 0 && 
                            <button type="button" className="board__reset" 
-                              onClick={(e) => props.history(cellHistory[cellHistory.length - 1], posIndex)} >
-                                 <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="Mass undo to this point" />
+                              onClick={(e) => props.history(cellHistory[cellHistory.length - 1], posIndex)} 
+                              title={`Undo moves to the ${ordinal_suffix_of(undoStep)} move`}>
+                                 <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="undo" />
                            </button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} 

@@ -1,3 +1,5 @@
+import ordinal_suffix_of from "./ordinal_suffix_of";
+
 const months = [
    'January',
    'February',
@@ -27,23 +29,6 @@ const mons = [
    'Nov',
    'Dec'
 ];
-
-function ordinal_suffix_of(i) {
-   var j = i % 10;
-
-   if(j === 1 && i !== 11) {
-      return i + 'st';
-   }
-   else if(i === 2 && i !== 12) {
-      return i = 'nd';
-   }
-   else if(i === 3 && i !== 13) {
-      return i + 'rd';
-   }
-   else {
-      return i + 'th';
-   }
-}
 
 export default function formatDate(raw, style) {
    const date = new Date(raw);

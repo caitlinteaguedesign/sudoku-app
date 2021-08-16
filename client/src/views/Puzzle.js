@@ -26,6 +26,7 @@ import { ReactComponent as CloseEye } from '../img/close-eye.svg';
 
 import { ReactComponent as Reset } from '../img/reset.svg';
 import { ReactComponent as Save } from '../img/save.svg';
+import ordinal_suffix_of from '../util/ordinal_suffix_of';
 
 const validation_start_entry = {
    tip: false,
@@ -270,8 +271,8 @@ class Puzzle extends Component {
    }
 
    changeHistory = (position, index) => {
-
-      const ask = window.confirm("Are you sure you want to mass undo to this point? This action cannot be undone.");
+      const readPos = ordinal_suffix_of(position);
+      const ask = window.confirm(`Are you sure you want to mass undo to the ${readPos} move? This action cannot be undone.`);
 
       if(ask) {
          const { history } = this.state;
@@ -643,7 +644,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} className="view-puzzle__board" validation={validation} cells={cells} />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} cells={cells} className="view-puzzle__board" />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
