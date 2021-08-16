@@ -57,6 +57,11 @@ class Puzzle extends Component {
 
       this.state = {
          loading: true,
+         settings: {
+            readonly: {color: ''},
+            default: {color: ''},
+            guess: {color: ''}
+         },
          puzzle: null,
          player: null,
          history: [],
@@ -115,6 +120,10 @@ class Puzzle extends Component {
                            });
                      }
 
+                     // check for user's custom color settings
+                     const settings = user.game;
+                     console.log('settings', settings);
+
                      let startHistory = cloneDeep(this.state.history);
                      startHistory.push({
                         state: cloneDeep(player.state),
@@ -124,6 +133,7 @@ class Puzzle extends Component {
                      this.setState({
                         loading: false,
                         puzzle: puzzle,
+                        settings: settings,
                         player: player,
                         history: startHistory
                      }, () => {
@@ -569,6 +579,7 @@ class Puzzle extends Component {
       const {
          loading,
          puzzle,
+         settings,
          player,
          history,
          current_history,
@@ -647,7 +658,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} cells={cells} className="view-puzzle__board" />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} cells={cells} settings={settings} className="view-puzzle__board" />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];
@@ -773,6 +784,7 @@ class Puzzle extends Component {
                   <div className="view-puzzle__mark-mode">
                      <button type="button" onClick={(e) => this.toggleMode('default')}
                         title="Set color to default"
+                        style={{ background: settings.default.color }}
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default',
                         {'view-puzzle__mark-button--active': this.state.mode === 'default'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'default'}
@@ -788,6 +800,7 @@ class Puzzle extends Component {
                      </div>
                      <button type="button"onClick={(e) => this.toggleMode('guess')}
                         title="Set color to guess"
+                        style={{ background: settings.guess.color }}
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess',
                         {'view-puzzle__mark-button--active': this.state.mode === 'guess'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'guess'}

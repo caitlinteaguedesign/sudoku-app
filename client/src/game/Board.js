@@ -6,8 +6,9 @@ import ordinal_suffix_of from '../util/ordinal_suffix_of';
 
 import { ReactComponent as Reset } from '../img/reset.svg';
 
+
 export default function Board(props) {
-   const { player, start, validation, cells } = props;
+   const { player, start, validation, cells, settings } = props;
    
    return (
       <section className={`board ${props.className}`}>
@@ -19,7 +20,7 @@ export default function Board(props) {
                   
                   // pass color/style classes for the numbers
                   let cellMode = 'default';
-                  let cellHistory = [-1];
+                  let cellHistory = [];
                   let undoStep = -1;
                   let posIndex = rowIndex * 9 + cellIndex;
 
@@ -53,7 +54,7 @@ export default function Board(props) {
 
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
-                     return <div key={`cell_${cellIndex}`} 
+                     return <div key={`cell_${cellIndex}`} style={{color: settings.readonly.color }}
                         className={classnames(
                            'board__cell board__cell--readonly',
                            {'board__cell--missing': showTips && hasRemaining },
@@ -67,7 +68,7 @@ export default function Board(props) {
                   else {
 
                      return (
-                        <div key={`cell_${cellIndex}`} 
+                        <div key={`cell_${cellIndex}`}
                            className={classnames('board__cell',
                            {'board__cell--default' : !showTips },
                            {'board__cell--missing': showTips && hasRemaining },
@@ -82,6 +83,7 @@ export default function Board(props) {
                            </button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} 
+                              style={{ color: cellMode === 'guess' ? settings.guess.color : settings.default.color }}
                               className={classnames("board__input",
                               {'board__input--default' : cellMode === 'default'},
                               {'board__input--guess' : cellMode === 'guess'},
