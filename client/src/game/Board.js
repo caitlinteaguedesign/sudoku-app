@@ -8,7 +8,7 @@ import { ReactComponent as Reset } from '../img/reset.svg';
 
 
 export default function Board(props) {
-   const { player, start, validation, cells, settings } = props;
+   const { player, start, validation, history, settings } = props;
    
    return (
       <section className={`board ${props.className}`}>
@@ -19,16 +19,18 @@ export default function Board(props) {
                   const startValue = start[rowIndex][cellIndex];
                   
                   // pass color/style classes for the numbers
-                  let cellMode = 'default';
-                  let cellHistory = [];
+                  let thisMode = '';
+                  let thisHistory = [];
                   let undoStep = -1;
                   let posIndex = rowIndex * 9 + cellIndex;
 
-                  if(cells) {
-                     const cell = cells[posIndex];
-                     cellMode = cell.style;
-                     cellHistory = cell.history;
-                     undoStep = cellHistory[cellHistory.length - 1];
+                  if(player.modes) {
+                     thisMode = player.modes[posIndex].mode;
+                  }
+
+                  if(history) {
+                     thisHistory = history[posIndex].history;
+                     undoStep = thisHistory[thisHistory.length - 1];
                   }
 
                   // pass background color classes from validation
@@ -75,18 +77,18 @@ export default function Board(props) {
                            {'board__cell--duplicates': showTips && hasDuplicates && hasRemaining },
                            {'board__cell--complete': showTips && !hasRemaining }
                         )} >
-                           { cellHistory.length > 0 && 
+                           { thisHistory.length > 0 && 
                            <button type="button" className="board__reset" 
-                              onClick={(e) => props.history(cellHistory[cellHistory.length - 1], posIndex)} 
+                              onClick={(e) => props.changeHistory(undoStep, posIndex)} 
                               title={`Undo moves to the ${ordinal_suffix_of(undoStep)} move`}>
                                  <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="undo" />
                            </button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} 
-                              style={{ color: cellMode === 'guess' ? settings.guess.color : settings.default.color }}
+                              style={{ color: thisMode === 'guess' ? settings.guess.color : settings.default.color }}
                               className={classnames("board__input",
-                              {'board__input--default' : cellMode === 'default'},
-                              {'board__input--guess' : cellMode === 'guess'},
+                              {'board__input--default' : thisMode === 'default'},
+                              {'board__input--guess' : thisMode === 'guess'},
                               )}
                               onFocus={(e) => e.target.select()} 
                               onChange={(e) => props.update(e, rowIndex, cellIndex)}

@@ -42,11 +42,17 @@ for(let i = 0; i < 9; i++) {
    validation_dictionary[`subgrid_${i}`] = validation_start_entry;
 }
 
-const cell_dictionary = [];
+const history_dictionary = [];
 for(let i = 0; i < 81; i++){
-   cell_dictionary.push({
-      style: 'default',
+   history_dictionary.push({
       history: []
+   });
+}
+
+const mode_dictionary = [];
+for(let i = 0; i < 81; i++){
+   mode_dictionary.push({
+      mode: 'default'
    });
 }
 
@@ -63,13 +69,15 @@ class Puzzle extends Component {
             guess: {color: ''}
          },
          puzzle: null,
-         player: null,
+         player: {
+            mode: cloneDeep(mode_dictionary)
+         },
          history: [],
+         history_dictionary: cloneDeep(history_dictionary),
          current_history: 0,
          validation: cloneDeep(validation_dictionary),
          errors: null,
-         mode: 'default',
-         cells: cloneDeep(cell_dictionary)
+         mode: 'default'
       }
    }
 
@@ -98,7 +106,8 @@ class Puzzle extends Component {
                      let player = {
                         id: puzzleId,
                         state: cloneDeep(puzzle.start),
-                        completed: false
+                        completed: false,
+                        modes: cloneDeep(mode_dictionary)
                      }
 
                      // check if player has started this puzzle
@@ -107,6 +116,7 @@ class Puzzle extends Component {
                      // update player board to user's version
                      if(index !== -1) {
                         player = cloneDeep(user.puzzles[index]);
+                        if(!player.modes) player.modes = cloneDeep(mode_dictionary);
                      }
                      // if new, add to players list of puzzles
                      else {
@@ -120,10 +130,6 @@ class Puzzle extends Component {
                            });
                      }
 
-                     // check for user's custom color settings
-                     const settings = user.game;
-                     console.log('settings', settings);
-
                      let startHistory = cloneDeep(this.state.history);
                      startHistory.push({
                         state: cloneDeep(player.state),
@@ -133,10 +139,12 @@ class Puzzle extends Component {
                      this.setState({
                         loading: false,
                         puzzle: puzzle,
-                        settings: settings,
+                        settings: user.game,
                         player: player,
                         history: startHistory
                      }, () => {
+
+                        console.log('did mount', this.state.player.modes);
 
                         const { history, current_history } = this.state;
 
@@ -157,7 +165,8 @@ class Puzzle extends Component {
                let player = {
                   id: puzzleId,
                   state: cloneDeep(puzzle.start),
-                  completed: false
+                  completed: false,
+                  modes: cloneDeep(mode_dictionary)
                }
 
                let startHistory = cloneDeep(this.state.history);
@@ -259,24 +268,29 @@ class Puzzle extends Component {
       newBoard[rowIndex][cellIndex] = value;
 
       // update the style (if changed)
-      const cells = [...this.state.cells];
+      const updateModes = cloneDeep(this.state.player.modes);
+      console.log('update', updateModes);
       const posIndex = rowIndex * 9 + cellIndex;
-      if(cells[posIndex].style !== this.state.mode) cells[posIndex].style = this.state.mode;
-      cells[posIndex].history.push(updateHistory.length);
+      if(updateModes[posIndex].mode !== this.state.mode) updateModes[posIndex].mode = this.state.mode;
+
+      // update history dictionary
+      const updateHistoryDictionary = [...this.state.history_dictionary];
+      updateHistoryDictionary[posIndex].history.push(updateHistory.length);
 
       this.setState({
          player: {
             ...this.state.player,
-            state: updateData
+            state: updateData,
+            modes: updateModes
          },
          history: updateHistory.concat([{
             state: newBoard,
             cell: posIndex
          }]),
+         history_dictionary: updateHistoryDictionary,
          current_history: updateHistory.length,
          validation: updateValidation,
          errors: null,
-         cells: cells
       });
    }
 
@@ -298,11 +312,11 @@ class Puzzle extends Component {
             cellIndexes.push(cell);
          }
 
-         let updateCells = cloneDeep(this.state.cells);
+         let updateHistoryDictionary = cloneDeep(this.state.history_dictionary);
 
          for(let i = 0; i < cellIndexes.length; i++) {
             const index = cellIndexes[i];
-            updateCells[index].history.splice(-1);
+            updateHistoryDictionary[index].history.splice(-1);
          }
 
          const updatedPosition = position - 1;
@@ -313,9 +327,9 @@ class Puzzle extends Component {
                state: cloneDeep(history[updatedPosition].state)
             },
             history: newHistory,
+            history_dictionary: updateHistoryDictionary,
             current_history: updatedPosition,
-            validation: this.validateEntireGrid(history[updatedPosition].state),
-            cells: updateCells
+            validation: this.validateEntireGrid(history[updatedPosition].state)
          })
       }
 
@@ -582,10 +596,10 @@ class Puzzle extends Component {
          settings,
          player,
          history,
+         history_dictionary,
          current_history,
          validation,
-         errors,
-         cells } = this.state;
+         errors } = this.state;
 
       if(loading) return Loading();
       else {
@@ -658,7 +672,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} history={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} cells={cells} settings={settings} className="view-puzzle__board" />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} changeHistory={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} history={history_dictionary} settings={settings} className="view-puzzle__board" />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];

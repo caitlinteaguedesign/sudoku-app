@@ -39,6 +39,10 @@ const userSchema = mongoose.Schema({
       state: {
          type: Array,
          default: []
+      },
+      modes: {
+         type: Array,
+         default: []
       }
    }],
    role: {
