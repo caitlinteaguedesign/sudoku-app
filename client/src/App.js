@@ -46,9 +46,9 @@ class App extends Component {
                 <Entry />
               </Route>
 
-              <Route path="/">
+              <Route path={['/browse', '/puzzle/:id', '/dashboard', '/create', '/dashboard', '/settings']}>
 
-                <Header />
+                <Header theme="default" />
 
                 <main className="main">
                   <Switch>
@@ -67,12 +67,14 @@ class App extends Component {
                     <Route path="/browse">
                       <Browse />
                     </Route>
-                    <Route path="/">
-                      <Home />
-                    </Route>
                   </Switch>
                 </main>
 
+              </Route>
+
+              <Route path="/">
+                <Header theme="homepage" />
+                <Home />
               </Route>
 
             </Switch>

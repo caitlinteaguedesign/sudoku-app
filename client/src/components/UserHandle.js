@@ -12,6 +12,7 @@ class UserHandle extends Component {
          <div className="header__container">
             { isAuthenticated ? <>
             <p>Hi, <span className="text_bold">{user.name}</span></p>
+            <Link to="/dashboard" className="link link_style-text">Dashboard</Link>
             <Link to="/settings" className="link link_style-text">Settings</Link>
             <button type="button" 
                onClick={() => this.props.logoutUser()}

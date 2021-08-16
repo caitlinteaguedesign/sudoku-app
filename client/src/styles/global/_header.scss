@@ -3,7 +3,16 @@
    justify-content: space-between;
    align-items: center;
    padding: 1rem 2rem;
-   background: #eaeaea;
+
+   &_theme {
+      &-homepage {
+         background: #333333;
+      }
+
+      &-default {
+         background: #eaeaea;
+      }
+   }
 
    &__container {
       display: flex;

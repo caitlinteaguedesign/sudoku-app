@@ -56,7 +56,6 @@ class Puzzle extends Component {
 
       this.state = {
          loading: true,
-         isGuest: true,
          puzzle: null,
          player: null,
          history: [],
@@ -79,13 +78,6 @@ class Puzzle extends Component {
             const puzzle = puzzleRes.data.result;
 
             const { isAuthenticated } = this.props.auth;
-
-            // starting board
-            let player = {
-               id: puzzleId,
-               state: cloneDeep(puzzle.start),
-               completed: false
-            }
             
             if(isAuthenticated) {
                // get player state
@@ -93,7 +85,15 @@ class Puzzle extends Component {
 
                axios.get('/users/id/'+userId)
                   .then( userRes => {
+
                      const user = userRes.data.result;
+
+                     // starting board
+                     let player = {
+                        id: puzzleId,
+                        state: cloneDeep(puzzle.start),
+                        completed: false
+                     }
 
                      // check if player has started this puzzle
                      const index = user.puzzles.findIndex(obj => obj.id === puzzleId);
@@ -113,33 +113,64 @@ class Puzzle extends Component {
                               console.log(saveErr);
                            });
                      }
+
+                     let startHistory = cloneDeep(this.state.history);
+                     startHistory.push({
+                        state: cloneDeep(player.state),
+                        cell: -1
+                     });
+
+                     this.setState({
+                        loading: false,
+                        puzzle: puzzle,
+                        player: player,
+                        history: startHistory
+                     }, () => {
+
+                        const { history, current_history } = this.state;
+
+                        // update the validation tips
+                        this.setState({
+                           validation: this.validateEntireGrid(history[current_history].state)
+                        });
+                     });
+
                   })
                   .catch( userErr => {
                      console.log(userErr);
                   });
             }
+            else {
 
-            let startHistory = cloneDeep(this.state.history);
-            startHistory.push({
-               state: cloneDeep(player.state),
-               cell: -1
-            });
+               // starting board
+               let player = {
+                  id: puzzleId,
+                  state: cloneDeep(puzzle.start),
+                  completed: false
+               }
 
-            this.setState({
-               isGuest: !isAuthenticated,
-               loading: false,
-               puzzle: puzzle,
-               player: player,
-               history: startHistory
-            }, () => {
-
-               const { history, current_history } = this.state;
-
-               // update the validation tips
-               this.setState({
-                  validation: this.validateEntireGrid(history[current_history].state)
+               let startHistory = cloneDeep(this.state.history);
+               startHistory.push({
+                  state: cloneDeep(player.state),
+                  cell: -1
                });
-            });
+
+               this.setState({
+                  loading: false,
+                  puzzle: puzzle,
+                  player: player,
+                  history: startHistory
+               }, () => {
+
+                  const { history, current_history } = this.state;
+
+                  // update the validation tips
+                  this.setState({
+                     validation: this.validateEntireGrid(history[current_history].state)
+                  });
+               });
+
+            }
 
          })
          .catch(err => {
@@ -326,7 +357,9 @@ class Puzzle extends Component {
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
          updatePlayer.completed = false;
 
-         if(!this.state.isGuest) {
+         const { isAuthenticated } = this.props.auth;
+
+         if(isAuthenticated) {
             axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
                this.setState({
@@ -376,7 +409,9 @@ class Puzzle extends Component {
          const updatePlayer = this.state.player;
          updatePlayer.completed = true;
 
-         if(!this.state.isGuest) {
+         const { isAuthenticated } = this.props.auth;
+
+         if(isAuthenticated) {
                
             axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
                .then( res => {
@@ -529,9 +564,9 @@ class Puzzle extends Component {
    }
 
    render() {
+      const { isAuthenticated } = this.props.auth;
       const {
          loading,
-         isGuest,
          puzzle,
          player,
          history,
@@ -659,7 +694,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__actions">
 
-                  {!player.completed && !isGuest &&
+                  {!player.completed && isAuthenticated &&
                   <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.saveProgress}>
                      <div className="button__layout button__layout--icon-left">
                         <Save className="button__icon" width="20" height="20" role="img" aria-label="save" />
@@ -683,9 +718,9 @@ class Puzzle extends Component {
                   </button>
 
                   {!player.completed && <>
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
+                  {/* <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
-                  </button>
+                  </button> */}
                   <button type="button" className="button button_style-solid button_style-solid--primary" onClick={this.checkAnswer}>
                      Check Answer
                   </button>

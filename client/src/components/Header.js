@@ -5,11 +5,12 @@ import logo from '../img/wordmark.svg';
 
 import UserHandle from './UserHandle';
 
-export default function Header() {
+export default function Header(props) {
+   const { theme } = props;
    const isLoggedIn = useSelector(state => state.auth.isAuthenticated);
 
    return (
-      <header className="header">
+      <header className={`header header_theme-${theme}`}>
 
          <div className="header__container">
             <Link to="/" className="header__logo">
@@ -17,7 +18,6 @@ export default function Header() {
             </Link>
             <Link to="/browse" className="link link_style-text">Browse</Link>
             { isLoggedIn && <Link to="/create" className="link link_style-text">Create</Link> }
-            { isLoggedIn && <Link to="/dashboard" className="link link_style-text">Dashboard</Link> }
          </div>
 
          <UserHandle />
