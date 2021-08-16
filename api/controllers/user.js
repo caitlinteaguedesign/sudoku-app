@@ -52,6 +52,33 @@ exports.getById = (req, res, next) => {
       })
 }
 
+exports.getSettingsById = (req, res, next) => {
+   const id = req.params.id;
+
+   User.findById(id)
+      .select('-__v -_id -puzzles')
+      .exec()
+      .then( result => {
+         if(result) {
+            res.status(200).json({
+               message: 'User found',
+               result: result
+            })
+         }
+         else {
+            res.status(404).json({
+               message: 'User not found'
+            })
+         }
+      })
+      .catch(err => {
+         res.status(500).json({
+            error: err
+         })
+      })
+}
+
+
 exports.register = (req,res, next) => {
 
    const { errors, isValid } = validateRegister(req.body);

@@ -45,6 +45,26 @@ const userSchema = mongoose.Schema({
       type: String,
       enum: ['admin', 'player'],
       default: 'player'
+   },
+   game: {
+      readonly: {
+         color: {
+            type: String,
+            match: /^#([0-9a-f]{3}){1,2}$/i
+         }
+      },
+      default: {
+         color: {
+            type: String,
+            match: /^#([0-9a-f]{3}){1,2}$/i
+         }
+      },
+      guess: {
+         color: {
+            type: String,
+            match: /^#([0-9a-f]{3}){1,2}$/i
+         }
+      }
    }
 });
 

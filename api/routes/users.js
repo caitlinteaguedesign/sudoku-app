@@ -12,6 +12,7 @@ router.post('/login', UserController.login);
 router.delete('/unverified', UserController.deleteUnverified);
 
 router.get('/id/:id', UserController.getById);
+router.get('/id/:id/settings', UserController.getSettingsById);
 router.patch('/id/:id', checkEmail, UserController.update);
 router.delete('/id/:id', UserController.delete);
 
