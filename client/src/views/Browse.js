@@ -31,31 +31,37 @@ class Browse extends Component {
 
    processPuzzles = async (puzzles) => {
 
-      const { user } = this.props.auth;
+      const { user, isAuthenticated } = this.props.auth;
 
-      const result = await axios.get('/users/id/'+user.id)
+      if(isAuthenticated) {
+         const result = await axios.get('/users/id/'+user.id)
             .then( lookup => lookup.data.result)
             .catch( err => console.log(err));
 
-      if(result) {
-         let puzzlesList = [];
-         const userPuzzles = cloneDeep(result.puzzles);
-
-         for(const puz in puzzles) {
-
-            let thisPuzzle = puzzles[puz];
-
-            const userVersion = userPuzzles.findIndex(puz => puz.id === thisPuzzle._id);
-
-            if(userVersion !== -1) {
-               thisPuzzle.isCompleted = userPuzzles[userVersion].completed;
+         if(result) {
+            let puzzlesList = [];
+            const userPuzzles = cloneDeep(result.puzzles);
+   
+            for(const puz in puzzles) {
+   
+               let thisPuzzle = puzzles[puz];
+   
+               const userVersion = userPuzzles.findIndex(puz => puz.id === thisPuzzle._id);
+   
+               if(userVersion !== -1) {
+                  thisPuzzle.isCompleted = userPuzzles[userVersion].completed;
+               }
+   
+               puzzlesList.push(thisPuzzle);
+                           
             }
-
-            puzzlesList.push(thisPuzzle);
-                      
+   
+            return puzzlesList;
+         }
+         else {
+            return puzzles;
          }
 
-         return puzzlesList;
       }
       else {
          return puzzles;
