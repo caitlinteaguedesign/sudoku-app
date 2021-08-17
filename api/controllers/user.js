@@ -184,16 +184,11 @@ exports.login = (req, res, next) => {
 
 exports.update = (req, res, next) => {
    const id = req.params.id;
-   const updateOps = {};
 
-   for (const ops of req.body) {
-      updateOps[ops.property] = ops.value;
-   }
-
-   User.findByIdAndUpdate({_id: id}, {$set: updateOps}, { runValidators: true }).exec()
+   User.findByIdAndUpdate({_id: id}, {$set: req.body}, { runValidators: true }).exec()
       .then( result => {
 
-         const changes = commonKeys(updateOps, result);
+         const changes = commonKeys(req.body, result);
 
          res.status(200).json({
             message: 'User updated',

@@ -7,19 +7,10 @@ module.exports = async (req, res, next) => {
       let email = '';
 
       // we're updating an existing user
-      if(req.params.id) {
-         id = req.params.id;
+      if(req.params.id) id = req.params.id;
 
-         const updateOps = {};
-         for (const ops of req.body) {
-            updateOps[ops.property] = ops.value;
-         }
-         if(updateOps['email']) email = updateOps['email'];
-      }
-      // we're creating a new user
-      else {
-         email = req.body.email;
-      }
+      // is there an email to check?
+      if(req.body.email) email = req.body.email;
    
       if(email!='') {
          let user = await User.findOne({email: email});

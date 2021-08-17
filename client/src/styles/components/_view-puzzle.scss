@@ -58,15 +58,15 @@
       font-family: 'Mali', cursive;
       font-size: 1.5em;
       font-weight: 400;
-      font-style: italic;
       line-height: 1em;
-      color: #ffffff;
+      color: #fff;
 
       &--default {
          background: $entry_color_default;
       }
 
       &--guess {
+         font-style: italic;
          background: $entry_color_guess;
       }
 
