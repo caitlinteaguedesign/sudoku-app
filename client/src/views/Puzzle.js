@@ -116,7 +116,6 @@ class Puzzle extends Component {
                      // update player board to user's version
                      if(index !== -1) {
                         player = cloneDeep(user.puzzles[index]);
-                        if(!player.modes) player.modes = cloneDeep(mode_dictionary);
                      }
                      // if new, add to players list of puzzles
                      else {
@@ -143,8 +142,6 @@ class Puzzle extends Component {
                         player: player,
                         history: startHistory
                      }, () => {
-
-                        console.log('did mount', this.state.player.modes);
 
                         const { history, current_history } = this.state;
 
@@ -269,7 +266,6 @@ class Puzzle extends Component {
 
       // update the style (if changed)
       const updateModes = cloneDeep(this.state.player.modes);
-      console.log('update', updateModes);
       const posIndex = rowIndex * 9 + cellIndex;
       if(updateModes[posIndex].mode !== this.state.mode) updateModes[posIndex].mode = this.state.mode;
 
@@ -672,7 +668,7 @@ class Puzzle extends Component {
 
                <div className="view-puzzle__main">
 
-                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} changeHistory={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} history={history_dictionary} settings={settings} className="view-puzzle__board" />
+                  <Board start={puzzle.start} player={history[current_history].state} update={(e, rowIndex, cellIndex) => this.handleGrid(e, rowIndex, cellIndex)} changeHistory={(e, position, index) => this.changeHistory(e, position, index)} validation={validation} history={history_dictionary} settings={settings} modes={player.modes} className="view-puzzle__board" />
 
                   { sections.map( ( (button) => {
                      const thisValidation = validation[`row_${button}`];

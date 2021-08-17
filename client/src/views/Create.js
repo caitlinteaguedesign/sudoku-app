@@ -23,12 +23,6 @@ export default function CreatePuzzle() {
       [0,0,0,0,0,0,0,0,0]
    ];
 
-   const settings = {
-      readonly: {color: ''},
-      default: {color: ''},
-      guess: {color: ''}
-   }
-
    const [grid, setGrid] = useState(start);
 
    const handleGrid = (e, rowIndex, cellIndex) => {
@@ -144,7 +138,7 @@ export default function CreatePuzzle() {
 
             </div>
 
-            <Board start={start} player={grid} update={handleGrid} settings={settings} className="create-puzzle__board" />
+            <Board start={start} player={grid} update={handleGrid} className="create-puzzle__board" />
 
             <button type="submit" className="button button_style-solid button_style-solid--primary">Create</button>
 

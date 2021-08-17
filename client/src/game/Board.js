@@ -8,7 +8,7 @@ import { ReactComponent as Reset } from '../img/reset.svg';
 
 
 export default function Board(props) {
-   const { player, start, validation, history, settings } = props;
+   const { player, start, validation, history, modes, settings } = props;
    
    return (
       <section className={`board ${props.className}`}>
@@ -17,16 +17,26 @@ export default function Board(props) {
                {row.map( (cell, cellIndex) => {
                   const value = cell === 0 ? '' : cell;
                   const startValue = start[rowIndex][cellIndex];
+                  const posIndex = rowIndex * 9 + cellIndex;
                   
+                  // pass custom user settings
+                  let readonlyColor = '', defaultColor = '', guessColor = '';
+                  
+                  if(settings) {
+                     readonlyColor = settings.readonly.color;
+                     defaultColor = settings.default.color;
+                     guessColor = settings.guess.color;
+                  }
+
                   // pass color/style classes for the numbers
                   let thisMode = '';
-                  let thisHistory = [];
-                  let undoStep = -1;
-                  let posIndex = rowIndex * 9 + cellIndex;
 
-                  if(player.modes) {
-                     thisMode = player.modes[posIndex].mode;
+                  if(modes) {
+                     thisMode = modes[posIndex].mode;
                   }
+
+                  // pass history records for mass undo
+                  let thisHistory = [], undoStep = -1;
 
                   if(history) {
                      thisHistory = history[posIndex].history;
@@ -56,7 +66,7 @@ export default function Board(props) {
 
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
-                     return <div key={`cell_${cellIndex}`} style={{color: settings.readonly.color }}
+                     return <div key={`cell_${cellIndex}`} style={{color: readonlyColor }}
                         className={classnames(
                            'board__cell board__cell--readonly',
                            {'board__cell--missing': showTips && hasRemaining },
@@ -85,7 +95,7 @@ export default function Board(props) {
                            </button> 
                            }
                            <input type="text" pattern="[1-9]" maxLength="1" value={value} 
-                              style={{ color: thisMode === 'guess' ? settings.guess.color : settings.default.color }}
+                              style={{ color: thisMode === 'guess' ? guessColor : defaultColor }}
                               className={classnames("board__input",
                               {'board__input--default' : thisMode === 'default'},
                               {'board__input--guess' : thisMode === 'guess'},

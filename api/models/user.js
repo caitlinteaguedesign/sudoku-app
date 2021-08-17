@@ -40,10 +40,12 @@ const userSchema = mongoose.Schema({
          type: Array,
          default: []
       },
-      modes: {
-         type: Array,
-         default: []
-      }
+      modes: [{
+         mode: {
+            type: String,
+            default: 'default'
+         }
+      }]
    }],
    role: {
       type: String,
@@ -54,18 +56,21 @@ const userSchema = mongoose.Schema({
       readonly: {
          color: {
             type: String,
+            default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
          }
       },
       default: {
          color: {
             type: String,
+            default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
          }
       },
       guess: {
          color: {
             type: String,
+            default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
          }
       }

@@ -264,8 +264,6 @@ exports.deleteUnverified = (req, res, next) => {
 exports.addPuzzleList = (req, res, next) => {
    const id = req.params.id;
 
-   console.log('id', id);
-
    User.findByIdAndUpdate({_id: id}, {$addToSet: {puzzles: [req.body] } }, { runValidators: true }).exec()
       .then( result => {
 
@@ -295,7 +293,8 @@ exports.updatePuzzleList = (req, res, next) => {
    User.findOneAndUpdate({_id: userId, "puzzles.id": puzzleId}, 
       {$set: { 
          "puzzles.$.state": req.body.state,
-         "puzzles.$.completed": req.body.completed }}, 
+         "puzzles.$.completed": req.body.completed,
+         "puzzles.$.modes": req.body.modes }}, 
       { new: true, upsert: false, runValidators: true }).exec()
       .then( result => {
          res.status(200).json({
