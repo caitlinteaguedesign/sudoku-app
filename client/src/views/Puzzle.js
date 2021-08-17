@@ -270,7 +270,7 @@ class Puzzle extends Component {
       if(updateModes[posIndex].mode !== this.state.mode) updateModes[posIndex].mode = this.state.mode;
 
       // update history dictionary
-      const updateHistoryDictionary = [...this.state.history_dictionary];
+      const updateHistoryDictionary = cloneDeep(this.state.history_dictionary);
       updateHistoryDictionary[posIndex].history.push(updateHistory.length);
 
       this.setState({
@@ -388,6 +388,7 @@ class Puzzle extends Component {
                   validation: this.validateEntireGrid(updatePlayer.state),
                   errors: null,
                   history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
+                  history_dictionary: cloneDeep(history_dictionary),
                   current_history: 0,
                })
             })
@@ -401,6 +402,7 @@ class Puzzle extends Component {
                validation: this.validateEntireGrid(updatePlayer.state),
                errors: null,
                history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
+               history_dictionary: cloneDeep(history_dictionary),
                current_history: 0,
             })
          }
