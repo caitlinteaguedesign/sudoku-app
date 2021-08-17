@@ -116,6 +116,8 @@ class Puzzle extends Component {
                      // update player board to user's version
                      if(index !== -1) {
                         player = cloneDeep(user.puzzles[index]);
+
+                        if(player.modes.length === 0) player.modes = cloneDeep(mode_dictionary);
                      }
                      // if new, add to players list of puzzles
                      else {
