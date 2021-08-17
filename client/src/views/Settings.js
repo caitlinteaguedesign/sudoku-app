@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { SketchPicker } from 'react-color';
 
 import Loading from '../components/Loading';
 
@@ -12,7 +13,12 @@ class Settings extends Component {
 
       this.state = ({
          data: null,
-         loading: true
+         loading: true,
+         modals: {
+            color1: false,
+            color2: false,
+            color3: false,
+         }
       });
    }
 
@@ -22,7 +28,6 @@ class Settings extends Component {
       axios.get('/users/id/'+userId+'/settings')
          .then( res => {
             const user = res.data.result;
-            console.log(user);
 
             if(user.game.readonly.color === '') user.game.readonly.color = '#454545';
             if(user.game.default.color === '') user.game.default.color = '#333333';
@@ -38,9 +43,16 @@ class Settings extends Component {
          })
    }
 
-   handleColorChange = (e) => {
-      const value = e.target.value;
-      const name = e.target.name;
+   toggleColor = (modal) => {
+      this.setState({
+         modals: {
+            ...this.state.modals,
+            [modal]: !this.state.modals[modal]
+         }
+      });
+   }
+
+   handleColorChange = (color, name) => {
 
       this.setState({
          data: {
@@ -49,7 +61,7 @@ class Settings extends Component {
                ...this.state.data.game,
                [name]: {
                   ...this.state.data.game[name],
-                  color: value
+                  color: color.hex
                }
             }
          }
@@ -77,7 +89,7 @@ class Settings extends Component {
 
    render() {
 
-      const { loading } = this.state;
+      const { loading, modals } = this.state;
 
       if(loading) {
          return <Loading />
@@ -93,16 +105,25 @@ class Settings extends Component {
                {verified ? 
                <form noValidate onSubmit={this.saveGameSettings}>
                   <label htmlFor="readonly_color">Readonly color</label>
-                  <input type="text" id="readonly_color" name="readonly" value={game.readonly.color} onChange={(e) => this.handleColorChange(e)} />
-                  <div className="settings__color-sample" style={{ background: game.readonly.color }}></div>
+                  <div className="settings__color-sample" style={{ background: game.readonly.color }} onClick={() => this.toggleColor('color1')}></div>
+
+                  {modals.color1 && 
+                     <SketchPicker disableAlpha presetColors={[]} id="readonly_color" onChangeComplete={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
+                  }
 
                   <label htmlFor="readonly_color">Default entry color</label>
-                  <input type="text" id="default_color" name="default" value={game.default.color} onChange={(e) => this.handleColorChange(e)} />
-                  <div className="settings__color-sample" style={{ background: game.default.color }}></div>
+                  <div className="settings__color-sample" style={{ background: game.default.color }} onClick={() => this.toggleColor('color2')}></div>
+                  
+                  {modals.color2 && 
+                     <SketchPicker disableAlpha presetColors={[]} id="default_color" onChangeComplete={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
+                  }
 
                   <label htmlFor="readonly_color">Guess entry color</label>
-                  <input type="text" id="guess_color" name="guess" value={game.guess.color} onChange={(e) => this.handleColorChange(e)} />
-                  <div className="settings__color-sample" style={{ background: game.guess.color }}></div>
+                  <div className="settings__color-sample" style={{ background: game.guess.color }} onClick={() => this.toggleColor('color3')}></div>
+                  
+                  {modals.color3 && 
+                     <SketchPicker disableAlpha presetColors={[]} id="guess_color" onChangeComplete={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
+                  }
 
                   <button type="submit" className="button button_style-solid button_style-solid--primary">Save Settings</button>
                </form>
