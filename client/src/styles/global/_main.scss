@@ -20,7 +20,11 @@
          }
       }
 
-      background-image: url('../../img/pattern.jpg');
-      
+      background-image: url('../../img/pattern.jpg');      
+   }
+
+   &_theme-homepage {
+      background: #1d1d1d;
+      color: #ccc;
    }
 }
