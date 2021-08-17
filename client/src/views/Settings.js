@@ -41,13 +41,31 @@ class Settings extends Component {
          .catch( err => {
             console.log(err)
          })
+
+      
    }
 
    toggleColor = (modal) => {
+      const resetModals = {
+         color1: false,
+         color2: false,
+         color3: false,
+      }
+
       this.setState({
          modals: {
-            ...this.state.modals,
+            ...resetModals,
             [modal]: !this.state.modals[modal]
+         }
+      });
+   }
+
+   closeModals = () => {
+      this.setState({
+         modals: {
+            color1: false,
+            color2: false,
+            color3: false,
          }
       });
    }
@@ -108,21 +126,21 @@ class Settings extends Component {
                   <div className="settings__color-sample" style={{ background: game.readonly.color }} onClick={() => this.toggleColor('color1')}></div>
 
                   {modals.color1 && 
-                     <SketchPicker disableAlpha presetColors={[]} id="readonly_color" onChangeComplete={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
+                     <SketchPicker id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
                   }
 
                   <label htmlFor="readonly_color">Default entry color</label>
                   <div className="settings__color-sample" style={{ background: game.default.color }} onClick={() => this.toggleColor('color2')}></div>
                   
                   {modals.color2 && 
-                     <SketchPicker disableAlpha presetColors={[]} id="default_color" onChangeComplete={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
+                     <SketchPicker id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
                   }
 
                   <label htmlFor="readonly_color">Guess entry color</label>
                   <div className="settings__color-sample" style={{ background: game.guess.color }} onClick={() => this.toggleColor('color3')}></div>
                   
                   {modals.color3 && 
-                     <SketchPicker disableAlpha presetColors={[]} id="guess_color" onChangeComplete={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
+                     <SketchPicker id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
                   }
 
                   <button type="submit" className="button button_style-solid button_style-solid--primary">Save Settings</button>
