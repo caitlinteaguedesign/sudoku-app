@@ -107,11 +107,11 @@
 
    &_color-error {
       .validation__square {
-         border-color: #c5af65;
+         border-color: #b6a15e;
          background: #FFFBA1;
 
          &--current {
-            background: #dbc479;
+            background: #dfcb8b;
          } 
       }
 
@@ -125,7 +125,7 @@
 
    &_color-complete {
       .validation__square {
-         border-color: #93bb8e;
+         border-color: #89b183;
          background: #D1FCCE;
 
          &--current {
