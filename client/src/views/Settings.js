@@ -124,6 +124,7 @@ class Settings extends Component {
                <form noValidate onSubmit={this.saveGameSettings}>
                   <label htmlFor="readonly_color">Readonly color</label>
                   <div className="settings__color-sample" style={{ background: game.readonly.color }} onClick={() => this.toggleColor('color1')}></div>
+                  <p className="settings__readonly" style={{ color: game.readonly.color }}>123456789</p>
 
                   {modals.color1 && 
                      <SketchPicker id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
@@ -131,14 +132,16 @@ class Settings extends Component {
 
                   <label htmlFor="readonly_color">Default entry color</label>
                   <div className="settings__color-sample" style={{ background: game.default.color }} onClick={() => this.toggleColor('color2')}></div>
-                  
+                  <p className="settings__default" style={{ color: game.default.color }}>123456789</p>
+
                   {modals.color2 && 
                      <SketchPicker id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
                   }
 
                   <label htmlFor="readonly_color">Guess entry color</label>
                   <div className="settings__color-sample" style={{ background: game.guess.color }} onClick={() => this.toggleColor('color3')}></div>
-                  
+                  <p className="settings__guess" style={{ color: game.guess.color }}>123456789</p>
+
                   {modals.color3 && 
                      <SketchPicker id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
                   }

@@ -4,4 +4,22 @@
       width: 3rem;
       height: 3rem;
    }
+
+   &__readonly {
+      font-size: 1.5em;
+      font-weight: 700;
+   }
+
+   &__default {
+      font-size: 1.5em;
+      font-family: 'Mali', cursive;
+      font-weight: 400;
+   }
+
+   &__guess {
+      font-size: 1.5em;
+      font-family: 'Mali', cursive;
+      font-weight: 400;
+      font-style: italic;
+   }
 }
