@@ -4,7 +4,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client-install": "npm install --prefix client",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "buildout-client": "npm run install-client && npm run build",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
