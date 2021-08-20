@@ -162,7 +162,7 @@ class Settings extends Component {
                      </div>
                   </div>
 
-                  <button type="submit" className="button button_style-solid button_style-solid--primary">Save Settings</button>
+                  <button type="submit" className="button button_style-solid button_style-solid--primary">Test Settings</button>
                </form>
                :
                <div>You must be verified by the site administrator to modify your user settings.</div>
