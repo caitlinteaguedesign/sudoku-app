@@ -62,11 +62,11 @@ app.use('/users', usersRoute);
 app.use('/puzzles', puzzlesRoute);
 
 // Client
-if(process.env.NODE_ENV === "production") {
-   app.use(express.static('client/build'));
-}
+// if(process.env.NODE_ENV === "production") {
+//    app.use(express.static('client/build'));
+// }
 
-//app.use(express.static('client/build'));
+app.use(express.static('client/build'));
 
 // Errors
 app.use((req, res, next) => {
