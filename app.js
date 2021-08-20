@@ -66,6 +66,8 @@ if(process.env.NODE_ENV === "production") {
    app.use(express.static('client/build'));
 }
 
+app.use(express.static('client/build'));
+
 // Errors
 app.use((req, res, next) => {
    const error = new Error('Not found');

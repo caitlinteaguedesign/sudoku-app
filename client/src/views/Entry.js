@@ -5,12 +5,14 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import Login from './Login';
 import Register from './Register';
 
+import bgImage from '../img/pattern.jpg';
+
 export default function Entry() {
    let location = useLocation();
    const nodeRef = React.useRef(null);
 
    return (
-      <main className="main main--public">
+      <main className="main main--public" style={{ backgroundImage: `url(${bgImage})` }}>
          <div className="transition" role="presentation">
             <SwitchTransition mode="out-in">
                <CSSTransition
