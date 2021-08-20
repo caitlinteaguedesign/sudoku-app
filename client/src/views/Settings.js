@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { SketchPicker } from 'react-color';
+import { SliderPicker } from 'react-color';
 
 import Loading from '../components/Loading';
+
+const resetModals = {
+   color1: false,
+   color2: false,
+   color3: false,
+}
+
 
 class Settings extends Component {
 
@@ -14,12 +21,10 @@ class Settings extends Component {
       this.state = ({
          data: null,
          loading: true,
-         modals: {
-            color1: false,
-            color2: false,
-            color3: false,
-         }
+         modals: { resetModals }
       });
+
+      this.node = null;
    }
 
    componentDidMount() {
@@ -40,32 +45,14 @@ class Settings extends Component {
          })
          .catch( err => {
             console.log(err)
-         })
-
-      
+         });
    }
 
-   toggleColor = (modal) => {
-      const resetModals = {
-         color1: false,
-         color2: false,
-         color3: false,
-      }
-
+   toggleColorModal = (modal) => {
       this.setState({
          modals: {
             ...resetModals,
             [modal]: !this.state.modals[modal]
-         }
-      });
-   }
-
-   closeModals = () => {
-      this.setState({
-         modals: {
-            color1: false,
-            color2: false,
-            color3: false,
          }
       });
    }
@@ -123,28 +110,50 @@ class Settings extends Component {
                {verified ? 
                <form noValidate onSubmit={this.saveGameSettings}>
                   <label htmlFor="readonly_color">Readonly color</label>
-                  <div className="settings__color-sample" style={{ background: game.readonly.color }} onClick={() => this.toggleColor('color1')}></div>
                   <p className="settings__readonly" style={{ color: game.readonly.color }}>123456789</p>
 
-                  {modals.color1 && 
-                     <SketchPicker id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
-                  }
+                  <div className="color-picker">
+                     <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color1')}>
+                        <div className="color-picker__sample" style={{ background: game.readonly.color }}></div>
+                     </button>
+
+                     {modals.color1 && 
+                     <div className="color-picker__modal">
+                        <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
+                     </div>
+                     }
+                  </div>
+                  
 
                   <label htmlFor="readonly_color">Default entry color</label>
-                  <div className="settings__color-sample" style={{ background: game.default.color }} onClick={() => this.toggleColor('color2')}></div>
                   <p className="settings__default" style={{ color: game.default.color }}>123456789</p>
 
-                  {modals.color2 && 
-                     <SketchPicker id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
-                  }
+                  <div className="color-picker">
+                     <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color2')}>
+                        <div className="color-picker__sample" style={{ background: game.default.color }}></div>
+                     </button>
+                     
+                     {modals.color2 && 
+                     <div className="color-picker__modal">
+                        <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
+                     </div>
+                     }
+                  </div>
 
                   <label htmlFor="readonly_color">Guess entry color</label>
-                  <div className="settings__color-sample" style={{ background: game.guess.color }} onClick={() => this.toggleColor('color3')}></div>
                   <p className="settings__guess" style={{ color: game.guess.color }}>123456789</p>
 
-                  {modals.color3 && 
-                     <SketchPicker id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
-                  }
+                  <div className="color-picker">
+                     <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color3')}>
+                        <div className="color-picker__sample" style={{ background: game.guess.color }}></div>
+                     </button>
+
+                     {modals.color3 && 
+                     <div className="color-picker__modal">
+                        <SliderPicker className="color-picker__picker" id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
+                     </div>
+                     }
+                  </div>
 
                   <button type="submit" className="button button_style-solid button_style-solid--primary">Save Settings</button>
                </form>

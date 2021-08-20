@@ -1,3 +1,6 @@
+# Documentation
+* [Color Picker](http://casesandberg.github.io/react-color/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
