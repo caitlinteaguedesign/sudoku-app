@@ -1,13 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import axios from 'axios';
 import { isEqual, isEmpty } from 'lodash';
 
+import Loading from '../components/Loading';
 import Board from '../game/Board';
 import validate from '../game/validate';
 
-export default function CreatePuzzle() {
+export default function CreatePuzzle(props) {
+   const userId = useSelector( (state) => state.auth.user.id);
+   const [verified, setVerified] = useState(false);
+   const [loading, setLoading] = useState(true);
+
+   useEffect( () => {
+      axios.get('/users/id/'+userId+'/settings')
+         .then( res => {
+            const isVerified = res.data.result.verified;
+            setVerified(isVerified);
+            setLoading(false);
+         })
+         .catch( err => {
+            console.log(err);
+         });
+   });
+
    const history = useHistory();
    const [errors, setErrors] = useState({});
 
@@ -100,9 +118,15 @@ export default function CreatePuzzle() {
    }
 
    return (
-      <div className="page">
+      <>
+      { loading 
+
+      ? <Loading />
+
+      :<div className="page">
          <h1 className="page-title">Create a Puzzle</h1>
 
+         {verified ? 
          <form noValidate onSubmit={handleSubmit} className="create-puzzle">
             <div className="create-puzzle__fields form_layout-grid form_color-default">
 
@@ -146,7 +170,13 @@ export default function CreatePuzzle() {
                {Object.keys(errors).map( (err, i) => <p key={`error_${i}`}>{errors[err]}</p>) }
             </div>}
          </form>
+
+         :
+         <div>You must be verified by the site administrator to create puzzles.</div>
+         }
          
       </div>
+      }
+      </>
    )
 }
