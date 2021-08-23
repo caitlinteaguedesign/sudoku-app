@@ -13,7 +13,7 @@ import CreatePrompt from '../components/CreatePrompt';
 import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
 import { ReactComponent as Hard } from '../img/hard.svg';
-import { ReactComponent as Insane } from '../img/insane.svg';
+import { ReactComponent as Expert } from '../img/expert.svg';
 import { ReactComponent as InProgress } from '../img/inprogress.svg';
 import { ReactComponent as Completed } from '../img/completed.svg';
 
@@ -143,8 +143,8 @@ function singlePuzzle(puzzle) {
          IconName = Medium; break;
       case 'hard':
          IconName = Hard; break;
-      case 'insane':
-         IconName = Insane; break;
+      case 'expert':
+         IconName = Expert; break;
       default: break;
    }
 
@@ -155,7 +155,7 @@ function singlePuzzle(puzzle) {
             {'puzzle-list__icon--easy': puzzle.difficulty === 'easy'},
             {'puzzle-list__icon--medium': puzzle.difficulty === 'medium'},
             {'puzzle-list__icon--hard': puzzle.difficulty === 'hard'},
-            {'puzzle-list__icon--insane': puzzle.difficulty === 'insane'})}
+            {'puzzle-list__icon--expert': puzzle.difficulty === 'expert'})}
          />
          <Link to={`/puzzle/${puzzle._id}`} className="link link_style-text">{puzzle.name}</Link>
          <span className="puzzle-list__date">Added on <span className="text_bold">{formatDate(puzzle.date_created, 'M/D/YYYY')}</span></span>

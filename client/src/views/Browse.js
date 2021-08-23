@@ -14,7 +14,7 @@ import CreatePrompt from '../components/CreatePrompt';
 import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
 import { ReactComponent as Hard } from '../img/hard.svg';
-import { ReactComponent as Insane } from '../img/insane.svg';
+import { ReactComponent as Expert } from '../img/expert.svg';
 import { ReactComponent as InProgress } from '../img/inprogress.svg';
 import { ReactComponent as Completed } from '../img/completed.svg';
 
@@ -116,7 +116,7 @@ function displayPuzzles(data) {
    const easy = data.filter(puzzle => puzzle.difficulty === 'easy').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
    const medium = data.filter(puzzle => puzzle.difficulty === 'medium').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
    const hard = data.filter(puzzle => puzzle.difficulty === 'hard').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
-   const insane = data.filter(puzzle => puzzle.difficulty === 'insane').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
+   const expert = data.filter(puzzle => puzzle.difficulty === 'expert').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
 
    return (
       <div className="page">
@@ -153,14 +153,14 @@ function displayPuzzles(data) {
          </section>
          }
 
-         {insane.length > 0 &&
+         {expert.length > 0 &&
          <section className="section">
             <div className="section-title-icon">
-               <Insane role="img" aria-label="these are insane puzzles" width="26" height="26" className="section-title-icon__icon" />
-               <h2 className="section-title">Insane</h2>
+               <Expert role="img" aria-label="these are expert puzzles" width="26" height="26" className="section-title-icon__icon" />
+               <h2 className="section-title">Expert</h2>
             </div>
             
-            { listPuzzles(insane) }
+            { listPuzzles(expert) }
          </section>
          }
       </div>
@@ -195,8 +195,8 @@ function singlePuzzle(puzzle) {
             IconName = Medium; break;
          case 'hard':
             IconName = Hard; break;
-         case 'insane':
-            IconName = Insane; break;
+         case 'expert':
+            IconName = Expert; break;
          default: break;
       }
    }

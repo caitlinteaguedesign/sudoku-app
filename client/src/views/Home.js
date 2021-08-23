@@ -3,7 +3,7 @@ export default function Home() {
       <main className="main main_theme-homepage">
          <div className="page">
             {/* home page soon */}
-            * homepage coming soon * test
+            * homepage coming soon *
          </div>
       </main>
    )

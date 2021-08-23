@@ -131,7 +131,7 @@ export default function CreatePuzzle() {
                      <option value="easy">Easy</option>
                      <option value="medium">Medium</option>
                      <option value="hard">Hard</option>
-                     <option value="insane">Insane</option>
+                     <option value="expert">Expert</option>
                   </select>
                   <p className="field__error">{errors.difficulty}</p>
                </div>
