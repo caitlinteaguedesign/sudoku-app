@@ -7,11 +7,11 @@ const PORT = process.env.PORT || 4000;
 // declare protocol - might use https when on digital ocean
 let protocol;
 
-if(process.env.NODE_ENV !== "production") {
-   protocol = require('http');
+if(process.env.NODE_ENV === "production") {
+   protocol = require('https');
 }
 else {
-   protocol = require('https');
+   protocol = require('http');
 }
 
 // setup server

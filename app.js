@@ -6,7 +6,7 @@ const passport = require('passport');
 const app = express();
 
 // constants
-const MONGODB_URI = "mongodb+srv://admin:"+process.env.MONGO_ATLAS_PW+"@sudokucluster.ztnsx.mongodb.net/SudokuApp?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://admin:"+process.env.MONGO_ATLAS_PW+"@"+process.env.DATABASE_URL+"?retryWrites=true&w=majority";
 
 // routes
 const usersRoute = require('./api/routes/users');
@@ -63,10 +63,9 @@ app.use('/puzzles', puzzlesRoute);
 
 // Client
 if(process.env.NODE_ENV === "production") {
-   app.use('/', express.static('client/build'));
+   app.use(express.static('client/build'));
 
    const path = require('path');
-
    app.get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
    });
@@ -78,6 +77,7 @@ app.use((req, res, next) => {
    error.status = 404;
    next(error);
 })
+
 app.use((error, req, res, next) => {
    res.status(error.status || 500);
    res.json({
