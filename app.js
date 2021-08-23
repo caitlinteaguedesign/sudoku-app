@@ -62,7 +62,7 @@ app.use('/users', usersRoute);
 app.use('/puzzles', puzzlesRoute);
 
 // Client
-if(process.env.NODE_ENV === "production") {
+if(process.env.NODE_ENV !== "development") {
    app.use(express.static('client/build'));
 
    const path = require('path');
