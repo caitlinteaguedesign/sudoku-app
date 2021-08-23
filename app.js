@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 	);
 
 	if(req.method === 'OPTIONS') {
-		res.header('Access-Control-Allow-Methods', 'PUT, POST, PATH, DELETE, GET');
+		res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
 		return res.status(200).json({});
 	}
 	next();
@@ -63,10 +63,14 @@ app.use('/puzzles', puzzlesRoute);
 
 // Client
 if(process.env.NODE_ENV === "production") {
-   app.use(express.static('client/build'));
-}
+   app.use('/', express.static('client/build'));
 
-app.use(express.static('client/build'));
+   const path = require('path');
+
+   app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+   });
+}
 
 // Errors
 app.use((req, res, next) => {
