@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 4000;
 let protocol;
 
 if(process.env.NODE_ENV === "development") {
-   protocol = require('http');
+   protocol = require('https');
 }
 else {
    protocol = require('https');
