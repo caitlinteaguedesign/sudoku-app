@@ -24,7 +24,7 @@ export default function CreatePuzzle(props) {
          .catch( err => {
             console.log(err);
          });
-   });
+   }, [userId]);
 
    const history = useHistory();
    const [errors, setErrors] = useState({});
@@ -109,7 +109,7 @@ export default function CreatePuzzle(props) {
 
          axios.post('/puzzles', puzzle)
             .then(res => {
-               history.push('/browse');
+               history.push('/browse?added=true');
             }) 
             .catch(err => console.log(err));
       }
