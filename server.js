@@ -4,15 +4,8 @@ const app = require('./app');
 // constants
 const PORT = process.env.PORT || 4000;
 
-// declare protocol - might use https when on digital ocean
-let protocol;
-
-if(process.env.NODE_ENV !== "production") {
-   protocol = require('http');
-}
-else {
-   protocol = require('https');
-}
+// declare protocol
+let protocol = require('http');
 
 // setup server
 server = protocol.createServer(app);

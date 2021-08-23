@@ -13,5 +13,3 @@ Not to be confused with telling the player if they entered an incorrect answer i
 Because it's too easy to think of features to add!
 
 * 5 x 5 insane sudoku puzzle
-* Interface tour for new users
-* Sudoku tutorial
