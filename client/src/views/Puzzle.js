@@ -18,7 +18,7 @@ import formatDate from '../util/formatDate';
 import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
 import { ReactComponent as Hard } from '../img/hard.svg';
-import { ReactComponent as Insane } from '../img/insane.svg';
+import { ReactComponent as Expert } from '../img/expert.svg';
 import { ReactComponent as Completed } from '../img/completed.svg';
 
 import { ReactComponent as OpenEye } from '../img/open-eye.svg';
@@ -613,8 +613,8 @@ class Puzzle extends Component {
                IconName = Medium; break;
             case 'hard':
                IconName = Hard; break;
-            case 'insane':
-               IconName = Insane; break;
+            case 'expert':
+               IconName = Expert; break;
             default: break;
          }
 
@@ -629,7 +629,7 @@ class Puzzle extends Component {
                   {'title-group__icon--easy': puzzle.difficulty === 'easy'},
                   {'title-group__icon--medium': puzzle.difficulty === 'medium'},
                   {'title-group__icon--hard': puzzle.difficulty === 'hard'},
-                  {'title-group__icon--insane': puzzle.difficulty === 'insane'})}
+                  {'title-group__icon--expert': puzzle.difficulty === 'expert'})}
                />
                <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>

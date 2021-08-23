@@ -54,6 +54,10 @@
       .floating-field__label {
          @include labelDefault();
       }
+
+      .floating-field__togglePassword {
+         display: flex;
+      }
    }
    
    &--inactive {

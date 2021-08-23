@@ -13,7 +13,7 @@ const puzzleSchema = mongoose.Schema({
    difficulty: {
       type: String,
       required: true,
-      enum: ['easy', 'medium', 'hard', 'insane'],
+      enum: ['easy', 'medium', 'hard', 'expert'],
       default: 'easy'
    },
    start: {
