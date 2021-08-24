@@ -10,6 +10,7 @@ import formatDate from '../util/formatDate';
 
 import Loading from '../components/Loading';
 import CreatePrompt from '../components/CreatePrompt';
+import SlideIn from '../components/SlideIn';
 
 import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
@@ -84,7 +85,7 @@ class Browse extends Component {
 
    getAddedPuzzle() {
       const { location } = this.props;
-      return new URLSearchParams(location.search).get('added') || false;
+      return new URLSearchParams(location.search).get('added') === 'true' ? true : false;
    }
 
    componentDidMount() {
@@ -131,12 +132,12 @@ function displayPuzzles(data, added) {
       <div className="page">
          <h1 className="page-title">Browse Puzzles</h1>
 
-         {added && 
-         <div className="alert alert_color-success alert_layout-icon page__justify-start">
-            <Add role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
-            <p>You added a puzzle!</p>
-         </div>
-         }
+         <SlideIn initial={added}>
+            <div className="alert alert_color-success alert_layout-icon">
+               <Add role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
+               <p>You added a puzzle!</p>
+            </div>
+         </SlideIn>
 
          {easy.length > 0 &&
          <section className="section">
