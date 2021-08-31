@@ -10,6 +10,7 @@ import formatDate from '../util/formatDate';
 
 import Loading from '../components/Loading';
 import CreatePrompt from '../components/CreatePrompt';
+import SlideIn from '../components/SlideIn';
 
 import { ReactComponent as Easy } from '../img/easy.svg';
 import { ReactComponent as Medium } from '../img/medium.svg';
@@ -18,6 +19,8 @@ import { ReactComponent as Expert } from '../img/expert.svg';
 import { ReactComponent as InProgress } from '../img/inprogress.svg';
 import { ReactComponent as Completed } from '../img/completed.svg';
 
+import { ReactComponent as Add } from '../img/add.svg';
+
 class Browse extends Component {
 
    constructor(props) {
@@ -25,7 +28,8 @@ class Browse extends Component {
 
       this.state = {
          data: null,
-         loading: true
+         loading: true,
+         added: false
       }
    }
 
@@ -74,44 +78,50 @@ class Browse extends Component {
 
       this.setState({
          data: puzzlesList,
-         loading: false
+         loading: false,
+         added: this.getAddedPuzzle()
       });
    }
 
+   getAddedPuzzle() {
+      const { location } = this.props;
+      return new URLSearchParams(location.search).get('added') === 'true' ? true : false;
+   }
+
    componentDidMount() {
+
       axios.get('/puzzles/')
-      .then(res => {
-         const puzzles = res.data;
+         .then(res => {
+            const puzzles = res.data;
 
-         if(puzzles.length > 0) {
-            this.comparePuzzles(puzzles);
-         }
-         else {
-            this.setState({
-               loading: false
-            })
-         }
-
-         
-      }) 
-      .catch(err => console.log(err));
+            if(puzzles.length > 0) {
+               this.comparePuzzles(puzzles);
+            }
+            else {
+               this.setState({
+                  loading: false,
+                  added: this.getAddedPuzzle()
+               })
+            }
+         }) 
+         .catch(err => console.log(err));
    }
 
    render() {
 
-      const { data, loading } = this.state;
+      const { data, loading, added } = this.state;
 
       if(loading) {
          return Loading();
       }
       else {
-         if(data) return displayPuzzles(data);
+         if(data) return displayPuzzles(data, added);
          else return <CreatePrompt />;
       }
    }
 }
 
-function displayPuzzles(data) {
+function displayPuzzles(data, added) {
 
    const easy = data.filter(puzzle => puzzle.difficulty === 'easy').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
    const medium = data.filter(puzzle => puzzle.difficulty === 'medium').sort( (a,b) => new Date(b.date_created) - new Date(a.date_created));
@@ -121,6 +131,13 @@ function displayPuzzles(data) {
    return (
       <div className="page">
          <h1 className="page-title">Browse Puzzles</h1>
+
+         <SlideIn initial={added} callback={false}>
+            <div className="alert alert_color-success alert_layout-icon">
+               <Add role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
+               <p>You added a puzzle!</p>
+            </div>
+         </SlideIn>
 
          {easy.length > 0 &&
          <section className="section">
@@ -216,7 +233,8 @@ function singlePuzzle(puzzle) {
 }
 
 Browse.propTypes = {
-   auth: PropTypes.object.isRequired
+   auth: PropTypes.object.isRequired,
+   location: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({

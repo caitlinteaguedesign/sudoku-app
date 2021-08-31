@@ -1,7 +1,9 @@
 .page {
+   position: relative;
    width: 100%;
    align-self: flex-start;
    display: grid;
    grid-gap: 3rem;
    gap: 3rem;
+   overflow-x: hidden;
 }

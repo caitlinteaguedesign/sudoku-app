@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Prompt, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import classnames from 'classnames';
 
 import Loading from '../components/Loading';
 import Board from '../game/Board';
+import SlideIn from '../components/SlideIn';
 
 import solve from '../game/solve';
 import checkset from '../game/checkset';
@@ -77,7 +78,9 @@ class Puzzle extends Component {
          current_history: 0,
          validation: cloneDeep(validation_dictionary),
          errors: null,
-         mode: 'default'
+         mode: 'default',
+         saved: false,
+         block_leave: false
       }
    }
 
@@ -289,6 +292,8 @@ class Puzzle extends Component {
          current_history: updateHistory.length,
          validation: updateValidation,
          errors: null,
+         saved: false,
+         block_leave: true
       });
    }
 
@@ -327,7 +332,9 @@ class Puzzle extends Component {
             history: newHistory,
             history_dictionary: updateHistoryDictionary,
             current_history: updatedPosition,
-            validation: this.validateEntireGrid(history[updatedPosition].state)
+            validation: this.validateEntireGrid(history[updatedPosition].state),
+            saved: false,
+            block_leave: true
          })
       }
 
@@ -357,14 +364,26 @@ class Puzzle extends Component {
             state: cloneDeep(history[newPosition].state)
          },
          current_history: newPosition,
-         validation: this.validateEntireGrid(history[newPosition].state)
+         validation: this.validateEntireGrid(history[newPosition].state),
+         saved: false,
+         block_leave: true
       })
+   }
+
+
+   dismissSaved = () => {
+      this.setState({
+         saved: false
+      });
    }
 
    saveProgress = () => {
       axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', this.state.player)
          .then( res => {
-            //console.log('saved!');
+            this.setState({
+               saved: true,
+               block_leave: false
+            });
          })
          .catch(err => {
             console.log(err);
@@ -392,6 +411,8 @@ class Puzzle extends Component {
                   history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                   history_dictionary: cloneDeep(history_dictionary),
                   current_history: 0,
+                  saved: false,
+                  block_leave: false
                })
             })
             .catch(err => {
@@ -406,6 +427,7 @@ class Puzzle extends Component {
                history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                history_dictionary: cloneDeep(history_dictionary),
                current_history: 0,
+               block_leave: false
             })
          }
       }
@@ -444,7 +466,9 @@ class Puzzle extends Component {
                      player: {
                         ...this.state.player,
                         completed: true
-                     }
+                     },
+                     saved: false,
+                     block_leave: false
                   })
                })
                .catch(err => {
@@ -456,7 +480,8 @@ class Puzzle extends Component {
                player: {
                   ...this.state.player,
                   completed: true
-               }
+               },
+               block_leave: false
             })
          }
 
@@ -584,7 +609,9 @@ class Puzzle extends Component {
          history: [{state: answer, cell: -1}],
          current_history: 0,
          validation: cloneDeep(validation_dictionary),
-         errors: null
+         errors: null,
+         saved: false,
+         block_leave: false
       });
    }
 
@@ -599,7 +626,9 @@ class Puzzle extends Component {
          history_dictionary,
          current_history,
          validation,
-         errors } = this.state;
+         errors,
+         saved,
+         block_leave } = this.state;
 
       if(loading) return Loading();
       else {
@@ -633,6 +662,17 @@ class Puzzle extends Component {
                />
                <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
+
+            <Prompt when={block_leave} 
+               message={ () => `Are you sure you want to leave before saving? You may lose progress on this puzzle.`} 
+            />
+
+            <SlideIn initial={saved} callback={() => this.dismissSaved()}>
+               <div className="alert alert_color-success alert_layout-icon">
+                  <Completed role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
+                  <p>You saved your progress!</p>
+               </div>
+            </SlideIn>
 
             <div className="view-puzzle">
 
