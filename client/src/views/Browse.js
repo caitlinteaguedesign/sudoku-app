@@ -132,7 +132,7 @@ function displayPuzzles(data, added) {
       <div className="page">
          <h1 className="page-title">Browse Puzzles</h1>
 
-         <SlideIn initial={added}>
+         <SlideIn initial={added} callback={false}>
             <div className="alert alert_color-success alert_layout-icon">
                <Add role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
                <p>You added a puzzle!</p>

@@ -9,17 +9,27 @@ export default function SlideIn(props) {
    const [animateOut, setAnimateOut] = useState(false);
    const [state, setState] = useState(false);
 
+   const dismiss = () => {
+      setAnimateIn(false);
+      setAnimateOut(true);
+      setState(false);
+
+   }
+
    useEffect( () => {
       if(props.initial) {
          setAnimateIn(true);
+         setAnimateOut(false);
          setState(true);
+      }
+      else {
+         dismiss();
       }
    }, [props.initial]);
 
    const handleDismiss = () => {
-      setAnimateIn(false);
-      setAnimateOut(true);
-      setState(false);
+      dismiss();
+      if(props.callback) props.callback();
    }
 
    return (
