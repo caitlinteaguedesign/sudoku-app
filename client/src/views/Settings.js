@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { SliderPicker } from 'react-color';
+import { SliderPicker, SketchPicker } from 'react-color';
 
 import Loading from '../components/Loading';
 
@@ -120,11 +120,12 @@ class Settings extends Component {
                            <div className="color-picker__sample" style={{ background: game.readonly.color }}></div>
                         </button>
 
-                        {modals.color1 && 
-                        <div className="color-picker__modal">
-                           <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
-                        </div>
-                        }
+                        {modals.color1 && <>
+                           {/* <div className="color-picker__modal color-picker__modal-style">
+                              <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} /> 
+                           </div> */}
+                           <SketchPicker id="readonly_color" color={game.readonly.color} onChange={(color) => this.handleColorChange(color, 'readonly')} disableAlpha={true} presetColors={[]}  />
+                        </>}
                      </div>
                   </div>
 
@@ -137,11 +138,12 @@ class Settings extends Component {
                            <div className="color-picker__sample" style={{ background: game.default.color }}></div>
                         </button>
                         
-                        {modals.color2 && 
-                        <div className="color-picker__modal">
-                           <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
-                        </div>
-                        }
+                        {modals.color2 && <>
+                           {/* <div className="color-picker__modal color-picker__modal-style">
+                              <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
+                           </div> */}
+                           <SketchPicker id="default_color" color={game.default.color} onChange={(color) => this.handleColorChange(color, 'default')} disableAlpha={true} presetColors={[]}  />
+                        </>}
                      </div>
                   </div>
 
@@ -154,15 +156,17 @@ class Settings extends Component {
                            <div className="color-picker__sample" style={{ background: game.guess.color }}></div>
                         </button>
 
-                        {modals.color3 && 
-                        <div className="color-picker__modal">
+                        {modals.color3 && <>
+                        {/* <div className="color-picker__modal color-picker__modal-style">
                            <SliderPicker className="color-picker__picker" id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
-                        </div>
-                        }
+                        </div> */}
+
+                        <SketchPicker id="guess_color" color={game.guess.color} onChange={(color) => this.handleColorChange(color, 'guess')} disableAlpha={true} presetColors={[]}  />
+                        </>}
                      </div>
                   </div>
 
-                  <button type="submit" className="button button_style-solid button_style-solid--primary">Save Settings</button>
+                  <button type="submit" className="settings__form-button button button_style-solid button_style-solid--primary">Save Settings</button>
                </form>
                :
                <div>You must be verified by the site administrator to modify your user settings.</div>
