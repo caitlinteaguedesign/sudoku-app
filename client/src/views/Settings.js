@@ -5,6 +5,9 @@ import axios from 'axios';
 import { SliderPicker, SketchPicker } from 'react-color';
 
 import Loading from '../components/Loading';
+import SlideIn from '../components/SlideIn';
+
+import { ReactComponent as Completed } from '../img/completed.svg';
 
 const resetModals = {
    color1: false,
@@ -21,7 +24,8 @@ class Settings extends Component {
       this.state = ({
          data: null,
          loading: true,
-         modals: { resetModals }
+         modals: { resetModals },
+         saved: false
       });
 
       this.node = null;
@@ -69,9 +73,16 @@ class Settings extends Component {
                   color: color.hex
                }
             }
-         }
+         },
+         saved: false
       });
 
+   }
+
+   dismissSaved = () => {
+      this.setState({
+         saved: false
+      });
    }
 
    saveGameSettings = (e) => {
@@ -85,7 +96,10 @@ class Settings extends Component {
 
       axios.patch('/users/id/'+userId, saveData)
          .then(res => {
-            console.log(res.data);
+            //console.log(res.data);
+            this.setState({
+               saved: true
+            })
          })
          .catch(err => {
             console.log(err);
@@ -101,11 +115,19 @@ class Settings extends Component {
       }      
       else {
 
-         const { verified, game } = this.state.data;         
+         const { verified, game } = this.state.data;       
+         const { saved } = this.state;
 
          return (
             <div className="page">
                <h1 className="page-title">Settings</h1>
+
+               <SlideIn initial={saved} callback={() => this.dismissSaved()}>
+                  <div className="alert alert_color-success alert_layout-icon">
+                     <Completed role="img" aria-label="check mark" width="26" height="26" className="alert__icon" />
+                     <p>Settings saved!</p>
+                  </div>
+               </SlideIn>
 
                {verified ? 
                <form noValidate onSubmit={this.saveGameSettings} className="settings__form">
