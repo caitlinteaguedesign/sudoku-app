@@ -799,9 +799,9 @@ class Puzzle extends Component {
                   </button>
 
                   {!player.completed && <>
-                  <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
+                  {/* <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
-                  </button>
+                  </button> */}
                   <button type="button" className="button button_style-solid button_style-solid--primary" 
                      onClick={this.checkAnswer}
                      title="Press to submit answer">
