@@ -71,7 +71,8 @@ class Puzzle extends Component {
          },
          puzzle: null,
          player: {
-            mode: cloneDeep(mode_dictionary)
+            completed: false,
+            modes: cloneDeep(mode_dictionary)
          },
          history: [],
          history_dictionary: cloneDeep(history_dictionary),

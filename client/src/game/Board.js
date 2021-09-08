@@ -9,6 +9,90 @@ import { ReactComponent as Reset } from '../img/reset.svg';
 
 export default function Board(props) {
    const { player, start, validation, history, modes, settings } = props;
+
+   const getNextPosition = (key, row, column) => {
+      let newRow = row;
+      let newCol = column;
+      let limitReached = false;
+
+      switch(key) {
+         case 38: // up
+            newRow = newRow - 1;
+            if(newRow < 0) {
+               newRow = 0;
+               limitReached = true;
+            }
+            break;
+         case 40: // down
+            newRow = newRow + 1;
+            if(newRow > 8) {
+               newRow = 8;
+               limitReached = true;
+            }
+            break;
+         case 37: // left
+            newCol = newCol - 1;
+            if(newCol < 0) {
+               newCol = 0;
+               limitReached = true;
+            }
+            break;               
+         case 39: // right
+            newCol = newCol + 1;
+            if(newCol > 8) {
+               newCol = 8;
+               limitReached = true;
+            }
+            break;
+         default:
+            break;
+      }
+
+      return {limitReached, newRow, newCol} ;
+   }
+
+   const arrowKeys = (e, row, column) => {
+      const key = e.keyCode;
+
+      if(key >= 37 && key <= 40) {
+         const { newRow, newCol } = getNextPosition(key, row, column);
+      
+         const id = `r${newRow}_c${newCol}`;
+         const next = document.getElementById(id);
+
+         if(e.target.id !== id) {
+            e.target.blur();         
+            next.focus();
+            if(next.type === 'text') setTimeout( function() {
+               next.select();
+            }, 0);
+         }
+
+         // let foundNext = false;
+         // let nextRow = row, nextCol = column;
+
+         // while (!foundNext) {
+         //    const { limitReached, newRow, newCol } = getNextPosition(key, nextRow, nextCol);
+         
+         //    const id = `r${newRow}_c${newCol}`;
+         //    const next = document.getElementById(id);
+   
+         //    if(next || limitReached) {
+               
+         //       if(next) {
+         //          e.target.blur();         
+         //          next.focus();
+         //       } 
+
+         //       foundNext = true;
+         //       break;
+         //    }
+
+         //    nextRow = newRow;
+         //    nextCol = newCol;
+         // }
+      }
+   }
    
    return (
       <section className={`board ${props.className}`}>
@@ -67,6 +151,9 @@ export default function Board(props) {
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
                      return <div key={`cell_${cellIndex}`} style={{color: readonlyColor }}
+                        id={`r${rowIndex}_c${cellIndex}`}
+                        onKeyDown={(e) => arrowKeys(e, rowIndex, cellIndex)}
+                        tabIndex="0"
                         className={classnames(
                            'board__cell board__cell--readonly',
                            {'board__cell--missing': showTips && hasRemaining },
@@ -94,7 +181,8 @@ export default function Board(props) {
                                  <Reset className="board__reset-icon" width="12" height="12" role="img" aria-label="undo" />
                            </button> 
                            }
-                           <input type="text" pattern="[1-9]" maxLength="1" value={value} 
+                           <input type="text" pattern="[1-9]" maxLength="1" value={value}
+                              id={`r${rowIndex}_c${cellIndex}`}
                               style={{ color: thisMode === 'guess' ? guessColor : defaultColor }}
                               className={classnames("board__input",
                               {'board__input--default' : thisMode === 'default'},
@@ -102,6 +190,7 @@ export default function Board(props) {
                               )}
                               onFocus={(e) => e.target.select()} 
                               onChange={(e) => props.update(e, rowIndex, cellIndex)}
+                              onKeyDown={(e) => arrowKeys(e, rowIndex, cellIndex)}
                               title="Enter a number between 1 and 9" />
                         </div>
                      )
