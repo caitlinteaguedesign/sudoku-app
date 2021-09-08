@@ -34,6 +34,11 @@ $border-thick: 2px solid #adadad;
       &--readonly {
          color: #454545;
          font-weight: bold;
+
+         &:focus {
+            outline: 2px dashed $primary_color;
+            outline-offset: -2px;
+         }
       }
 
       &--missing {

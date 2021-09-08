@@ -55,30 +55,42 @@ export default function Board(props) {
       const key = e.keyCode;
 
       if(key >= 37 && key <= 40) {
+         const { newRow, newCol } = getNextPosition(key, row, column);
+      
+         const id = `r${newRow}_c${newCol}`;
+         const next = document.getElementById(id);
 
-         let foundNext = false;
-         let nextRow = row, nextCol = column;
-
-         while (!foundNext) {
-            const { limitReached, newRow, newCol } = getNextPosition(key, nextRow, nextCol);
-         
-            const id = `r${newRow}_c${newCol}`;
-            const next = document.getElementById(id);
-   
-            if(next || limitReached) {
-               
-               if(next) {
-                  e.target.blur();         
-                  next.focus();
-               } 
-
-               foundNext = true;
-               break;
-            }
-
-            nextRow = newRow;
-            nextCol = newCol;
+         if(e.target.id !== id) {
+            e.target.blur();         
+            next.focus();
+            if(next.type === 'text') setTimeout( function() {
+               next.select();
+            }, 0);
          }
+
+         // let foundNext = false;
+         // let nextRow = row, nextCol = column;
+
+         // while (!foundNext) {
+         //    const { limitReached, newRow, newCol } = getNextPosition(key, nextRow, nextCol);
+         
+         //    const id = `r${newRow}_c${newCol}`;
+         //    const next = document.getElementById(id);
+   
+         //    if(next || limitReached) {
+               
+         //       if(next) {
+         //          e.target.blur();         
+         //          next.focus();
+         //       } 
+
+         //       foundNext = true;
+         //       break;
+         //    }
+
+         //    nextRow = newRow;
+         //    nextCol = newCol;
+         // }
       }
    }
    
@@ -139,6 +151,9 @@ export default function Board(props) {
                   // If start grid has a non zero, it must be a read-only cell
                   if(startValue !== 0) { 
                      return <div key={`cell_${cellIndex}`} style={{color: readonlyColor }}
+                        id={`r${rowIndex}_c${cellIndex}`}
+                        onKeyDown={(e) => arrowKeys(e, rowIndex, cellIndex)}
+                        tabIndex="0"
                         className={classnames(
                            'board__cell board__cell--readonly',
                            {'board__cell--missing': showTips && hasRemaining },
