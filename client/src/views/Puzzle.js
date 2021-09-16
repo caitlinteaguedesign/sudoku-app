@@ -616,6 +616,10 @@ class Puzzle extends Component {
       });
    }
 
+   abandon = () => {
+      this.props.history.push("/dashboard");
+   }
+
    render() {
       const { isAuthenticated } = this.props.auth;
       const {
@@ -887,6 +891,15 @@ class Puzzle extends Component {
                      <button type="button" className="button button_style-solid button--disabled">Redo</button>
                      }
                   </div>
+
+                  {isAuthenticated &&
+                  <button type="button" className="button button_style-solid button_style-solid--default"
+                     onClick={(e) => this.abandon()}
+                     title="Press to abandon this puzzle and remove it from your dashboard"
+                  >
+                     Abandon
+                  </button>
+                  }
 
                   </>}
                </div>
