@@ -109,7 +109,9 @@ export default function CreatePuzzle(props) {
 
          axios.post('/puzzles', puzzle)
             .then(res => {
-               history.push('/browse?added=true');
+               const newPuzzleId = res.data.puzzle.id;
+               //history.push('/browse?added=true');
+               history.push('/puzzle/'+newPuzzleId);
             }) 
             .catch(err => console.log(err));
       }
