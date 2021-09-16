@@ -616,6 +616,21 @@ class Puzzle extends Component {
       });
    }
 
+   abandon = () => {
+
+      const puzzle = {
+         id: this.state.player.id
+      }
+      
+      axios.patch('/users/id/'+this.props.auth.user.id+'/pullPuzzle', puzzle)
+         .then( res => {
+            this.props.history.push("/dashboard");
+         })
+         .catch( err => {
+            console.log(err);
+         });
+   }
+
    render() {
       const { isAuthenticated } = this.props.auth;
       const {
@@ -887,6 +902,15 @@ class Puzzle extends Component {
                      <button type="button" className="button button_style-solid button--disabled">Redo</button>
                      }
                   </div>
+
+                  {isAuthenticated &&
+                  <button type="button" className="button button_style-solid button_style-solid--default"
+                     onClick={(e) => this.abandon()}
+                     title="Press to abandon this puzzle and remove it from your dashboard"
+                  >
+                     Abandon
+                  </button>
+                  }
 
                   </>}
                </div>

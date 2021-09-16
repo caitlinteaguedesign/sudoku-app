@@ -73,7 +73,6 @@ class Dashboard extends Component {
             if(puzzles.length > 0) {
                this.getPuzzles(puzzles);
             }
-
             else {
                this.setState({
                   loading: false
