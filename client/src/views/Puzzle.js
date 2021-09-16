@@ -300,9 +300,9 @@ class Puzzle extends Component {
 
    changeHistory = (position, index) => {
       const readPos = ordinal_suffix_of(position);
-      const ask = window.confirm(`Are you sure you want to mass undo to the ${readPos} move? This action cannot be undone.`);
+      const confirm = window.confirm(`Are you sure you want to mass undo to the ${readPos} move? This action cannot be undone.`);
 
-      if(ask) {
+      if(confirm) {
          const { history } = this.state;
 
          const updateHistory = cloneDeep(history);
@@ -392,9 +392,9 @@ class Puzzle extends Component {
    }
 
    resetPuzzle = () => {
-      const ask = window.confirm("Are you sure you want to reset this puzzle? This action cannot be undone.");
+      const confirm = window.confirm("Are you sure you want to reset this puzzle? This action cannot be undone.");
 
-      if(ask) {
+      if(confirm) {
          let updatePlayer = this.state.player;
 
          updatePlayer.state = cloneDeep(this.state.puzzle.start);
@@ -618,17 +618,20 @@ class Puzzle extends Component {
 
    abandon = () => {
 
-      const puzzle = {
-         id: this.state.player.id
-      }
-      
-      axios.patch('/users/id/'+this.props.auth.user.id+'/pullPuzzle', puzzle)
-         .then( res => {
-            this.props.history.push("/dashboard");
-         })
-         .catch( err => {
-            console.log(err);
+      const confirm = window.confirm("Are you sure you want to abandon this puzzle? This action cannot be undone.");
+
+      if(confirm) {
+         const puzzle = {
+            id: this.state.player.id
+         }
+         axios.patch('/users/id/'+this.props.auth.user.id+'/pullPuzzle', puzzle)
+            .then( res => {
+               this.props.history.push("/dashboard");
+            })
+            .catch( err => {
+               console.log(err);
          });
+      }
    }
 
    render() {
@@ -905,7 +908,7 @@ class Puzzle extends Component {
 
                   {isAuthenticated &&
                   <button type="button" className="button button_style-solid button_style-solid--default"
-                     onClick={(e) => this.abandon()}
+                     onClick={this.abandon}
                      title="Press to abandon this puzzle and remove it from your dashboard"
                   >
                      Abandon
