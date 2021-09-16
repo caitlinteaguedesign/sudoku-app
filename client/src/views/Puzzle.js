@@ -617,7 +617,18 @@ class Puzzle extends Component {
    }
 
    abandon = () => {
-      this.props.history.push("/dashboard");
+
+      const puzzle = {
+         id: this.state.player.id
+      }
+      
+      axios.patch('/users/id/'+this.props.auth.user.id+'/pullPuzzle', puzzle)
+         .then( res => {
+            this.props.history.push("/dashboard");
+         })
+         .catch( err => {
+            console.log(err);
+         });
    }
 
    render() {
