@@ -5,6 +5,19 @@ import { Link, withRouter } from 'react-router-dom';
 import { logoutUser } from '../actions/authActions';
 
 class UserHandle extends Component {
+
+   checkCanLogout = () => {
+      if(!this.props.auth.canLogout) {
+         const confirm = window.confirm(`Are you sure you want to log out? You will lose unsaved changes.`);
+         if(confirm) {
+            this.props.logoutUser(this.props.history);
+         }
+      }
+      else {
+         this.props.logoutUser(this.props.history)
+      }
+   }
+
    render() {
       const { user, isAuthenticated } = this.props.auth;
 
@@ -15,7 +28,7 @@ class UserHandle extends Component {
             <Link to="/dashboard" className="link link_style-text">Dashboard</Link>
             <Link to="/settings" className="link link_style-text">Settings</Link>
             <button type="button" 
-               onClick={() => this.props.logoutUser(this.props.history)}
+               onClick={() => this.checkCanLogout()}
                className="button button_style-solid button_style-solid--primary">
                   Log Out
             </button>

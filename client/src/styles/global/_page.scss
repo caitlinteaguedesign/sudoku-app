@@ -5,5 +5,5 @@
    display: grid;
    grid-gap: 3rem;
    gap: 3rem;
-   overflow-x: hidden;
+   overflow: hidden; // for the save message that slides in
 }

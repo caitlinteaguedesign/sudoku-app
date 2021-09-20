@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { setCanLogout } from '../actions/authActions';
 import { Prompt, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
@@ -80,8 +81,7 @@ class Puzzle extends Component {
          validation: cloneDeep(validation_dictionary),
          errors: null,
          mode: 'default',
-         saved: false,
-         block_leave: false
+         saved: false
       }
    }
 
@@ -202,6 +202,10 @@ class Puzzle extends Component {
          });
    }
 
+   componentWillUnmount() {
+      this.props.setCanLogout(true);
+   }
+
    validateEntireGrid = (puzzle) => {
       let updateValidation = this.state.validation;
       const data = cloneDeep(puzzle);
@@ -279,6 +283,8 @@ class Puzzle extends Component {
       const updateHistoryDictionary = cloneDeep(this.state.history_dictionary);
       updateHistoryDictionary[posIndex].history.push(updateHistory.length);
 
+      this.props.setCanLogout(false);
+
       this.setState({
          player: {
             ...this.state.player,
@@ -293,8 +299,7 @@ class Puzzle extends Component {
          current_history: updateHistory.length,
          validation: updateValidation,
          errors: null,
-         saved: false,
-         block_leave: true
+         saved: false
       });
    }
 
@@ -325,6 +330,8 @@ class Puzzle extends Component {
 
          const updatedPosition = position - 1;
 
+         this.props.setCanLogout(false);
+
          this.setState({
             player: {
                ...this.state.player,
@@ -334,8 +341,7 @@ class Puzzle extends Component {
             history_dictionary: updateHistoryDictionary,
             current_history: updatedPosition,
             validation: this.validateEntireGrid(history[updatedPosition].state),
-            saved: false,
-            block_leave: true
+            saved: false
          })
       }
 
@@ -359,6 +365,8 @@ class Puzzle extends Component {
             break;
       }
 
+      this.props.setCanLogout(false);
+
       this.setState({
          player: {
             ...this.state.player,
@@ -366,8 +374,7 @@ class Puzzle extends Component {
          },
          current_history: newPosition,
          validation: this.validateEntireGrid(history[newPosition].state),
-         saved: false,
-         block_leave: true
+         saved: false
       })
    }
 
@@ -381,9 +388,9 @@ class Puzzle extends Component {
    saveProgress = () => {
       axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', this.state.player)
          .then( res => {
+            this.props.setCanLogout(true);
             this.setState({
-               saved: true,
-               block_leave: false
+               saved: true
             });
          })
          .catch(err => {
@@ -405,6 +412,7 @@ class Puzzle extends Component {
          if(isAuthenticated) {
             axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
             .then( res => {
+               this.props.setCanLogout(true);
                this.setState({
                   player: updatePlayer,
                   validation: this.validateEntireGrid(updatePlayer.state),
@@ -412,8 +420,7 @@ class Puzzle extends Component {
                   history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                   history_dictionary: cloneDeep(history_dictionary),
                   current_history: 0,
-                  saved: false,
-                  block_leave: false
+                  saved: false
                })
             })
             .catch(err => {
@@ -421,14 +428,14 @@ class Puzzle extends Component {
             });
          }
          else {
+            this.props.setCanLogout(true);
             this.setState({
                player: updatePlayer,
                validation: this.validateEntireGrid(updatePlayer.state),
                errors: null,
                history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                history_dictionary: cloneDeep(history_dictionary),
-               current_history: 0,
-               block_leave: false
+               current_history: 0
             })
          }
       }
@@ -463,13 +470,13 @@ class Puzzle extends Component {
                
             axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
                .then( res => {
+                  this.props.setCanLogout(true);
                   this.setState({
                      player: {
                         ...this.state.player,
                         completed: true
                      },
-                     saved: false,
-                     block_leave: false
+                     saved: false
                   })
                })
                .catch(err => {
@@ -477,12 +484,12 @@ class Puzzle extends Component {
                });
          }
          else {
+            this.props.setCanLogout(true);
             this.setState({
                player: {
                   ...this.state.player,
                   completed: true
-               },
-               block_leave: false
+               }
             })
          }
 
@@ -601,7 +608,7 @@ class Puzzle extends Component {
 
    autoSolve = () => {
       const answer = solve(cloneDeep(this.state.puzzle.start));
-
+      this.props.setCanLogout(true);
       this.setState({
          player: {
             ...this.state.player,
@@ -611,8 +618,7 @@ class Puzzle extends Component {
          current_history: 0,
          validation: cloneDeep(validation_dictionary),
          errors: null,
-         saved: false,
-         block_leave: false
+         saved: false
       });
    }
 
@@ -634,8 +640,12 @@ class Puzzle extends Component {
       }
    }
 
+   testToggle = () => {
+      this.props.setCanLogout(false);
+   }
+
    render() {
-      const { isAuthenticated } = this.props.auth;
+      const { isAuthenticated, canLogout } = this.props.auth;
       const {
          loading,
          puzzle,
@@ -646,8 +656,7 @@ class Puzzle extends Component {
          current_history,
          validation,
          errors,
-         saved,
-         block_leave } = this.state;
+         saved } = this.state;
 
       if(loading) return Loading();
       else {
@@ -682,9 +691,14 @@ class Puzzle extends Component {
                <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Prompt when={block_leave} 
-               message={ () => `Are you sure you want to leave before saving? You may lose progress on this puzzle.`} 
+            {isAuthenticated &&
+            <Prompt when={!canLogout} 
+               message={ (location) => {
+                  if(location.search.includes('logout')) return true;
+                  return `Are you sure you want to leave before saving? You may lose progress on this puzzle.`;
+               }}
             />
+            }
 
             <SlideIn initial={saved} callback={() => this.dismissSaved()}>
                <div className="alert alert_color-success alert_layout-icon">
@@ -912,8 +926,7 @@ class Puzzle extends Component {
                      title="Press to abandon this puzzle and remove it from your dashboard"
                   >
                      Abandon
-                  </button>
-                  }
+                  </button>}
 
                   </>}
                </div>
@@ -927,6 +940,7 @@ class Puzzle extends Component {
 
 
 Puzzle.propTypes = {
+   setCanLogout: PropTypes.func.isRequired,
    auth: PropTypes.object.isRequired
 }
 
@@ -934,4 +948,4 @@ const mapStateToProps = state => ({
    auth: state.auth
 });
 
-export default connect(mapStateToProps)(withRouter(Puzzle));
+export default connect(mapStateToProps, {setCanLogout})(withRouter(Puzzle));
