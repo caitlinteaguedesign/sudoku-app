@@ -81,7 +81,8 @@ class Puzzle extends Component {
          validation: cloneDeep(validation_dictionary),
          errors: null,
          mode: 'default',
-         saved: false
+         saved: false,
+         canLeave: true
       }
    }
 
@@ -299,7 +300,8 @@ class Puzzle extends Component {
          current_history: updateHistory.length,
          validation: updateValidation,
          errors: null,
-         saved: false
+         saved: false,
+         canLeave: false
       });
    }
 
@@ -341,7 +343,8 @@ class Puzzle extends Component {
             history_dictionary: updateHistoryDictionary,
             current_history: updatedPosition,
             validation: this.validateEntireGrid(history[updatedPosition].state),
-            saved: false
+            saved: false,
+            canLeave: false
          })
       }
 
@@ -374,7 +377,8 @@ class Puzzle extends Component {
          },
          current_history: newPosition,
          validation: this.validateEntireGrid(history[newPosition].state),
-         saved: false
+         saved: false,
+         canLeave: false
       })
    }
 
@@ -390,7 +394,8 @@ class Puzzle extends Component {
          .then( res => {
             this.props.setCanLogout(true);
             this.setState({
-               saved: true
+               saved: true,
+               canLeave: true
             });
          })
          .catch(err => {
@@ -420,7 +425,8 @@ class Puzzle extends Component {
                   history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                   history_dictionary: cloneDeep(history_dictionary),
                   current_history: 0,
-                  saved: false
+                  saved: false,
+                  canLeave: true
                })
             })
             .catch(err => {
@@ -435,7 +441,8 @@ class Puzzle extends Component {
                errors: null,
                history: [{state: cloneDeep(updatePlayer.state), cell: -1}],
                history_dictionary: cloneDeep(history_dictionary),
-               current_history: 0
+               current_history: 0,
+               canLeave: true
             })
          }
       }
@@ -476,7 +483,8 @@ class Puzzle extends Component {
                         ...this.state.player,
                         completed: true
                      },
-                     saved: false
+                     saved: false,
+                     canLeave: true
                   })
                })
                .catch(err => {
@@ -488,7 +496,8 @@ class Puzzle extends Component {
             this.setState({
                player: {
                   ...this.state.player,
-                  completed: true
+                  completed: true,
+                  canLeave: true
                }
             })
          }
@@ -618,7 +627,8 @@ class Puzzle extends Component {
          current_history: 0,
          validation: cloneDeep(validation_dictionary),
          errors: null,
-         saved: false
+         saved: false,
+         canLeave: true
       });
    }
 
@@ -640,12 +650,8 @@ class Puzzle extends Component {
       }
    }
 
-   testToggle = () => {
-      this.props.setCanLogout(false);
-   }
-
    render() {
-      const { isAuthenticated, canLogout } = this.props.auth;
+      const { isAuthenticated } = this.props.auth;
       const {
          loading,
          puzzle,
@@ -656,7 +662,8 @@ class Puzzle extends Component {
          current_history,
          validation,
          errors,
-         saved } = this.state;
+         saved,
+         canLeave } = this.state;
 
       if(loading) return Loading();
       else {
@@ -691,14 +698,13 @@ class Puzzle extends Component {
                <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            {isAuthenticated &&
-            <Prompt when={!canLogout} 
+            <Prompt when={!canLeave} 
                message={ (location) => {
                   if(location.search.includes('logout')) return true;
-                  return `Are you sure you want to leave before saving? You may lose progress on this puzzle.`;
+                  if(isAuthenticated) return 'Are you sure you want to leave before saving? You may lose progress on this puzzle..'
+                  return 'Are you sure you want to leave? You will lose your progress on this puzzle.'
                }}
             />
-            }
 
             <SlideIn initial={saved} callback={() => this.dismissSaved()}>
                <div className="alert alert_color-success alert_layout-icon">

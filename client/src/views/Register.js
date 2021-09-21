@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'; 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { registerUser } from '../actions/authActions';
+import { registerUser, resetErrors } from '../actions/authActions';
 
 import shallowEqual from '../util/shallowEquality';
 import FloatingField from '../components/FloatingField';
@@ -46,6 +46,10 @@ class Register extends Component {
 
       }
       
+   }
+
+   componentWillUnmount() {
+      this.props.resetErrors();
    }
 
    handleChange = (e) => {
@@ -94,6 +98,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
+   resetErrors: PropTypes.func.isRequired,
    registerUser: PropTypes.func.isRequired,
    auth: PropTypes.object.isRequired,
    errors: PropTypes.object.isRequired
@@ -104,4 +109,4 @@ const mapStateToProps = state => ({
    errors: state.errors
 });
 
-export default connect(mapStateToProps, {registerUser}) (withRouter(Register));
+export default connect(mapStateToProps, {registerUser, resetErrors}) (withRouter(Register));
