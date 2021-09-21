@@ -701,7 +701,7 @@ class Puzzle extends Component {
             <Prompt when={!canLeave} 
                message={ (location) => {
                   if(location.search.includes('logout')) return true;
-                  if(isAuthenticated) return 'Are you sure you want to leave before saving? You may lose progress on this puzzle..'
+                  if(isAuthenticated) return 'Are you sure you want to leave before saving? You may lose progress on this puzzle.'
                   return 'Are you sure you want to leave? You will lose your progress on this puzzle.'
                }}
             />
