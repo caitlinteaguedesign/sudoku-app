@@ -5,7 +5,8 @@ import jwt_decode from 'jwt-decode';
 import {
    GET_ERRORS,
    SET_CURRENT_USER,
-   USER_LOADING
+   USER_LOADING,
+   CAN_LOGOUT
 } from './types';
 
 // Register User
@@ -66,6 +67,14 @@ export const setCurrentUser = decoded => {
    }
 }
 
+// Set if the user can log out
+export const setCanLogout = decoded => {
+   return {
+      type: CAN_LOGOUT,
+      payload: decoded
+   }
+}
+
 // User loading
 export const setUserLoading = () => {
    return {
@@ -83,15 +92,19 @@ export const resetErrors = () => {
 
 // Log user out
 export const logoutUser = (history) => dispatch => {
+
    // Remove token from local storage
    localStorage.removeItem('jwtToken');
 
    // Remove auth header for future requests
    setAuthToken(false);
 
+   // reset can logout
+   dispatch(setCanLogout(true));
+
    // Set current user to empty object {} which will set isAuthenticated to false
    dispatch(setCurrentUser({}));
 
    // redirect to homepage after logout
-   history.push('/');
+   history.push('/?logout');
 }

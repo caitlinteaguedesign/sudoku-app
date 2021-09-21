@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'; 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from '../actions/authActions';
+import { loginUser, resetErrors } from '../actions/authActions';
 
 import shallowEqual from '../util/shallowEquality';
 import FloatingField from '../components/FloatingField';
@@ -42,6 +42,10 @@ class Login extends Component {
          });
       }
       
+   }
+
+   componentWillUnmount() {
+      this.props.resetErrors();
    }
 
    handleChange = (e) => {
@@ -88,6 +92,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+   resetErrors: PropTypes.func.isRequired,
    loginUser: PropTypes.func.isRequired,
    auth: PropTypes.object.isRequired,
    errors: PropTypes.object.isRequired
@@ -98,4 +103,4 @@ const mapStateToProps = state => ({
    errors: state.errors
 });
 
-export default connect(mapStateToProps, {loginUser}) (withRouter(Login));
+export default connect(mapStateToProps, {loginUser, resetErrors}) (withRouter(Login));
