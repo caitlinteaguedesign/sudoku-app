@@ -1,3 +1,5 @@
+// deprecated pre soft-launch
+
 // import { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom'; // Redirect, useLocation
 // import PropTypes from 'prop-types';

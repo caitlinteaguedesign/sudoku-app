@@ -1,3 +1,5 @@
+// deprecated on 9/22/2021
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -28,33 +30,39 @@ class Dashboard extends Component {
       }
    }
 
-   getPuzzles = (usersPuzzles) => {
-      axios.get('/puzzles/')
-         .then(res => {
-            const puzzleLibrary = res.data;
-            let puzzleList = [];
+   processPuzzles = async (puzzles) => {
+      let puzzlesList = [];
 
-            for(let i = 0; i < usersPuzzles.length; i++) {
-               const puzzle = usersPuzzles[i];
+      for(const puz in puzzles) {
+         const puzzleId = puzzles[puz].id;
 
-               const lookup = puzzleLibrary.find(x => x._id === puzzle.id);
+         const result = await axios.get('/puzzles/id/'+puzzleId)
+            .then( lookup => lookup.data.result)
+            .catch( err => console.log(err));
 
-               const entry = {
-                  _id: puzzle.id,
-                  name: lookup.name,
-                  difficulty: lookup.difficulty,
-                  date_created: lookup.date_created,
-                  completed: puzzle.completed
-               }
-               puzzleList.push(entry); 
+         if(result) {
+            const entry = {
+               _id: puzzleId,
+               name: result.name,
+               difficulty: result.difficulty,
+               date_created: result.date_created,
+               completed: puzzles[puz].completed
             }
+            puzzlesList.push(entry);     
+         }
+                   
+      }
 
-            this.setState({
-               puzzles: puzzleList,
-               loading: false
-            });
-         }) 
-         .catch(err => console.log(err));
+      return puzzlesList;
+   }
+
+   getPuzzles = async (puzzles) => {
+      const puzzlesList = await this.processPuzzles(puzzles);
+
+      this.setState({
+         puzzles: puzzlesList,
+         loading: false
+      });
    }
 
    componentDidMount() {
