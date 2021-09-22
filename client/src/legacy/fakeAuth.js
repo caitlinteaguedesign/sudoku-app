@@ -1,3 +1,4 @@
+// deprecated pre soft-launch
 const fakeAuth = {
    isAuthenticated: false,
    authenticate(cb) {

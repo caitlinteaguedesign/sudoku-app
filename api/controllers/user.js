@@ -235,6 +235,21 @@ exports.delete = (req, res, next) => {
       })
 }
 
+exports.getUnverified = (req, res, next) => {
+   User.find({verified: false})
+      .select('-__v -puzzles')
+      .exec()
+      .then( data => {
+         res.status(200).json(data);
+      })
+      .catch( err => {
+         console.log(err);
+         res.status(500).json({
+            error: err
+         });
+      });
+}
+
 exports.deleteUnverified = (req, res, next) => {
    User.deleteMany({verified: false}).exec()
       .then(result => {

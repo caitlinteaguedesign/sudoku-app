@@ -9,6 +9,7 @@ router.get('/', UserController.getAll);
 router.post('/register', checkEmail, UserController.register);
 router.post('/login', UserController.login);
 
+router.get('/unverified', UserController.getUnverified);
 router.delete('/unverified', UserController.deleteUnverified);
 
 router.get('/id/:id', UserController.getById);
