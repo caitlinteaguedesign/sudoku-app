@@ -8,7 +8,7 @@ import { ReactComponent as Reset } from '../img/reset.svg';
 
 
 export default function Board(props) {
-   const { player, start, validation, history, modes, settings } = props;
+   const { player, start, validation, history, modes, settings, completed } = props;
 
    const getNextPosition = (key, row, column) => {
       let newRow = row;
@@ -191,6 +191,7 @@ export default function Board(props) {
                               onFocus={(e) => e.target.select()} 
                               onChange={(e) => props.update(e, rowIndex, cellIndex)}
                               onKeyDown={(e) => arrowKeys(e, rowIndex, cellIndex)}
+                              readOnly={completed ? completed : false}
                               title="Enter a number between 1 and 9" />
                         </div>
                      )
