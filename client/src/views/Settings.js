@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { SliderPicker, SketchPicker } from 'react-color';
+import { SketchPicker } from 'react-color'; // SliderPicker
 
 import Loading from '../components/Loading';
 import SlideIn from '../components/SlideIn';
@@ -112,10 +112,10 @@ class Settings extends Component {
 
       if(loading) {
          return <Loading />
-      }      
+      }
       else {
 
-         const { verified, game } = this.state.data;       
+         const { verified, game } = this.state.data;
          const { saved } = this.state;
 
          return (
@@ -129,7 +129,7 @@ class Settings extends Component {
                   </div>
                </SlideIn>
 
-               {verified ? 
+               {verified ?
                <form noValidate onSubmit={this.saveGameSettings} className="settings__form">
                   <h2 className="section-title settings__form-title">Game Settings</h2>
 
@@ -144,7 +144,7 @@ class Settings extends Component {
 
                         {modals.color1 && <>
                            {/* <div className="color-picker__modal color-picker__modal-style">
-                              <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} /> 
+                              <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
                            </div> */}
                            <SketchPicker id="readonly_color" color={game.readonly.color} onChange={(color) => this.handleColorChange(color, 'readonly')} disableAlpha={true} presetColors={[]}  />
                         </>}
@@ -159,7 +159,7 @@ class Settings extends Component {
                         <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color2')}>
                            <div className="color-picker__sample" style={{ background: game.default.color }}></div>
                         </button>
-                        
+
                         {modals.color2 && <>
                            {/* <div className="color-picker__modal color-picker__modal-style">
                               <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
@@ -198,7 +198,7 @@ class Settings extends Component {
       }
 
    }
-   
+
 }
 
 Settings.propTypes = {
