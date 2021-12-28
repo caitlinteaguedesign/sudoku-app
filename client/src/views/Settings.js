@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import classnames from 'classnames';
 import { SketchPicker } from 'react-color'; // SliderPicker
 
 import Loading from '../components/Loading';
@@ -112,7 +113,6 @@ class Settings extends Component {
 
       axios.patch('/users/id/'+userId, saveData)
          .then(res => {
-            console.log(res.data);
             this.setState({
                saved: true
             })
@@ -150,7 +150,7 @@ class Settings extends Component {
                   <h2 className="section-title settings__form-title">Game Settings</h2>
 
                   <div className="settings__form-section">
-                     <label htmlFor="readonly_color">Read-only color</label>
+                     <h3 className="settings__form-subtitle">Read Only Text</h3>
                      <span
                         className={`settings__preview
                            text_family-${game.readonly.family}
@@ -160,22 +160,68 @@ class Settings extends Component {
                         123456789
                      </span>
 
-                     <div className="color-picker">
-                        <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color1')}>
-                           <div className="color-picker__sample" style={{ background: game.readonly.color }}></div>
-                        </button>
-
-                        {modals.color1 && <>
-                           {/* <div className="color-picker__modal color-picker__modal-style">
-                              <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
-                           </div> */}
-                           <SketchPicker id="readonly_color" color={game.readonly.color} onChange={(color) => this.handleColorChange(color, 'readonly')} disableAlpha={true} presetColors={[]}  />
-                        </>}
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font family</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.family === 'sans'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'family', 'sans')}>Sans-serif</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.family === 'cursive'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'family', 'cursive')}>Cursive</button>
                      </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font weight</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.weight === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'weight', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.weight === 'bold'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'weight', 'bold')}>Bold</button>
+                     </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font style</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.style === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'style', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.readonly.style === 'italic'}
+                           )}
+                           onClick={() => this.handleFontChange('readonly', 'style', 'italic')}>Italic</button>
+                     </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label" htmlFor="readonly_color">Color</label>
+                        <div className="color-picker">
+                           <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color1')}>
+                              <div className="color-picker__sample" style={{ background: game.readonly.color }}></div>
+                           </button>
+
+                           {modals.color1 && <>
+                              {/* <div className="color-picker__modal color-picker__modal-style">
+                                 <SliderPicker className="color-picker__picker" id="readonly_color" onChange={(color) => this.handleColorChange(color, 'readonly')} color={game.readonly.color} />
+                              </div> */}
+                              <SketchPicker id="readonly_color" color={game.readonly.color} onChange={(color) => this.handleColorChange(color, 'readonly')} disableAlpha={true} presetColors={[]}  />
+                           </>}
+                        </div>
+                     </div>
+
                   </div>
 
                   <div className="settings__form-section">
-                     <label htmlFor="readonly_color">Default entry color</label>
+                     <h3 className="settings__form-subtitle">Default Text</h3>
                      <span
                         className={`settings__preview
                            text_family-${game.default.family}
@@ -185,22 +231,67 @@ class Settings extends Component {
                            123456789
                      </span>
 
-                     <div className="color-picker">
-                        <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color2')}>
-                           <div className="color-picker__sample" style={{ background: game.default.color }}></div>
-                        </button>
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font family</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.family === 'sans'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'family', 'sans')}>Sans-serif</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.family === 'cursive'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'family', 'cursive')}>Cursive</button>
+                     </div>
 
-                        {modals.color2 && <>
-                           {/* <div className="color-picker__modal color-picker__modal-style">
-                              <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
-                           </div> */}
-                           <SketchPicker id="default_color" color={game.default.color} onChange={(color) => this.handleColorChange(color, 'default')} disableAlpha={true} presetColors={[]}  />
-                        </>}
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font weight</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.weight === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'weight', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.weight === 'bold'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'weight', 'bold')}>Bold</button>
+                     </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font style</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.style === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'style', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.default.style === 'italic'}
+                           )}
+                           onClick={() => this.handleFontChange('default', 'style', 'italic')}>Italic</button>
+                     </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label" htmlFor="default_color">Color</label>
+                        <div className="color-picker">
+                           <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color2')}>
+                              <div className="color-picker__sample" style={{ background: game.default.color }}></div>
+                           </button>
+
+                           {modals.color2 && <>
+                              {/* <div className="color-picker__modal color-picker__modal-style">
+                                 <SliderPicker className="color-picker__picker" id="default_color" onChange={(color) => this.handleColorChange(color, 'default')} color={game.default.color} />
+                              </div> */}
+                              <SketchPicker id="default_color" color={game.default.color} onChange={(color) => this.handleColorChange(color, 'default')} disableAlpha={true} presetColors={[]}  />
+                           </>}
+                        </div>
                      </div>
                   </div>
 
                   <div className="settings__form-section">
-                     <label htmlFor="readonly_color">Guess entry color</label>
+                     <h3 className="settings__form-subtitle">Guess Text</h3>
                      <span
                         className={`settings__preview
                            text_family-${game.guess.family}
@@ -210,18 +301,63 @@ class Settings extends Component {
                         123456789
                      </span>
 
-                     <div className="color-picker">
-                        <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color3')}>
-                           <div className="color-picker__sample" style={{ background: game.guess.color }}></div>
-                        </button>
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font family</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.family === 'sans'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'family', 'sans')}>Sans-serif</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.family === 'cursive'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'family', 'cursive')}>Cursive</button>
+                     </div>
 
-                        {modals.color3 && <>
-                        {/* <div className="color-picker__modal color-picker__modal-style">
-                           <SliderPicker className="color-picker__picker" id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
-                        </div> */}
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font weight</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.weight === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'weight', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.weight === 'bold'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'weight', 'bold')}>Bold</button>
+                     </div>
 
-                        <SketchPicker id="guess_color" color={game.guess.color} onChange={(color) => this.handleColorChange(color, 'guess')} disableAlpha={true} presetColors={[]}  />
-                        </>}
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label">Font style</label>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.style === 'normal'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'style', 'normal')}>Normal</button>
+                        <button type="button"
+                           className={classnames("settings__form-toggle",
+                              {'settings__form-toggle--selected' : game.guess.style === 'italic'}
+                           )}
+                           onClick={() => this.handleFontChange('guess', 'style', 'italic')}>Italic</button>
+                     </div>
+
+                     <div className="settings__form-subsection">
+                        <label className="settings__form-label" htmlFor="guess_color">Color</label>
+                        <div className="color-picker">
+                           <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color3')}>
+                              <div className="color-picker__sample" style={{ background: game.guess.color }}></div>
+                           </button>
+
+                           {modals.color3 && <>
+                           {/* <div className="color-picker__modal color-picker__modal-style">
+                              <SliderPicker className="color-picker__picker" id="guess_color" onChange={(color) => this.handleColorChange(color, 'guess')} color={game.guess.color} />
+                           </div> */}
+
+                           <SketchPicker id="guess_color" color={game.guess.color} onChange={(color) => this.handleColorChange(color, 'guess')} disableAlpha={true} presetColors={[]}  />
+                           </>}
+                        </div>
                      </div>
                   </div>
 
