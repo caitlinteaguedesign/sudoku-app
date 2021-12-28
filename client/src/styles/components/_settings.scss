@@ -1,7 +1,7 @@
 .settings {
 
    &__form {
-      display: grid;      
+      display: grid;
       grid-gap: 1rem;
       gap: 1rem;
       align-items: start;
@@ -24,10 +24,10 @@
          align-self: stretch;
          text-transform: uppercase;
          color: #666;
-         
+
          border-bottom: 1px solid #dbdbdb;
          background: #eaeaea;
-         
+
 
          @media (min-width: 600px) {
             border-right: 1px solid #dbdbdb;
@@ -58,21 +58,7 @@
       }
    }
 
-   &__readonly {
+   &__preview {
       font-size: 1.5em;
-      font-weight: 700;
-   }
-
-   &__default {
-      font-size: 1.5em;
-      font-family: 'Mali', cursive;
-      font-weight: 400;
-   }
-
-   &__guess {
-      font-size: 1.5em;
-      font-family: 'Mali', cursive;
-      font-weight: 400;
-      font-style: italic;
    }
 }

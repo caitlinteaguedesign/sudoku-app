@@ -79,6 +79,22 @@ class Settings extends Component {
 
    }
 
+   handleFontChange = (name, setting, value) => {
+      this.setState({
+         data: {
+            ...this.state.data,
+            game: {
+               ...this.state.data.game,
+               [name]: {
+                  ...this.state.data.game[name],
+                  [setting]: value
+               }
+            }
+         },
+         saved: false
+      });
+   }
+
    dismissSaved = () => {
       this.setState({
          saved: false
@@ -96,7 +112,7 @@ class Settings extends Component {
 
       axios.patch('/users/id/'+userId, saveData)
          .then(res => {
-            //console.log(res.data);
+            console.log(res.data);
             this.setState({
                saved: true
             })
@@ -135,7 +151,14 @@ class Settings extends Component {
 
                   <div className="settings__form-section">
                      <label htmlFor="readonly_color">Read-only color</label>
-                     <span className="settings__readonly" style={{ color: game.readonly.color }}>123456789</span>
+                     <span
+                        className={`settings__preview
+                           text_family-${game.readonly.family}
+                           text_weight-${game.readonly.weight}
+                           text_style-${game.readonly.style}`}
+                        style={{ color: game.readonly.color }}>
+                        123456789
+                     </span>
 
                      <div className="color-picker">
                         <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color1')}>
@@ -153,7 +176,14 @@ class Settings extends Component {
 
                   <div className="settings__form-section">
                      <label htmlFor="readonly_color">Default entry color</label>
-                     <span className="settings__default" style={{ color: game.default.color }}>123456789</span>
+                     <span
+                        className={`settings__preview
+                           text_family-${game.default.family}
+                           text_weight-${game.default.weight}
+                           text_style-${game.default.style}`}
+                        style={{ color: game.default.color }}>
+                           123456789
+                     </span>
 
                      <div className="color-picker">
                         <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color2')}>
@@ -171,7 +201,14 @@ class Settings extends Component {
 
                   <div className="settings__form-section">
                      <label htmlFor="readonly_color">Guess entry color</label>
-                     <span className="settings__guess" style={{ color: game.guess.color }}>123456789</span>
+                     <span
+                        className={`settings__preview
+                           text_family-${game.guess.family}
+                           text_weight-${game.guess.weight}
+                           text_style-${game.guess.style}`}
+                        style={{ color: game.guess.color }}>
+                        123456789
+                     </span>
 
                      <div className="color-picker">
                         <button type="button" className="color-picker__button" onClick={() => this.toggleColorModal('color3')}>

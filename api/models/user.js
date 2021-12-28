@@ -58,6 +58,21 @@ const userSchema = mongoose.Schema({
             type: String,
             default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
+         },
+         family: {
+            type: String,
+            default: 'sans',
+            enum: ['sans', 'cursive'],
+         },
+         weight: {
+            type: String,
+            default: 'bold',
+            enum: ['normal', 'bold'],
+         },
+         style: {
+            type: String,
+            default: 'normal',
+            enum: ['normal', 'italic'],
          }
       },
       default: {
@@ -65,6 +80,21 @@ const userSchema = mongoose.Schema({
             type: String,
             default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
+         },
+         family: {
+            type: String,
+            default: 'cursive',
+            enum: ['sans', 'cursive'],
+         },
+         weight: {
+            type: String,
+            default: 'normal',
+            enum: ['normal', 'bold'],
+         },
+         style: {
+            type: String,
+            default: 'normal',
+            enum: ['normal', 'italic'],
          }
       },
       guess: {
@@ -72,6 +102,21 @@ const userSchema = mongoose.Schema({
             type: String,
             default: '',
             match: /^#([0-9a-f]{3}){1,2}$/i
+         },
+         family: {
+            type: String,
+            default: 'cursive',
+            enum: ['sans', 'cursive'],
+         },
+         weight: {
+            type: String,
+            default: 'normal',
+            enum: ['normal', 'bold'],
+         },
+         style: {
+            type: String,
+            default: 'italic',
+            enum: ['normal', 'italic'],
          }
       }
    }
