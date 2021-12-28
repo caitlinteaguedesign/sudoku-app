@@ -15,9 +15,7 @@ const puzzlesRoute = require('./api/routes/puzzles');
 // Connecting
 mongoose.connect(MONGODB_URI, {
    useUnifiedTopology: true,
-   useNewUrlParser: true,
-   useFindAndModify: false,
-   useCreateIndex: true
+   useNewUrlParser: true
 })
 .catch(err => {
    console.log(err);
@@ -46,7 +44,7 @@ app.use(express.json());
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header(
-		'Access-Control-Allow-Headers', 
+		'Access-Control-Allow-Headers',
 		'Origin, X-Requested-With, Content-Type, Accept, Authorization'
 	);
 

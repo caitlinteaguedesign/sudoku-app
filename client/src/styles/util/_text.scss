@@ -1,6 +1,27 @@
 .text {
-   &_bold {
-      font-weight: bold;
+
+   &_family-sans {
+      font-family: inherit;
+   }
+
+   &_family-cursive {
+      font-family: 'Mali', cursive;
+   }
+
+   &_style-normal {
+      font-style: normal;
+   }
+
+   &_style-italic {
+      font-style: italic;
+   }
+
+   &_weight-regular {
+      font-weight: 400;
+   }
+
+   &_weight-bold {
+      font-weight: 700;
    }
 
    &_uppercase {

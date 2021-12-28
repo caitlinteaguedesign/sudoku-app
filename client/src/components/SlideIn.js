@@ -4,22 +4,15 @@ import classnames from 'classnames';
 import { ReactComponent as Exmark } from '../img/exmark.svg';
 
 export default function SlideIn(props) {
-   
-   const [animateIn, setAnimateIn] = useState(false);
-   const [animateOut, setAnimateOut] = useState(false);
+
    const [state, setState] = useState(false);
 
    const dismiss = () => {
-      setAnimateIn(false);
-      setAnimateOut(true);
       setState(false);
-
    }
 
    useEffect( () => {
       if(props.initial) {
-         setAnimateIn(true);
-         setAnimateOut(false);
          setState(true);
       }
       else {
@@ -34,10 +27,7 @@ export default function SlideIn(props) {
 
    return (
       <div className={classnames('slidein',
-         {'slidein-show': state },
-         {'slidein-hide': !state },
-         {'slidein-animateIn': animateIn },
-         {'slidein-animateOut': animateOut })}
+         {'slidein-show': state })}
       >
          {props.children}
          <button type="button" title="Press to dismiss this notification" className="slidein__dismiss" onClick={() => handleDismiss()}>

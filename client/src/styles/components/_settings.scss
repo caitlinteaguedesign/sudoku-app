@@ -1,7 +1,7 @@
 .settings {
 
    &__form {
-      display: grid;      
+      display: grid;
       grid-gap: 1rem;
       gap: 1rem;
       align-items: start;
@@ -24,10 +24,10 @@
          align-self: stretch;
          text-transform: uppercase;
          color: #666;
-         
+
          border-bottom: 1px solid #dbdbdb;
          background: #eaeaea;
-         
+
 
          @media (min-width: 600px) {
             border-right: 1px solid #dbdbdb;
@@ -36,15 +36,54 @@
          }
       }
 
+      &-subtitle {
+         font-size: 1em;
+         line-height: 1em;
+         font-weight: 700;
+         color: #666666;
+         text-transform: uppercase;
+         letter-spacing: 0.01em;
+      }
+
       &-section {
          margin: 0 1rem;
          display: grid;
-         grid-template-rows: repeat(2, auto) 1fr;
-         grid-gap: 0.5rem;
-         gap: 0.5rem;
+         grid-template-rows: repeat(5, auto) 1fr;
+         grid-gap: 1rem;
+         gap: 1rem;
 
          @media (min-width: 600px) {
             margin: 1rem 0 0;
+         }
+      }
+
+      &-subsection {
+         display: grid;
+         width: 100%;
+         max-width: 14rem;
+         grid-template-columns: repeat(2, 1fr);
+         grid-gap: 0.5rem;
+         gap: 0.5rem;
+
+         .settings__form-label {
+            grid-column: span 2;
+         }
+      }
+
+      &-toggle {
+         font-family: inherit;
+         font-size: 100%;
+         line-height: 1.3em;
+         padding: 0.2rem 0.5rem 0.3rem;
+         color: #333333;
+         background: white;
+         border: 3px solid #999999;
+         cursor: pointer;
+
+         &--selected {
+            color: white;
+            border-color: $primary_color;
+            background: $primary_color;
          }
       }
 
@@ -58,21 +97,7 @@
       }
    }
 
-   &__readonly {
+   &__preview {
       font-size: 1.5em;
-      font-weight: 700;
-   }
-
-   &__default {
-      font-size: 1.5em;
-      font-family: 'Mali', cursive;
-      font-weight: 400;
-   }
-
-   &__guess {
-      font-size: 1.5em;
-      font-family: 'Mali', cursive;
-      font-weight: 400;
-      font-style: italic;
    }
 }
