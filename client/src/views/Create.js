@@ -44,9 +44,9 @@ export default function CreatePuzzle(props) {
    const [grid, setGrid] = useState(start);
 
    const handleGrid = (e, rowIndex, cellIndex) => {
-      
+
       let value = parseInt(e.target.value);
-   
+
       if(!Number.isInteger(value) || (value<1 || value>9)) {
          value = 0;
       }
@@ -112,34 +112,34 @@ export default function CreatePuzzle(props) {
                const newPuzzleId = res.data.puzzle.id;
                //history.push('/browse?added=true');
                history.push('/puzzle/'+newPuzzleId);
-            }) 
+            })
             .catch(err => console.log(err));
       }
       else setErrors(checkErrors);
-      
+
    }
 
    return (
       <>
-      { loading 
+      { loading
 
       ? <Loading />
 
       :<div className="page">
          <h1 className="page-title">Create a Puzzle</h1>
 
-         {verified ? 
+         {verified ?
          <form noValidate onSubmit={handleSubmit} className="create-puzzle">
             <div className="create-puzzle__fields form_layout-grid form_color-default">
 
                <div className="form__field">
                   <label className="label">Name</label>
-                  <input type="text" onChange={handleInput} value={name} 
+                  <input type="text" onChange={handleInput} value={name}
                      className={
-                        classnames('field', 
+                        classnames('field',
                            { 'field_color-default': !errors.name },
                            { 'field_color-error': errors.name }
-                        )} 
+                        )}
                   />
                   <p className="field__error">{errors.name}</p>
                </div>
@@ -148,10 +148,10 @@ export default function CreatePuzzle(props) {
                   <label className="label">Difficulty</label>
                   <select onChange={handleSelect} value={difficulty}
                      className={
-                        classnames('select', 
+                        classnames('select',
                            { 'select_color-default': !errors.difficulty },
                            { 'select_color-error': errors.difficulty }
-                        )} 
+                        )}
                   >
                      <option value="">Select</option>
                      <option value="easy">Easy</option>
@@ -176,7 +176,7 @@ export default function CreatePuzzle(props) {
          :
          <div>You must be verified by the site administrator to create puzzles.</div>
          }
-         
+
       </div>
       }
       </>

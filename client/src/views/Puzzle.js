@@ -13,7 +13,7 @@ import SlideIn from '../components/SlideIn';
 
 import solve from '../game/solve';
 import checkset from '../game/checkset';
-import { definitions, pattern } from '../game/constants';
+import { definitions, pattern, defaultSettings } from '../game/constants';
 
 import formatDate from '../util/formatDate';
 
@@ -65,26 +65,7 @@ class Puzzle extends Component {
 
       this.state = {
          loading: true,
-         settings: {
-            readonly: {
-               color: '',
-               family: 'sans',
-               weight: 'bold',
-               style: 'normal'
-            },
-            default: {
-               color: '',
-               family: 'cursive',
-               weight: 'normal',
-               style: 'normal'
-            },
-            guess: {
-               color: '',
-               family: 'cursive',
-               weight: 'normal',
-               style: 'italic'
-            }
-         },
+         settings: defaultSettings,
          puzzle: null,
          player: {
             completed: false,

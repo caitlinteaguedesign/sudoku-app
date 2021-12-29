@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import { pattern } from '../game/constants';
+import { pattern, defaultSettings } from '../game/constants';
 
 import ordinal_suffix_of from '../util/ordinal_suffix_of';
 
@@ -104,26 +104,28 @@ export default function Board(props) {
                   const posIndex = rowIndex * 9 + cellIndex;
 
                   // pass user settings
+                  var userSettings = settings ? settings : defaultSettings;
+
                   let
-                     readonlyColor = settings.readonly.color,
-                     defaultColor = settings.default.color,
-                     guessColor = settings.guess.color,
+                     readonlyColor = userSettings.readonly.color,
+                     defaultColor = userSettings.default.color,
+                     guessColor = userSettings.guess.color,
 
-                     readonlyFamily = settings.readonly.family,
-                     defaultFamily = 'text_family-'+settings.default.family,
-                     guessFamily = 'text_family-'+settings.guess.family,
+                     readonlyFamily = userSettings.readonly.family,
+                     defaultFamily = 'text_family-'+userSettings.default.family,
+                     guessFamily = 'text_family-'+userSettings.guess.family,
 
-                     readonlyWeight = settings.readonly.weight,
-                     defaultWeight = 'text_weight-'+settings.default.weight,
-                     guessWeight = 'text_weight-'+settings.guess.weight,
+                     readonlyWeight = userSettings.readonly.weight,
+                     defaultWeight = 'text_weight-'+userSettings.default.weight,
+                     guessWeight = 'text_weight-'+userSettings.guess.weight,
 
-                     readonlyStyle = settings.readonly.style,
-                     defaultStyle = 'text_style-'+settings.default.style,
-                     guessStyle = 'text_style-'+settings.guess.style;
+                     readonlyStyle = userSettings.readonly.style,
+                     defaultStyle = 'text_style-'+userSettings.default.style,
+                     guessStyle = 'text_style-'+userSettings.guess.style;
 
 
                   // pass color/style classes for the numbers
-                  let thisMode = '';
+                  let thisMode = 'default';
 
                   if(modes) {
                      thisMode = modes[posIndex].mode;
