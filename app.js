@@ -6,7 +6,7 @@ const passport = require('passport');
 const app = express();
 
 // constants
-const MONGODB_URI = "mongodb+srv://admin:"+process.env.MONGO_ATLAS_PW+"@"+process.env.DATABASE_URL+"?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://"+process.env.MONGO_ATLAS_USER+":"+process.env.MONGO_ATLAS_PW+"@"+process.env.DATABASE_URL+"?retryWrites=true&w=majority";
 
 // routes
 const usersRoute = require('./api/routes/users');

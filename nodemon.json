@@ -1,7 +1,8 @@
 {
    "env": {
       "DATABASE_URL": "sudokucluster.ztnsx.mongodb.net/SudokuApp",
-      "MONGO_ATLAS_PW": "zGja27D4rs9HsnUE",
+      "MONGO_ATLAS_USER": "puzzle_master",
+      "MONGO_ATLAS_PW": "XKrHtwM9SeRK1yVW",
       "NODE_ENV": "development"
    }
 }
