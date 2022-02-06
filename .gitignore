@@ -3,3 +3,6 @@
 
 # backups
 /backups
+
+# local env
+.npmrc
