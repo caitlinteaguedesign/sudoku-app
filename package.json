@@ -10,7 +10,10 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently -n server,client -c gray,cyan \"npm run server\" \"npm run client\""
+    "dev": "concurrently -n server,client -c gray,cyan \"npm run server\" \"npm run client\"",
+    "export-puzzles": "mongoexport --uri=\"mongodb+srv://admin:zGja27D4rs9HsnUE@sudokucluster.ztnsx.mongodb.net/SudokuApp\" --collection=puzzles --out=puzzles.json",
+    "export-users": "mongoexport --uri=\"mongodb+srv://admin:zGja27D4rs9HsnUE@sudokucluster.ztnsx.mongodb.net/SudokuApp\" --collection=users --out=users.json",
+    "backup-db": "npm run export-puzzles && npm run export-users"
   },
   "keywords": [],
   "author": "",
