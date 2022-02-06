@@ -13,7 +13,7 @@ import SlideIn from '../components/SlideIn';
 
 import solve from '../game/solve';
 import checkset from '../game/checkset';
-import { definitions, pattern } from '../game/constants';
+import { definitions, pattern, defaultSettings } from '../game/constants';
 
 import formatDate from '../util/formatDate';
 
@@ -65,11 +65,7 @@ class Puzzle extends Component {
 
       this.state = {
          loading: true,
-         settings: {
-            readonly: {color: ''},
-            default: {color: ''},
-            guess: {color: ''}
-         },
+         settings: defaultSettings,
          puzzle: null,
          player: {
             completed: false,
@@ -97,7 +93,7 @@ class Puzzle extends Component {
             const puzzle = puzzleRes.data.result;
 
             const { isAuthenticated } = this.props.auth;
-            
+
             if(isAuthenticated) {
                // get player state
                const userId = this.props.auth.user.id;
@@ -474,7 +470,7 @@ class Puzzle extends Component {
          const { isAuthenticated } = this.props.auth;
 
          if(isAuthenticated) {
-               
+
             axios.patch('/users/id/'+this.props.auth.user.id+'/updatePuzzle', updatePlayer)
                .then( res => {
                   this.props.setCanLogout(true);
@@ -698,7 +694,7 @@ class Puzzle extends Component {
                <span className="title-group__small">{`${formatDate(puzzle.date_created, 'Mon D, YYYY')}`}</span>
             </div>
 
-            <Prompt when={!canLeave} 
+            <Prompt when={!canLeave}
                message={ (location) => {
                   if(location.search.includes('logout')) return true;
                   if(isAuthenticated) return 'Are you sure you want to leave before saving? You may lose progress on this puzzle.'
@@ -726,7 +722,7 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" 
+                        <button type="button"
                            className="validation__button" onClick={(e) => this.toggleTip('subgrid', button)}
                            title="Press to toggle tips for this quadrant"
                            >
@@ -763,7 +759,7 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )} >
-                        <button type="button" className="validation__button" 
+                        <button type="button" className="validation__button"
                            onClick={(e) => this.toggleTip('row', button)}
                            title="Press to toggle tips for this row"
                            >
@@ -789,7 +785,7 @@ class Puzzle extends Component {
                         {'validation_color-error': thisValidation.tip && thisValidation.duplicates.length > 0},
                         {'validation_color-complete': thisValidation.tip && thisValidation.remaining.length === 0}
                      )}>
-                        <button type="button" className="validation__button" 
+                        <button type="button" className="validation__button"
                            onClick={ (e) => this.toggleTip('column', button)}
                            title="Press to toggle tips for this column"
                            >
@@ -809,7 +805,7 @@ class Puzzle extends Component {
                <div className="view-puzzle__actions">
 
                   {!player.completed && isAuthenticated &&
-                  <button type="button" className="button button_style-solid button_style-solid--default" 
+                  <button type="button" className="button button_style-solid button_style-solid--default"
                      onClick={this.saveProgress}
                      title="Press to save progress"
                      >
@@ -827,7 +823,7 @@ class Puzzle extends Component {
                   </div>
                   }
 
-                  <button type="button" className="button button_style-solid button_style-solid--default" 
+                  <button type="button" className="button button_style-solid button_style-solid--default"
                      onClick={this.resetPuzzle}
                      title={`Press to ${player.completed ? 'replay' : 'restart'} puzzle`}
                      >
@@ -841,7 +837,7 @@ class Puzzle extends Component {
                   {/* <button type="button" className="button button_style-solid button_style-solid--default" onClick={this.autoSolve}>
                      Auto Solve
                   </button> */}
-                  <button type="button" className="button button_style-solid button_style-solid--primary" 
+                  <button type="button" className="button button_style-solid button_style-solid--primary"
                      onClick={this.checkAnswer}
                      title="Press to submit answer">
                      Submit Answer
@@ -879,6 +875,9 @@ class Puzzle extends Component {
                         title="Set color to default"
                         style={{ background: settings.default.color }}
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--default',
+                        `text_family-${settings.default.family}`,
+                        `text_weight-${settings.default.weight}`,
+                        `text_style-${settings.default.style}`,
                         {'view-puzzle__mark-button--active': this.state.mode === 'default'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'default'}
                         )}
@@ -895,6 +894,9 @@ class Puzzle extends Component {
                         title="Set color to guess"
                         style={{ background: settings.guess.color }}
                         className={classnames('view-puzzle__mark-button view-puzzle__mark-button--guess',
+                        `text_family-${settings.guess.family}`,
+                        `text_weight-${settings.guess.weight}`,
+                        `text_style-${settings.guess.style}`,
                         {'view-puzzle__mark-button--active': this.state.mode === 'guess'},
                         {'view-puzzle__mark-button--press': this.state.mode !== 'guess'}
                         )}
@@ -905,7 +907,7 @@ class Puzzle extends Component {
 
                   <div>
                      {current_history > 0 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                     <button type="button" className="button button_style-solid button_style-solid--default"
                         onClick={(e) => this.moveHistory('prev')}
                         title="Press to undo the most recent move"
                         >
@@ -915,7 +917,7 @@ class Puzzle extends Component {
                      <button type="button" className="button button_style-solid button--disabled">Undo</button>
                      }
                      {current_history < history.length - 1 ?
-                     <button type="button" className="button button_style-solid button_style-solid--default" 
+                     <button type="button" className="button button_style-solid button_style-solid--default"
                         onClick={(e) => this.moveHistory('next')}
                         title="Press to redo that last move that was previously undone"
                         >

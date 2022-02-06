@@ -58,4 +58,25 @@ const definitions = [
    }
 ];
 
-export {pattern, definitions};
+const defaultSettings = {
+   readonly: {
+      color: '',
+      family: 'sans',
+      weight: 'bold',
+      style: 'normal'
+   },
+   default: {
+      color: '',
+      family: 'cursive',
+      weight: 'normal',
+      style: 'normal'
+   },
+   guess: {
+      color: '',
+      family: 'cursive',
+      weight: 'normal',
+      style: 'italic'
+   }
+};
+
+export {pattern, definitions, defaultSettings};
