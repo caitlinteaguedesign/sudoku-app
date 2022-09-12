@@ -30,7 +30,7 @@ exports.getById = (req, res, next) => {
    const id = req.params.id;
 
    User.findById(id)
-      .select('-__v -_id -password -game')
+      .select('-__v -_id -password')
       .exec()
       .then( result => {
          if(result) {
