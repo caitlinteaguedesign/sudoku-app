@@ -9,7 +9,7 @@ import store from './store';
 
 import './styles/main.scss';
 
-import Home from './views/Home';
+import About from './views/About';
 import Entry from './views/Entry';
 import Header from './components/Header';
 import Dashboard from './views/Dashboard';
@@ -34,19 +34,19 @@ if(localStorage.jwtToken) {
 
 class App extends Component {
   render() {
-    
+
     return (
       <Provider store={store}>
         <Router>
           <div className="app">
 
             <Switch>
-              
+
               <Route path={['/register', '/login']}>
                 <Entry />
               </Route>
 
-              <Route path={['/browse', '/puzzle/:id', '/dashboard', '/create', '/dashboard', '/settings']}>
+              <Route path={['/', '/browse', '/about', '/puzzle/:id', '/dashboard', '/create', '/dashboard', '/settings']}>
 
                 <Header theme="default" />
 
@@ -64,17 +64,15 @@ class App extends Component {
                     <Route path="/puzzle/:id">
                       <Puzzle />
                     </Route>
-                    <Route path="/browse">
+                    <Route path="/about">
+                      <About />
+                    </Route>
+                    <Route path={['/', '/browse']}>
                       <Browse />
                     </Route>
                   </Switch>
                 </main>
 
-              </Route>
-
-              <Route path="/">
-                <Header theme="homepage" />
-                <Home />
               </Route>
 
             </Switch>

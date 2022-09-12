@@ -17,6 +17,7 @@ export default function Header(props) {
                <img src={logo} alt="Sudoku Maker logo" width="180" height="36" />
             </Link>
             <Link to="/browse" className="link link_style-text">Browse</Link>
+            <Link to="/about" className="link link_style-text">About</Link>
             { isLoggedIn && <Link to="/create" className="link link_style-text">Create</Link> }
          </div>
 
