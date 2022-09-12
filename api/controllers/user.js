@@ -13,7 +13,7 @@ const passport = require('passport');
 
 exports.getAll = (req, res, next) => {
    User.find()
-      .select('-__v -puzzles')
+      .select('-__v -puzzles -password -game')
       .exec()
       .then( data => {
          res.status(200).json(data);
@@ -30,7 +30,7 @@ exports.getById = (req, res, next) => {
    const id = req.params.id;
 
    User.findById(id)
-      .select('-__v -_id')
+      .select('-__v -_id -password -game')
       .exec()
       .then( result => {
          if(result) {
@@ -56,7 +56,7 @@ exports.getSettingsById = (req, res, next) => {
    const id = req.params.id;
 
    User.findById(id)
-      .select('-__v -_id -puzzles')
+      .select('-__v -_id -puzzles -password')
       .exec()
       .then( result => {
          if(result) {
@@ -149,7 +149,7 @@ exports.login = (req, res, next) => {
                name: user.name
                //puzzles: user.puzzles
             }
-   
+
             jwt.sign(
                payload,
                keys.secretOrKey,
@@ -237,7 +237,7 @@ exports.delete = (req, res, next) => {
 
 exports.getUnverified = (req, res, next) => {
    User.find({verified: false})
-      .select('-__v -puzzles')
+      .select('-__v -puzzles -password')
       .exec()
       .then( data => {
          res.status(200).json(data);
@@ -300,11 +300,11 @@ exports.updatePuzzleList = (req, res, next) => {
    const userId = req.params.id;
    const puzzleId = req.body.id;
 
-   User.findOneAndUpdate({_id: userId, "puzzles.id": puzzleId}, 
-      {$set: { 
+   User.findOneAndUpdate({_id: userId, "puzzles.id": puzzleId},
+      {$set: {
          "puzzles.$.state": req.body.state,
          "puzzles.$.completed": req.body.completed,
-         "puzzles.$.modes": req.body.modes }}, 
+         "puzzles.$.modes": req.body.modes }},
       { new: true, upsert: false, runValidators: true }).exec()
       .then( result => {
          res.status(200).json({
@@ -328,12 +328,12 @@ exports.pullFromPuzzleList = (req, res, next) => {
    const userId = req.params.id;
    const puzzleId = req.body.id;
 
-   User.findByIdAndUpdate({_id: userId}, 
-      {$pull: { 
+   User.findByIdAndUpdate({_id: userId},
+      {$pull: {
          "puzzles": {
             "id": puzzleId
          }
-      }}, 
+      }},
       { multi: true, new: true }).exec()
       .then( result => {
          res.status(200).json({

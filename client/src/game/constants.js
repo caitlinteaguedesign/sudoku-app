@@ -67,7 +67,7 @@ const defaultSettings = {
    },
    default: {
       color: '',
-      family: 'cursive',
+      family: 'sans',
       weight: 'normal',
       style: 'normal'
    },
