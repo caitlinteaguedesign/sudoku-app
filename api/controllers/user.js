@@ -56,7 +56,7 @@ exports.getSettingsById = (req, res, next) => {
    const id = req.params.id;
 
    User.findById(id)
-      .select('-__v -_id -puzzles')
+      .select('-__v -_id -puzzles -password')
       .exec()
       .then( result => {
          if(result) {
@@ -237,7 +237,7 @@ exports.delete = (req, res, next) => {
 
 exports.getUnverified = (req, res, next) => {
    User.find({verified: false})
-      .select('-__v -puzzles')
+      .select('-__v -puzzles -password')
       .exec()
       .then( data => {
          res.status(200).json(data);
