@@ -35,6 +35,10 @@
   "devDependencies": {
     "nodemon": "^2.0.19"
   },
+  "engines": {
+    "npm": "*",
+    "node": "*"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caitlinteaguedesign/sudoku-app.git"
