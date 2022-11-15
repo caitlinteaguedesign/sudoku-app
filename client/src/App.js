@@ -64,9 +64,9 @@ class App extends Component {
                     <Route path="/puzzle/:id">
                       <Puzzle />
                     </Route>
-                    <Route path="/about">
+                    {/* <Route path="/about">
                       <About />
-                    </Route>
+                    </Route> */}
                     <Route path={['/', '/browse']}>
                       <Browse />
                     </Route>
