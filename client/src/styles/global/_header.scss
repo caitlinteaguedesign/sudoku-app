@@ -24,6 +24,11 @@
 
    &__logo {
       flex-shrink: 0;
+
+      &-icon {
+         margin-left: -0.5rem;
+      }
    }
+
 
 }

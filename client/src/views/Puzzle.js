@@ -856,7 +856,7 @@ class Puzzle extends Component {
                      >
                         <div className="button__layout button__layout--icon-left">
                            <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
-                           <span className="button__text">all tips</span>
+                           <span className="button__text">show all tips</span>
                         </div>
                      </button>
                      <button type="button" className="button button_style-solid button_style-solid--default"
@@ -865,7 +865,7 @@ class Puzzle extends Component {
                      >
                         <div className="button__layout button__layout--icon-left">
                            <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
-                           <span className="button__text">all tips</span>
+                           <span className="button__text">hide all tips</span>
                         </div>
                      </button>
                   </div>
