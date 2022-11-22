@@ -849,27 +849,6 @@ class Puzzle extends Component {
                   </div>
                   }
 
-                  <div>
-                     <button type="button" className="button button_style-solid button_style-solid--default"
-                        title="Show all tips"
-                        onClick={(e) => this.toggleAllTips(true)}
-                     >
-                        <div className="button__layout button__layout--icon-left">
-                           <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
-                           <span className="button__text">show all tips</span>
-                        </div>
-                     </button>
-                     <button type="button" className="button button_style-solid button_style-solid--default"
-                        title="Hide all tips"
-                        onClick={(e) => this.toggleAllTips(false)}
-                     >
-                        <div className="button__layout button__layout--icon-left">
-                           <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
-                           <span className="button__text">hide all tips</span>
-                        </div>
-                     </button>
-                  </div>
-
                   <div className="view-puzzle__mark-mode">
                      <button type="button" onClick={(e) => this.toggleMode('default')}
                         title="Set color to default"
@@ -926,6 +905,27 @@ class Puzzle extends Component {
                      :
                      <button type="button" className="button button_style-solid button--disabled">Redo</button>
                      }
+                  </div>
+
+                  <div className="view-puzzle__toggle-tips">
+                     <button type="button" className="button button_style-solid button_style-solid--default"
+                        title="Show all tips"
+                        onClick={(e) => this.toggleAllTips(true)}
+                     >
+                        <div className="button__layout button__layout--icon-left">
+                           <OpenEye className="button__icon" width="24" height="24" role="img" aria-label="show" />
+                           <span className="button__text">show all tips</span>
+                        </div>
+                     </button>
+                     <button type="button" className="button button_style-solid button_style-solid--default"
+                        title="Hide all tips"
+                        onClick={(e) => this.toggleAllTips(false)}
+                     >
+                        <div className="button__layout button__layout--icon-left">
+                           <CloseEye className="button__icon" width="24" height="24" role="img" aria-label="hide" />
+                           <span className="button__text">hide all tips</span>
+                        </div>
+                     </button>
                   </div>
 
                   {isAuthenticated &&
