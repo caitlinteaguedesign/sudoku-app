@@ -8,8 +8,3 @@ It can be hard to read a sudoku puzzle. A player sees the numbers present but th
 
 ### Highlight Mistakes
 Not to be confused with telling the player if they entered an incorrect answer in a sudoku square. Sometimes in the course of play you can make an error against your own plays, like even after checking for conflicts realizing in later rounds you accidentally placed the same number twice in a region.
-
-### Scope Creeping
-Because it's too easy to think of features to add!
-
-* 5 x 5 insane sudoku puzzle
