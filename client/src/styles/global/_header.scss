@@ -1,3 +1,5 @@
+$mq: 500px;
+
 .header {
    display: flex;
    justify-content: space-between;
@@ -17,9 +19,23 @@
    }
 
    &__container {
+
+      @media screen and (min-width: $mq) {
+         display: flex;
+         align-items: center;
+         gap: 2rem;
+      }
+   }
+
+   &__nav {
       display: flex;
       align-items: center;
       gap: 2rem;
+      margin-top: $basis;
+
+      @media screen and (min-width: $mq) {
+         margin-top: 0;
+      }
    }
 
    &__logo {
