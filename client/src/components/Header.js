@@ -16,12 +16,15 @@ export default function Header(props) {
             <Link to="/" className="header__logo">
                <img src={logo} alt="Sudoku Checker logo" width="280" height="36" className="header__logo-icon" />
             </Link>
-            <Link to="/browse" className="link link_style-text">Browse</Link>
-            <Link to="/about" className="link link_style-text">About</Link>
-            { isLoggedIn && <Link to="/create" className="link link_style-text">Create</Link> }
+
+            <div className="header__nav">
+               <Link to="/browse" className="link link_style-text">Browse</Link>
+               { isLoggedIn && <Link to="/create" className="link link_style-text">Create</Link> }
+               <Link to="/about" className="link link_style-text">About</Link>
+            </div>
          </div>
 
-         <UserHandle />
+         { isLoggedIn && <UserHandle /> }
 
       </header>
    )
