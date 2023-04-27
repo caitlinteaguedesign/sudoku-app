@@ -3,6 +3,6 @@
    width: 100%;
    align-self: flex-start;
    display: grid;
-   grid-gap: 3rem;
-   gap: 3rem;
+   grid-gap: $basis*2;
+   gap: $basis*2;
 }

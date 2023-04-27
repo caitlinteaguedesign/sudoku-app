@@ -1,0 +1,19 @@
+.list {
+   list-style: none;
+
+   > li {
+      position: relative;
+      padding-left: $basis/2;
+      
+      &:before {
+         content: '-';
+         position: absolute;
+         left: 0;
+         top: 0;
+      }
+
+      &:not(:first-child) {
+         margin-top: $basis/4;
+      }
+   }
+}
