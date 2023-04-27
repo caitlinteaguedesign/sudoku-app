@@ -12,6 +12,7 @@ import './styles/main.scss';
 import About from './views/About';
 import Entry from './views/Entry';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Dashboard from './views/Dashboard';
 import Browse from './views/Browse';
 import Create from './views/Create';
@@ -72,6 +73,8 @@ class App extends Component {
                     </Route>
                   </Switch>
                 </main>
+
+                <Footer theme="default" />
 
               </Route>
 
