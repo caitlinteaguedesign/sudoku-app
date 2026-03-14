@@ -1,8 +1,11 @@
+@use "../util/vertical-rhythm";
+
 .footer {
-   padding: $basis*2 $basis*2 $basis*3;
-   text-align: center;
-   display: flex;
-   justify-content: center;
-   background: #eaeaea;
-   color: #333333;
+  padding: calc(vertical-rhythm.$basis * 2) calc(vertical-rhythm.$basis * 2)
+    calc(vertical-rhythm.$basis * 3);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background: #eaeaea;
+  color: #333333;
 }
