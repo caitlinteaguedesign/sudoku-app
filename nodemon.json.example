@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_ATLAS_USER": "",
+    "MONGO_ATLAS_PW": "",
+    "DATABASE_URL": "<mongodb-cluster-url>/<db-name>"
+  }
+}
