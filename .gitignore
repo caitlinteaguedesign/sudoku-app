@@ -5,5 +5,4 @@
 /backups
 
 # local env
-.npmrc
 nodemon.json
