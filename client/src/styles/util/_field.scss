@@ -1,69 +1,71 @@
+@use "../colors";
+
 .field {
-   width: 100%;
-   padding: 0.1em 0.35em 0.25em;
-   font-family: inherit;
-   font-size: 1em;
-   border: 1px solid;
+  width: 100%;
+  padding: 0.1em 0.35em 0.25em;
+  font-family: inherit;
+  font-size: 1em;
+  border: 1px solid;
 
-   &:focus {
-      outline: 2px solid;
-   }
+  &:focus {
+    outline: 2px solid;
+  }
 
-   &_color-default {
-      border-color: #aaaaaa;
+  &_color-default {
+    border-color: #aaaaaa;
 
-      &:focus {
-         outline-color: #aaaaaa;      
-      }
-   }
+    &:focus {
+      outline-color: #aaaaaa;
+    }
+  }
 
-   &_color-error {
-      color: $error_color;
-      background: $error_bg_color;
-      border-color: $error_border_color;
+  &_color-error {
+    color: colors.$error_color;
+    background: colors.$error_bg_color;
+    border-color: colors.$error_border_color;
 
-      &:focus {
-         outline-color: $error_outline-color;
-      }
-   }
+    &:focus {
+      outline-color: colors.$error_outline-color;
+    }
+  }
 
-   &__error {
-      color: #441717;
-      font-size: 0.9em;
-      line-height: 1.3em;
-      font-style: italic;
-      text-align: right;
-   }
+  &__error {
+    color: #441717;
+    font-size: 0.9em;
+    line-height: 1.3em;
+    font-style: italic;
+    text-align: right;
+  }
 }
 
 .select {
-   width: 100%;
-   padding: 0.1em 0.125em 0.25em;
-   font-family: inherit;
-   font-size: 1em;
-   
-   border: 1px solid;
-   
-   &:focus {
-      outline: 2px solid;
-   }
+  width: 100%;
+  padding: 0.1em 0.125em 0.25em;
+  font-family: inherit;
+  font-size: 1em;
 
-   &_color-default {
-      background: #ffffff;
-      border-color: #aaaaaa;
+  border: 1px solid;
 
-      &:focus {
-         outline-color: #aaaaaa;      
-      }
-   }
+  &:focus {
+    outline: 2px solid;
+  }
 
-   &_color-error {
-      color: $error_color;
-      background: $error_bg_color;
-      border-color: $error_border_color;
+  &_color-default {
+    background: #ffffff;
+    border-color: #aaaaaa;
 
-      &:focus {
-         outline-color: $error_outline-color;      
-      }
-   }
+    &:focus {
+      outline-color: #aaaaaa;
+    }
+  }
+
+  &_color-error {
+    color: colors.$error_color;
+    background: colors.$error_bg_color;
+    border-color: colors.$error_border_color;
+
+    &:focus {
+      outline-color: colors.$error_outline-color;
+    }
+  }
 }

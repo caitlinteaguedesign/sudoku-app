@@ -1,50 +1,48 @@
+@use "../util/vertical-rhythm";
 $mq: 500px;
 
 .header {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: $basis;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: vertical-rhythm.$basis;
 
-   &_theme {
-      &-homepage {
-         background: #1d1d1d;
-         color: #cccccc;
-      }
+  &_theme {
+    &-homepage {
+      background: #1d1d1d;
+      color: #cccccc;
+    }
 
-      &-default {
-         background: #eaeaea;
-         color: #333333;
-      }
-   }
+    &-default {
+      background: #eaeaea;
+      color: #333333;
+    }
+  }
 
-   &__container {
-
-      @media screen and (min-width: $mq) {
-         display: flex;
-         align-items: center;
-         gap: 2rem;
-      }
-   }
-
-   &__nav {
+  &__container {
+    @media screen and (min-width: $mq) {
       display: flex;
       align-items: center;
       gap: 2rem;
-      margin-top: $basis;
+    }
+  }
 
-      @media screen and (min-width: $mq) {
-         margin-top: 0;
-      }
-   }
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: vertical-rhythm.$basis;
 
-   &__logo {
-      flex-shrink: 0;
+    @media screen and (min-width: $mq) {
+      margin-top: 0;
+    }
+  }
 
-      &-icon {
-         margin-left: -0.5rem;
-      }
-   }
+  &__logo {
+    flex-shrink: 0;
 
-
+    &-icon {
+      margin-left: -0.5rem;
+    }
+  }
 }

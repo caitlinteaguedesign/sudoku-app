@@ -1,28 +1,31 @@
+@use "../util/vertical-rhythm";
+
 .main {
-   padding: $basis $basis $basis*2;
-   flex-grow: 1;
+  padding: vertical-rhythm.$basis vertical-rhythm.$basis
+    calc(vertical-rhythm.$basis * 2);
+  flex-grow: 1;
 
-   display: flex;
-   align-items: center;
-   justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-   &--public {
-      background: #666666 0% center repeat;
-      
-      animation: drift 180s linear infinite;
+  &--public {
+    background: #666666 0% center repeat;
 
-      @keyframes drift {
-         to {
-            background-position: 0% 0%;
-         }
-         from {
-            background-position: -100% 100%;
-         }
+    animation: drift 180s linear infinite;
+
+    @keyframes drift {
+      to {
+        background-position: 0% 0%;
       }
-   }
+      from {
+        background-position: -100% 100%;
+      }
+    }
+  }
 
-   &_theme-homepage {
-      background: #1d1d1d;
-      color: #ccc;
-   }
+  &_theme-homepage {
+    background: #1d1d1d;
+    color: #ccc;
+  }
 }

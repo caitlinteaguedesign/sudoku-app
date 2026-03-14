@@ -1,8 +1,10 @@
+@use "../util/vertical-rhythm";
+
 .page {
-   position: relative;
-   width: 100%;
-   align-self: flex-start;
-   display: grid;
-   grid-gap: $basis*2;
-   gap: $basis*2;
+  position: relative;
+  width: 100%;
+  align-self: flex-start;
+  display: grid;
+  grid-gap: calc(vertical-rhythm.$basis * 2);
+  gap: calc(vertical-rhythm.$basis * 2);
 }
