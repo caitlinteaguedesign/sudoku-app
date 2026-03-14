@@ -20,6 +20,7 @@ const usersRoute = require("./api/routes/users");
 const puzzlesRoute = require("./api/routes/puzzles");
 
 // Connecting
+mongoose.set("strictQuery", false);
 mongoose
   .connect(MONGODB_URI, {
     useUnifiedTopology: true,
