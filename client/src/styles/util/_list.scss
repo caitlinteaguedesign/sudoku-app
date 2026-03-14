@@ -1,19 +1,21 @@
+@use "../util/vertical-rhythm";
+
 .list {
-   list-style: none;
+  list-style: none;
 
-   > li {
-      position: relative;
-      padding-left: $basis/2;
-      
-      &:before {
-         content: '-';
-         position: absolute;
-         left: 0;
-         top: 0;
-      }
+  > li {
+    position: relative;
+    padding-left: calc(vertical-rhythm.$basis / 2);
 
-      &:not(:first-child) {
-         margin-top: $basis/4;
-      }
-   }
+    &:before {
+      content: "-";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &:not(:first-child) {
+      margin-top: calc(vertical-rhythm.$basis / 4);
+    }
+  }
 }
