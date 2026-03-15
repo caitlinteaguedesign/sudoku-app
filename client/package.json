@@ -32,8 +32,8 @@
     "sass": "^1.98.0"
   },
   "engines": {
-    "npm": "8.15.0",
-    "node": "16.17.1"
+    "npm": "10.8.2",
+    "node": "18.20.8"
   },
   "eslintConfig": {
     "extends": [
