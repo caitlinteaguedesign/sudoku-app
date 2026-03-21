@@ -11,10 +11,10 @@
 
 // import FloatingField from '../components/FloatingField';
 
-// import logo from '../img/logo.svg';
+// import logo from '../img/logo.svg?react';
 
 // function Login() {
-  
+
 //    const [email, setEmail] = useState('');
 //    const [password, setPassword] = useState('');
 //    const [errors, setErrors] = useState({});

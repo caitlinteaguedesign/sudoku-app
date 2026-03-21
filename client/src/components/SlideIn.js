@@ -1,38 +1,45 @@
-import { useState, useEffect } from 'react';
-import classnames from 'classnames';
+import { useState, useEffect } from "react";
+import classnames from "classnames";
 
-import { ReactComponent as Exmark } from '../img/exmark.svg';
+import Exmark from "../img/exmark.svg?react";
 
 export default function SlideIn(props) {
+  const [state, setState] = useState(false);
 
-   const [state, setState] = useState(false);
+  const dismiss = () => {
+    setState(false);
+  };
 
-   const dismiss = () => {
-      setState(false);
-   }
-
-   useEffect( () => {
-      if(props.initial) {
-         setState(true);
-      }
-      else {
-         dismiss();
-      }
-   }, [props.initial]);
-
-   const handleDismiss = () => {
+  useEffect(() => {
+    if (props.initial) {
+      setState(true);
+    } else {
       dismiss();
-      if(props.callback) props.callback();
-   }
+    }
+  }, [props.initial]);
 
-   return (
-      <div className={classnames('slidein',
-         {'slidein-show': state })}
+  const handleDismiss = () => {
+    dismiss();
+    if (props.callback) props.callback();
+  };
+
+  return (
+    <div className={classnames("slidein", { "slidein-show": state })}>
+      {props.children}
+      <button
+        type="button"
+        title="Press to dismiss this notification"
+        className="slidein__dismiss"
+        onClick={() => handleDismiss()}
       >
-         {props.children}
-         <button type="button" title="Press to dismiss this notification" className="slidein__dismiss" onClick={() => handleDismiss()}>
-            <Exmark role="img" aria-label="ex mark" width="18" height="18" className="slidein__icon" />
-         </button>
-      </div>
-   )
+        <Exmark
+          role="img"
+          aria-label="ex mark"
+          width="18"
+          height="18"
+          className="slidein__icon"
+        />
+      </button>
+    </div>
+  );
 }
