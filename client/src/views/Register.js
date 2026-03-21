@@ -7,7 +7,7 @@ import { registerUser, resetErrors } from "../actions/authActions";
 import shallowEqual from "../util/shallowEquality";
 import FloatingField from "../components/FloatingField";
 
-import logo from "../img/wordmark.svg?react";
+import Logo from "../img/wordmark.svg?react";
 
 class Register extends Component {
   constructor(props) {
@@ -68,7 +68,7 @@ class Register extends Component {
       <div className="prompt">
         <div className="prompt__brand">
           <Link to="/">
-            <img src={logo} width="180" height="36" alt="Sudoku Maker logo" />
+            <Logo width="180" height="36" alt="Sudoku Maker logo" />
           </Link>
         </div>
 
