@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import logo from "../img/wordmark_checker.svg?react";
+import Logo from "../img/wordmark_checker.svg?react";
 
 import UserHandle from "./UserHandle";
 
@@ -13,8 +13,7 @@ export default function Header(props) {
     <header className={`header header_theme-${theme}`}>
       <div className="header__container">
         <Link to="/" className="header__logo">
-          <img
-            src={logo}
+          <Logo
             alt="Sudoku Checker logo"
             width="280"
             height="36"
