@@ -4,6 +4,7 @@
   "main": "server.js",
   "homepage": "https://github.com/caitlinteaguedesign/sudoku-app#readme",
   "scripts": {
+    "build": "cd client && npm run build",
     "install-client": "cd client && npm install",
     "buildout-client": "npm run install-client && npm run build",
     "server": "nodemon",
