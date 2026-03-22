@@ -43,4 +43,18 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    proxy: {
+      "/puzzles": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/users": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
