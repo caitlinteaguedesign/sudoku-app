@@ -5,4 +5,4 @@
 /backups
 
 # local env
-nodemon.json
+.env

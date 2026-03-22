@@ -23,9 +23,19 @@ In this directory, you can run:
 
 Installs project locally for both root and client directory. Uses `npm ci` and requires a `package-lock.json` to run.
 
+Also, install `nodemon` globally:
+
+```
+npm install -g nodemon
+```
+
 ### `npm run dev`
 
-Runs both server and client in development mode.
+Runs both server and client in development mode with `nodemon`.
+
+### `npm start`
+
+Runs just the server with `node server.js`.
 
 ### `npm run superclean`
 
