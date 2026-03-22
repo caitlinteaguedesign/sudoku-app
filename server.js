@@ -1,3 +1,6 @@
+// env
+require("dotenv").config({ quiet: true });
+
 // setup
 const app = require("./app");
 
