@@ -1,3 +1,4 @@
 {
-  "exec": "node -r dotenv/config server.js"
+  "exec": "node -r dotenv/config server.js",
+  "ignore": ["**/client/**"]
 }
