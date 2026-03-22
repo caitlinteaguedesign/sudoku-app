@@ -115,19 +115,17 @@ class Browse extends Component {
   }
 }
 
+function filterPuzzlesByDifficulty(data, difficulty) {
+  return data
+    .filter((puzzle) => puzzle.difficulty === difficulty)
+    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
+}
+
 function displayPuzzles(data, added) {
-  const easy = data
-    .filter((puzzle) => puzzle.difficulty === "easy")
-    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
-  const medium = data
-    .filter((puzzle) => puzzle.difficulty === "medium")
-    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
-  const hard = data
-    .filter((puzzle) => puzzle.difficulty === "hard")
-    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
-  const expert = data
-    .filter((puzzle) => puzzle.difficulty === "expert")
-    .sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
+  const easy = filterPuzzlesByDifficulty(data, "easy");
+  const medium = filterPuzzlesByDifficulty(data, "medium");
+  const hard = filterPuzzlesByDifficulty(data, "hard");
+  const expert = filterPuzzlesByDifficulty(data, "expert");
 
   return (
     <div className="page">
