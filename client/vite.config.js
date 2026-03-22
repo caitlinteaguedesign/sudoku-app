@@ -9,6 +9,13 @@ export default defineConfig({
   build: {
     outDir: "build",
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
+  },
   plugins: [
     react(),
     svgrPlugin({
