@@ -10,9 +10,9 @@
     "superclean": "npm run clean && cd client && npm run clean",
     "superinstall": "npm ci && cd client && npm ci",
     "dev-client": "npm start --prefix client",
-    "dev": "concurrently -n server,client -c gray,cyan \"nodemon\" \"npm run dev-client\"",
+    "dev": "concurrently -n server,client -c gray,cyan \"nodemon server.js\" \"npm run dev-client\"",
     "serve-client": "npm run serve --prefix client",
-    "serve": "concurrently -n server,client -c gray,cyan \"nodemon\" \"npm run serve-client\""
+    "serve": "concurrently -n server,client -c gray,cyan \"npm start\" \"npm run serve-client\""
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
