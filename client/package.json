@@ -1,6 +1,5 @@
 {
-  "name": "client",
-  "version": "2.0.0",
+  "private": true,
   "main": "index.js",
   "homepage": "https://sudoku.caitlinteague.com/",
   "scripts": {
@@ -26,18 +25,12 @@
     "@vitejs/plugin-react": "^4.7.0",
     "classnames": "^2.5.1",
     "postcss": "^8.5.8",
-    "sass": "^1.98.0",
+    "sass": "^1.99.0",
     "vite": "^6.4.1",
     "vite-plugin-svgr": "^4.5.0"
   },
   "engines": {
     "npm": "10.8.2",
     "node": "18.20.8"
-  },
-  "type": "module",
-  "keywords": [],
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "private": true
+  }
 }
